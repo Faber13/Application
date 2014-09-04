@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="wds:war">
+    <output-path>$PROJECT_DIR$/src/main/java/org/fao/fenix/amis/cbsmonthly/restServices/WDS/wds/target</output-path>
+    <root id="archive" name="wds-4.3-SNAPSHOT.war">
+      <element id="artifact" artifact-name="wds:war exploded" />
+    </root>
+  </artifact>
+</component>

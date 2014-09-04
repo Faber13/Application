@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="AmisCBS-Monthly:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="policy.war">
+      <element id="artifact" artifact-name="AmisCBS-Monthly:war exploded" />
+    </root>
+  </artifact>
+</component>
