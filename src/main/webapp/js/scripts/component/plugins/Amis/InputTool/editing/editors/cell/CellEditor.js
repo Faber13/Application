@@ -56,7 +56,6 @@ define(["jquery", "formatter/DatatypesFormatter", "jquery.dirtyFields", "infragi
         // leftKeyColumns
         for (var i = 0; i < leftKeyColumnsIndexes.length; i++) {
             // show value in right format
-            debugger;
             var valueLeft = formatter.fromDSDToVisualizationFormat(cell[leftKeyColumnsIndexes[i]], configurationKeys["leftKeyColumnConfiguration"][i],
                 leftKeyColumns[i].dataTypes, Configurator)
             $('#form').append("<div class ='row'>" +
@@ -210,13 +209,13 @@ define(["jquery", "formatter/DatatypesFormatter", "jquery.dirtyFields", "infragi
                 if ((ConfColumn.values.dataRepresentation == 'distinct' || ConfColumn.values.dataRepresentation == 'hybrid')
                     && typeof dsdColumn.values !== 'undefined' && dsdColumn.values.length > 1) {
                     var maxLength = dsdColumn.values.length;
-                    var dateStringFrom = JSON.parse( dsdColumn.values[0]);
-                    var dateStringTo = JSON.parse( dsdColumn.values[maxLength - 1]);
+                    var dateStringFrom = JSON.parse(dsdColumn.values[0]);
+                    var dateStringTo = JSON.parse(dsdColumn.values[maxLength - 1]);
                     fromDate = new Date(dateStringFrom);
                     toDate = new Date(dateStringTo);
                     // if a value exist, take it as default
                     if (typeof value !== 'undefined') {
-                        var dateStringValue = JSON.parse( value);
+                        var dateStringValue = JSON.parse(value);
                         defaultDate = new Date(dateStringValue);
                     }
                 }
@@ -227,7 +226,7 @@ define(["jquery", "formatter/DatatypesFormatter", "jquery.dirtyFields", "infragi
                     fromDate = new Date(dateStringFrom);
                     toDate = new Date(dateStringTo);
                     if (typeof value !== 'undefined') {
-                        var dateStringValue = Date.parse( value);
+                        var dateStringValue = Date.parse(value);
                         defaultDate = new Date(dateStringValue);
                     }
                 }
@@ -292,7 +291,7 @@ define(["jquery", "formatter/DatatypesFormatter", "jquery.dirtyFields", "infragi
 
                     fromDate = new Date(yearFrom, monthFrom - 1);
                     toDate = new Date(yearTo, monthTo - 1);
-                    if (typeof value !== 'undefined' && value != 'undefined' && value != "Invalid date" && value !='null') {
+                    if (typeof value !== 'undefined' && value != 'undefined' && value != "Invalid date" && value != 'null') {
                         var year = value.substr(0, 4);
                         var month = value.substr(4, 2);
                         defaultDate = new Date(year, month - 1);
@@ -300,7 +299,6 @@ define(["jquery", "formatter/DatatypesFormatter", "jquery.dirtyFields", "infragi
                         defaultDate = null;
                     }
                 }
-
 
 
                 $('#form').append("<div class ='row'>" +
@@ -354,7 +352,7 @@ define(["jquery", "formatter/DatatypesFormatter", "jquery.dirtyFields", "infragi
 
                     fromDate = new Date(yearFrom);
                     toDate = new Date(yearTo);
-                    if (typeof value !== 'undefined' && value != 'undefined' && value != "Invalid date"  && value !='null') {
+                    if (typeof value !== 'undefined' && value != 'undefined' && value != "Invalid date" && value != 'null') {
                         var year = value.substr(0, 4);
                         defaultDate = new Date(year);
                     } else {
@@ -423,7 +421,7 @@ define(["jquery", "formatter/DatatypesFormatter", "jquery.dirtyFields", "infragi
                     var dayTo = dsdColumn.domain.period.to.substr(6, 4);
                     fromDate = new Date(yearFrom, monthFrom - 1, dayFrom);
                     toDate = new Date(yearTo, monthTo - 1, dayTo);
-                    if (typeof value !== 'undefined' && value != 'undefined' && value != "Invalid date" && value !='null') {
+                    if (typeof value !== 'undefined' && value != 'undefined' && value != "Invalid date" && value != 'null') {
                         var year = value.substr(0, 4);
                         var month = value.substr(4, 2);
                         var day = value.substr(6, 4);
@@ -495,7 +493,6 @@ define(["jquery", "formatter/DatatypesFormatter", "jquery.dirtyFields", "infragi
 
                 $('#' + container + '').jqxComboBox({
                     source: dataAdapter,
-                    multiSelect: true,
                     displayMember: "label",
                     valueMember: "code",
                     selectedIndex: codeValue,
@@ -576,6 +573,7 @@ define(["jquery", "formatter/DatatypesFormatter", "jquery.dirtyFields", "infragi
 
             default:
                 if (ConfColumn.values.editable) {
+                    debugger;
                     if (title == "note") {
                         $('#form').append("<div class ='row'>" +
                             "<div class='col-lg-6'><label for='" + container + "'>" + title
@@ -591,12 +589,12 @@ define(["jquery", "formatter/DatatypesFormatter", "jquery.dirtyFields", "infragi
 
                     }
                 }
-                else{
-                        $('#form').append("<div class ='row'>" +
-                            "<div class='col-lg-6'><label for='" + container + "'>" + title
-                            + "</label></div>" +
-                            "<div class='col-lg-6'><textarea type='text' class='input-group-lg form-control' name='name' rows='3' id='" + container + "' value='" + value + "' readonly></div>" +
-                            "</div><br>")
+                else {
+                    $('#form').append("<div class ='row'>" +
+                        "<div class='col-lg-6'><label for='" + container + "'>" + title
+                        + "</label></div>" +
+                        "<div class='col-lg-6'><input type='text' class='input-group-lg form-control' name='name'  id='" + container + "' value='" + value + "' readonly/></div>" +
+                        "</div><br>")
 
                 }
                 var previous = {};

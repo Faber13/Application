@@ -9,79 +9,76 @@ define(["jquery", "jqwidgets"], function($) {
 
         radioNationDB = $("#jqxradiobuttonNationalDB");
         radioCBS =      $("#jqxradiobuttonCBS");
-       // $("#labelCBS").html("CBS");
+        // $("#labelCBS").html("CBS");
 
     }
 
 
     DatabaseSelector.prototype.changeRadio = function(regionCode){
-        var url = "http://168.202.28.178:8081/wds/rest/amis/cbsmonthly/AMISCBS/databases/"+regionCode;
 
+        var filterRegionCode = {"regionCode" : regionCode}
+        //var url = "http://localhost:8081/wds/rest/amis/cbsmonthly/AMISCBS/databases/"+regionCode;
+        var url  = "http://168.202.28.178:8080/dataset/datasource"
         var that = this;
+        var data;
 
         $.ajax({
             async: false,
-            type: 'GET',
             url: url,
-            success: function(data) {
-                // prepare the data
-                 source =
-                {
-                    datatype: "json",
-                    datafields: [
-                        { name: 'tableName'},
-                        { name: 'code' },
-                        { name: 'title' }
-                    ],
-                    localdata: data
-                };
-
-                //callback
-
-                $("#labelNatDB").html(data['title']);
-
-            }
-
+            type: 'POST',
+            contentType : "application/json",
+            dataType : 'json',
+            data : JSON.stringify( filterRegionCode)
+        }).done(function(result) {
+            data = result;
         });
+
+        debugger;
+        // prepare the data
+        source =
+        {
+            datatype: "json",
+            datafields: [
+                { name: 'datasource'}
+            ],
+            localdata: data
+        };
+
+        //callback
+        $("#labelNatDB").html(data['datasource']);
+
+
         radioNationDB.jqxRadioButton({ width: 120, height: 25, checked: true});
-
-
     }
 
 
     DatabaseSelector.prototype.init = function(regionCode){
+        var filterRegionCode = {"regionCode" : regionCode}
 
-        var that = this
-
-        var url = "http://168.202.28.178:8081/wds/rest/amis/cbsmonthly/AMISCBS/databases/"+regionCode;
-
+        var url = "http://168.202.28.178:8080/dataset/datasource";
         selectedDB = $("#labelCBS").text();
         var that = this;
         $.ajax({
             async: false,
-            type: 'GET',
+            type: 'post',
             url: url,
+            contentType : "application/json",
+            dataType : 'json',
+            data : JSON.stringify( filterRegionCode),
             success: function(data) {
-
-               source = that.prepareBoxData(data)
-
+                source = that.prepareBoxData(data)
                 //callback
-
-                $("#labelNatDB").html(data['title']);
+                $("#labelNatDB").html(data['datasource']);
             }
         });
 
-
         //radioCBS.jqxRadioButton({ width: 120, height: 25 });
-
         radioNationDB.jqxRadioButton({
             width: 120,
             height: 25,
-             checked : true
+            checked : true
         });
-
-          return selectedDB;
-
+        return selectedDB;
     }
 
 
@@ -91,8 +88,8 @@ define(["jquery", "jqwidgets"], function($) {
 
 
     DatabaseSelector.prototype.selectNational = function(event){
-        console.log("SELECT NATIONAL: "+source.localdata.tableName);
-        return source.localdata.tableName;
+        console.log("SELECT NATIONAL: "+source.localdata.datasource);
+        return source.localdata.datasource;
     }
 
 
@@ -121,7 +118,6 @@ define(["jquery", "jqwidgets"], function($) {
         };
         return source;
     }
-
 
     return DatabaseSelector;
 

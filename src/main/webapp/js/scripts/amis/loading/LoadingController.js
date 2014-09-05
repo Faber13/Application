@@ -24,9 +24,6 @@ define(["jquery", "balanceSheet/BalanceSheet", "formatter/DatatypesFormatter"],
         var previousYearFilter = parseInt(preloadingData.years.previousYearLabel.substring(0, 4));
         var currentYearFilter = parseInt(preloadingData.years.currentYearLabel.substring(0, 4));
 
-        /*
-         {       "region":12,       "element":1,       "year":2010    }
-         */
         var region = parseInt(preloadingData.post.regionCode);
         var product = parseInt(preloadingData.post.productCode)
 
@@ -112,8 +109,6 @@ define(["jquery", "balanceSheet/BalanceSheet", "formatter/DatatypesFormatter"],
 
         var filterPreviousYear = {"region": region, "product": product, "year": previousYearFilter, "date": mostRecentDate}
 
-
-
         var prevYearForecast
         $.ajax({
             async: false,
@@ -180,10 +175,6 @@ define(["jquery", "balanceSheet/BalanceSheet", "formatter/DatatypesFormatter"],
                 balanceSheet.init(totalForecast, url)
             }
         }
-
-        debugger;
-
-
 
         $("#controlData").bind('click', function(){
             debugger;

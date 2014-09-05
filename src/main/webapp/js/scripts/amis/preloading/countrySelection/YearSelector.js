@@ -16,11 +16,16 @@ define(["jquery", "jqwidgets"], function($) {
     }
 
 
-    YearSelector.prototype.init = function(body){
+    YearSelector.prototype.init = function(oldBody){
+
+        var body = {
+            "regionCode" : oldBody.regionCode,
+            "productCode": oldBody.productCode
+        }
 
         var that = this;
         combo = $("#selectionYear")
-        var url = "http://168.202.28.178:8081/wds/rest/amis/cbsmonthly/AMISCBS/years";
+        var url = "http://168.202.28.178:8080/dataset/year";
         var sources = [];
 
         $.ajax({

@@ -6,9 +6,12 @@ define(["jquery" ], function($ ){
     function AdapterPivot(){};
 
     // get the clicked cell from the model data and the index of Table model
-    AdapterPivot.prototype.getClickedCell = function(TableModel, Configurator, ui, indexesObject, columnsNumber) {
+    AdapterPivot.prototype.getClickedCell = function(TableModel, Configurator, ui, indexesObject) {
         var result = {};
         var rowGridIndex, columnGridIndex;
+
+        var objectColumns = ui.owner.tmpDataSource._dataView[0];
+        var columnsNumber = Object.keys(objectColumns).length -1
 
         var numberLeftKeyColumns = Configurator.getLeftKeyColumn().leftColumns.length
         if (ui.rowIndex == 0) {
@@ -34,7 +37,6 @@ define(["jquery" ], function($ ){
         result["indTable"]      = indTable;
         result["rowGridIndex"]    = rowGridIndex;
         result["columnGridIndex"]    = columnGridIndex;
-        debugger;
         return result;
     }
 

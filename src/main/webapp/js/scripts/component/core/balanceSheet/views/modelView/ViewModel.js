@@ -79,6 +79,7 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
             }
         }
 
+        var notesInserted = false
         var accessorIndexes = accessorModel["accessorIndexes"];
         var accessorColumns = accessorModel["accessorColumns"];
         // accessor columns
@@ -106,10 +107,18 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
             }
             else {
                 result[accessorIndexes[i]] = item[accessorIndexes[i]]
+                if( i ==2 && typeof item[accessorIndexes[i]] !='undefined' &&  item[accessorIndexes[i]] != null &&  item[accessorIndexes[i]] != 'null'){
+                   notesInserted = true;
+                }
             }
         }
+        result[indexValues]  = formatter.fromDSDToVisualizationFormat(result[indexValues],valueColumn,configurator.getValueColumnOnDSD().dataTypes, configurator)
         //result[indexValues] = formatter.convertNumberOfDecimals(result[indexValues], configurator.getNumberOfDecimals())
         result[indexValues] = this.expressionLanguage(valueColumn, indexValues, result);
+        // Binded to Amis, if there is a note show an image
+        if(notesInserted) {
+            result[indexValues] += "<img src='../../../../../../../css/images/notes/Icon-notes.png'>"
+        }
         return result;
     }
 
@@ -148,10 +157,10 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
                     secondCondition = secondCondition.slice(0, -1);
                     var stringAppend = secondCondition.replace(onlyValue, function (match) {
                         var returnedValue;
-                        returnedValue = (match.substring(1) == "value") ? item[indexValue] : item[accessorMap[match.substring(1)]];
+                        returnedValue = (match.substring(1) == "value") ? item[indexValue] : "   "+item[accessorMap[match.substring(1)]];
                         return returnedValue;
                     })
-                    result += stringAppend;
+                    result +="   "+ stringAppend;
                 }
                 else {
                     expression = expression.replace(valuesRegExpression, "")
@@ -168,7 +177,6 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
         switch (datatype[0]) {
             case "time":
                 var date = new Date(value);
-
                 result = moment(date).format(configurationKeyColumn.properties.cellProperties.dateFormat)
                 break;
 

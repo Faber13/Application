@@ -168,6 +168,11 @@ define(['jquery'], function ($) {
         return result;
     }
 
+    Configurator.prototype.getValueColumnOnDSD = function(){
+       var valueIndex = this.getValueIndex();
+       return dsdConf.dsd.columns[valueIndex];
+    }
+
 
     Configurator.prototype.getIdOlapGrid = function () {
         var result = compConfiguration.gridConfiguration.HTMLproperties.idGrid;

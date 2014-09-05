@@ -1,4 +1,4 @@
-define(["jquery", "moment"], function ($) {
+define(["jquery", "moment", "numeral"], function ($) {
 
     var mapLabelToCode = [];
 
@@ -83,6 +83,12 @@ define(["jquery", "moment"], function ($) {
                 var columnsCodes = configurator.lookForCode(configurationKeyColumn.columnId);
                 result = columnsCodes.mapCodeLabel[value];
                 break;
+
+            case "number":
+                result = (typeof value != 'undefined' && value !== 'undefined' && value != null) ?
+                    numeral(value).format(configurationKeyColumn.properties.cellProperties.numericFormat) :
+                    value;
+                break;
         }
         return result;
 
@@ -103,7 +109,6 @@ define(["jquery", "moment"], function ($) {
     DatatypesFormatter.prototype.convertNumberOfDecimals = function(data, numberOfDecimals){
         var result;
         if(typeof data != 'undefined' && data != null && data != 'null') {
-            debugger;
             result = parseInt(data).toFixed(numberOfDecimals);
         }else{
             result = data;

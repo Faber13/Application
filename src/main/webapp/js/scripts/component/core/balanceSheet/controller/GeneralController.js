@@ -19,12 +19,11 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
         dsd = configurator.getDSD();
         Configurator = configurator;
         ViewGrid.init(fullTableModel, configurator)
-        var columnsNumber = ModelController.getFullColumnsIndexes().length;
-        this.createListeners(columnsNumber)
+        this.createListeners()
     }
 
 
-    GeneralController.prototype.createListeners = function (columnsNumber) {
+    GeneralController.prototype.createListeners = function () {
 
         var idPivot = Configurator.getIdOlapGrid()
         // Transform pivotGrid into grid
@@ -39,7 +38,7 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
             var cellTableModel = $.extend(true, [], cellTableModel2);
             // To identify when the first new nested row starts
             var indexesObject = ModelController.getIndexesNewFirstColumnLeft();
-            var resultedClicked= adapterPivot.getClickedCell(cellTableModel, Configurator, ui, indexesObject, columnsNumber);
+            var resultedClicked= adapterPivot.getClickedCell(cellTableModel, Configurator, ui, indexesObject);
             var clickedCell = resultedClicked["clickedCell"]
             var indTable = resultedClicked["indTable"] ;
             var rowGridIndex = resultedClicked["rowGridIndex"];
@@ -50,31 +49,6 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
         });
 
 
-       /* $("#"+grid.id()).igGridUpdating("dblclick",function(){
-            alert()
-            // Only the FIRST ROW column indexes start from 2!
-            evt.stopImmediatePropagation()
-            var cellTableModel2 = ModelController.getTableDataModel();
-            var cellTableModel = $.extend(true, [], cellTableModel2);
-            // To identify when the first new nested row starts
-            var indexesObject = ModelController.getIndexesNewFirstColumnLeft();
-            var resultedClicked= adapterPivot.getClickedCell(cellTableModel, Configurator, ui, indexesObject, columnsNumber);
-            var clickedCell = resultedClicked["clickedCell"]
-            var indTable = resultedClicked["indTable"] ;
-            var rowGridIndex = resultedClicked["rowGridIndex"];
-            var columnGridIndex = resultedClicked["columnGridIndex"];
-            var grid = $("#pivotGrid").igPivotGrid("grid");
-            FormController.init(Configurator, clickedCell, dsd)
-            that.onSaveButton(indTable, clickedCell, rowGridIndex, columnGridIndex);
-        })
-/*
-        $('#'+grid.id()).delegate('.ui-iggrid-activerow', 'dblclick', function (e) {
-            alert("DOBLECLICK")
-            var row = $('#igGrid1').igGridSelection('selectedRow');
-            var dataview = $('#igGrid1').data('igGrid').dataSource.dataView();
-            var cellValue = dataview[row.index]["UserId"];
-            window.location = address;
-        })*/
 
             $("#exportButton").click(function () {
             var ExportControl = new ExportController;
