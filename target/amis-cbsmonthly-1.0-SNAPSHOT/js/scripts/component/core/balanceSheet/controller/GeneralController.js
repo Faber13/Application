@@ -2,23 +2,33 @@
  * Created by fabrizio on 7/7/14.
  */
 define(["jquery", "view/GridDataView", "editorController/FormController",
-    "exporter/controller/ExportController", "adapter/AdapterPivot"],
-    function ($, GridDataView, EditorController, ExportController, Adapter) {
+    "exporter/controller/ExportController", "adapter/AdapterPivot", "formulasAmis/controller/FormulaController"],
+    function ($, GridDataView, EditorController, ExportController, Adapter, FormulaController) {
 
-    var ViewGrid, ModelController, FormController, dsd, Configurator, adapterPivot;
+    var ViewGrid, ModelController, FormController, dsd, Configurator, adapterPivot, formulaController;
 
     function GeneralController() {
         ViewGrid = new GridDataView;
         FormController = new EditorController;
-        adapterPivot = new Adapter
+        adapterPivot = new Adapter;
+        formulaController = new FormulaController;
+
     };
 
 
-    GeneralController.prototype.init = function (gridModel, fullTableModel, configurator, modelController) {
+    GeneralController.prototype.init = function (gridModel, tableModel, configurator, modelController) {
         ModelController = modelController;
         dsd = configurator.getDSD();
         Configurator = configurator;
-        ViewGrid.init(fullTableModel, configurator)
+
+        // formula
+       formulaController.init(tableModel, configurator)
+
+        // create a copy
+        var tableModelInstance = $.extend(true, [], tableModel);
+        // visualization model
+        ViewGrid.init(tableModelInstance, configurator)
+        // append listeners to events
         this.createListeners()
     }
 
@@ -48,11 +58,8 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
             that.onSaveButton(indTable, clickedCell, rowGridIndex, columnGridIndex);
         });
 
-
-
-            $("#exportButton").click(function () {
+            $("#exportButton").click(function() {
             var ExportControl = new ExportController;
-            // var table = ViewGrid.getModelView();
             var table = ModelController.getTableDataModel();
             ExportControl.init(table, Configurator)
         })
@@ -75,4 +82,5 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
 
 
         return GeneralController;
+
     });

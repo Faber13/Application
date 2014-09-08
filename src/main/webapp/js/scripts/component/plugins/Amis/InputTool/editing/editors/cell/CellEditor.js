@@ -578,13 +578,13 @@ define(["jquery", "formatter/DatatypesFormatter", "jquery.dirtyFields", "infragi
                         $('#form').append("<div class ='row'>" +
                             "<div class='col-lg-6'><label for='" + container + "'>" + title
                             + "</label></div>" +
-                            "<div class='col-lg-6'><textarea type='text' class='input-group-lg form-control' name='name'  rows='3' id='" + container + "' value='" + value + "'></textarea></div>" +
+                            "<div class='col-lg-6'><textarea type='text' class='input-group-lg form-control' name='name'  rows='3' id='" + container + "'>"+value+"</textarea></div>" +
                             "</div><br>")
                     } else {
                         $('#form').append("<div class ='row'>" +
                             "<div class='col-lg-6'><label for='" + container + "'>" + title
                             + "</label></div>" +
-                            "<div class='col-lg-6'><input type='text' class='input-group-lg form-control' name='name' id='" + container + "' value='" + value + "'></textarea></div>" +
+                            "<div class='col-lg-6'><input type='text' class='input-group-lg form-control' name='name' id='" + container + "' value='" + value + "'/></div>" +
                             "</div><br>")
 
                     }

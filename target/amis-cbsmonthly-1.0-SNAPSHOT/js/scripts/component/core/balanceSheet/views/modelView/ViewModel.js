@@ -117,7 +117,7 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
         result[indexValues] = this.expressionLanguage(valueColumn, indexValues, result);
         // Binded to Amis, if there is a note show an image
         if(notesInserted) {
-            result[indexValues] += "<img src='../../../../../../../css/images/notes/Icon-notes.png'>"
+            result[indexValues] += "<img src='../../../../../../../BalanceSheet/css/images/notes/paperclip-icon.png' width='16' height='16'>"
         }
         return result;
     }
