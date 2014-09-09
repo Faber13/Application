@@ -152,6 +152,46 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel"], function ($, pi
 
     }
 
+    GridDataView.prototype.updateBatchGridView = function (tableModel, cells) {
+
+        for(var i =0; i<cells.length; i++){
+            modelView[cells[i]["index"]] = viewModel.updateItem(cells[i]["row"])
+        }
+        dataSource2 = new $.ig.OlapFlatDataSource({
+            dataSource: modelView,
+            metadata: {
+                cube: {
+                    name: "Sales",
+                    caption: "Sales",
+                    measuresDimension: {
+                        caption: "Measures",
+                        measures: [ //for each measure, name and aggregator are required
+                            { caption: "value", name: "value", aggregator: getValue(indexValues) }
+                        ]
+                    },
+                    dimensions: [ // for each dimension
+                        {
+                            // For each dimension at least one hierarchy must be defined.
+                            caption: "Rows", name: "Rows", hierarchies: leftDimensions
+                        },
+                        {
+                            caption: "Columns", name: "Columns", displayFolder: "Folder1\\Folder2", hierarchies: upDimensions
+                        }
+                    ]
+
+                }
+            },
+            // Preload hiearhies for the rows, columns, filters and measures
+            rows: "[Rows].[" + titlesLeft[0] + "],[Rows].[" + titlesLeft[1] + "]",
+            columns: "[Columns].[" + titlesUp[0] + "],[Columns].[" + titlesUp[1] + "]",
+            measures: "[Measures].[value]"
+
+        });
+
+        $("#pivotGrid").igPivotGrid("option", "dataSource", dataSource2)
+
+    }
+
 
     GridDataView.prototype.setPropertiesDatasource = function () {
 

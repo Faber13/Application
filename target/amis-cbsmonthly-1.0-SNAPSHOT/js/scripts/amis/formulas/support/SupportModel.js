@@ -13,6 +13,7 @@ define(["jquery" ], function ($) {
         tableMapCodes = {};
     }
 
+
     SupportModel.prototype.getMapCodes = function () {
         var result;
         if (typeof mapCodes === 'undefined') {
@@ -45,6 +46,12 @@ define(["jquery" ], function ($) {
         }
 
         return result;
+    }
+
+
+    SupportModel.prototype.createIndexOriginalModel = function(numberOfColumns,indexColumn,mapCodes,code){
+        var xCoordinate = mapCodes[code];
+        return (numberOfColumns * xCoordinate) + indexColumn
     }
 
     return SupportModel;

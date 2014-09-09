@@ -58,7 +58,26 @@ define(["jquery" ], function ($) {
         return interColumns;
     }
 
+    FormulaConfigurator.prototype.getAllFormulaOnUpdate = function(){
+        return config.onUpdate.formulas;
+    }
 
+    FormulaConfigurator.prototype.getBindedKeys = function(){
+        return config.onUpdate.bindedKeys;
+    }
+
+    FormulaConfigurator.prototype.getFormulasBindedFromKey = function(key){
+        var result;
+        var allFormula = this.getAllFormulaOnUpdate()
+        var found = false;
+        for( var i=0; i<allFormula.length && !found; i++){
+            if(allFormula[i].key[0] == key) {
+                found = true;
+                result = allFormula[i].formulasBinded;
+            }
+        }
+        return result;
+    }
 
     return FormulaConfigurator;
 

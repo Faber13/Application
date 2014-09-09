@@ -116,8 +116,8 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
         //result[indexValues] = formatter.convertNumberOfDecimals(result[indexValues], configurator.getNumberOfDecimals())
         result[indexValues] = this.expressionLanguage(valueColumn, indexValues, result);
         // Binded to Amis, if there is a note show an image
-        if(notesInserted) {
-            result[indexValues] += "<img src='../../../../../../../BalanceSheet/css/images/notes/paperclip-icon.png' width='16' height='16'>"
+        if(notesInserted && result[indexValues]!= null && typeof result[indexValues] != 'undefined' && result[indexValues] != "") {
+            result[indexValues] += "&nbsp<img src='../../../../../../../BalanceSheet/css/images/notes/paperclip-icon.png' width='16' height='16'>"
         }
         return result;
     }
@@ -160,7 +160,7 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
                         returnedValue = (match.substring(1) == "value") ? item[indexValue] : "   "+item[accessorMap[match.substring(1)]];
                         return returnedValue;
                     })
-                    result +="   "+ stringAppend;
+                    result +=stringAppend;
                 }
                 else {
                     expression = expression.replace(valuesRegExpression, "")

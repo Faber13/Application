@@ -40,6 +40,10 @@ define(["jquery", "moment", "numeral"], function ($) {
                 }
                 break;
 
+            case "number":
+                result = (typeof value != 'undefined' && value !== 'undefined' && value != null) ? parseInt(value) : undefined;
+                break;
+
             default :
                 result = (value !== 'undefined' && value != '') ? value : undefined;
         }
