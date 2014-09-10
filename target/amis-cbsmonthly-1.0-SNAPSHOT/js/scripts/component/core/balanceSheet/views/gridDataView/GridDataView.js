@@ -4,15 +4,15 @@
 define(["jquery" , "infragistics", "views/modelView/ViewModel"], function ($, pivot, ViewModel) {
 
     var model, table, Configurator, titlesUp, titlesLeft, accessorMap, fullModel, configurationKeys, indexValues, modelView,
-        leftDimensions, upDimensions, valueColumn, dataSource2, idOlapGrid, language, viewModel
+        leftDimensions, upDimensions, valueColumn, dataSource2, idOlapGrid, language, viewModel, supportUtility
 
     function GridDataView() {
 
     }
 
 
-    GridDataView.prototype.init = function (tableModel, configurator) {
-
+    GridDataView.prototype.init = function (tableModel, configurator, utility) {
+        supportUtility = utility;
         viewModel = new ViewModel;
         table = tableModel;
         Configurator = configurator;
@@ -48,6 +48,11 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel"], function ($, pi
                 return result;
             };
         };
+
+
+        var filterData = supportUtility.getFilterData()
+
+        debugger;
 
 
         dataSource2 = new $.ig.OlapFlatDataSource({
@@ -98,7 +103,7 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel"], function ($, pi
             isParentInFrontForColumns: true,
             hideFiltersDropArea: true,
             gridOptions: {
-                caption : "AMIS Commodity Balance Sheets",
+                caption : "Forecast for season: "+filterData.season+" , "+filterData.country+" , "+filterData.product+" , "+filterData.dataSource,
                 defaultColumnWidth: 160,
                 features: [
                     {

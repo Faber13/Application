@@ -44,7 +44,6 @@ define(["jquery" ], function ($) {
                 result = i;
             }
         }
-
         return result;
     }
 

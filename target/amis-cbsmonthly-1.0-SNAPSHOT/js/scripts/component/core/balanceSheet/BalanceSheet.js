@@ -3,7 +3,8 @@
  */
 
 define(["jquery", "configurator/Configurator", "modelController/ModelsController",
-    "generalController/GeneralController"], function ($, Configurator, ModelController, GeneralController) {
+    "generalController/GeneralController", "utilities/SupportUtility"], function ($, Configurator, ModelController, GeneralController,
+    Utility) {
 
     /*var urlComponent = "./js/scripts/component/core/balanceSheet/configuration/component/componentConfiguration.json"
     var urlData = "./js/scripts/component/core/balanceSheet/configuration/data/data.js"
@@ -14,7 +15,7 @@ define(["jquery", "configurator/Configurator", "modelController/ModelsController
 
 
     var tableDataModel, gridDataModel, data, dsd, componentConfiguration,
-        configurator, indexes, generalController, modelController;
+        configurator, indexes, generalController, modelController, supportUtility;
 
     var dataInput;
 
@@ -23,10 +24,11 @@ define(["jquery", "configurator/Configurator", "modelController/ModelsController
         configurator = new Configurator;
         generalController = new GeneralController;
         modelController = new ModelController;
+        supportUtility = new Utility;
 
     }
 
-    BalanceSheet.prototype.init = function (dataInput, urlDSD) {
+    BalanceSheet.prototype.init = function (dataInput, urlDSD, filterData) {
         // dsd
         $.ajax({
             async: false,
@@ -46,6 +48,9 @@ define(["jquery", "configurator/Configurator", "modelController/ModelsController
                 componentConfiguration = data;
             }
         })
+
+
+        supportUtility.init(filterData)
 /*
         // data
         $.ajax({
@@ -62,7 +67,7 @@ define(["jquery", "configurator/Configurator", "modelController/ModelsController
 
         var gridModel = modelController.getGridDataModel()
         var tableModel = modelController.getTableDataModel()
-        generalController.init(gridModel, tableModel, configurator, modelController)
+        generalController.init(gridModel, tableModel, configurator, modelController, supportUtility)
 
     }
 

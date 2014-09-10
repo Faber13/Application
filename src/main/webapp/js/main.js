@@ -3,8 +3,9 @@ requirejs.config({
     "baseUrl": "js/scripts/libs",
     "paths": {
         jquery : "//code.jquery.com/jquery-2.1.1.min",
-        preloading        : "../amis/preloading",
-        loading           : "../amis/loading",
+        preloading        :  "../amis/preloading",
+        loading           :  "../amis/loading",
+        utilities         :  "../component/core/balanceSheet/configuration/utilities",
         balanceSheet      :  "../component/core/balanceSheet",
         models            :  "../component/core/balanceSheet/models",
         views             :  "../component/core/balanceSheet/views",

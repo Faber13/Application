@@ -1,10 +1,10 @@
 /**
  * Created by fabrizio on 5/20/14.
  */
-define(["jquery","preloading/countrySelection/CountrySelector",
-        "preloading/countrySelection/DatabaseSelector",
-        "preloading/countrySelection/CommoditySelector",
-        "preloading/countrySelection/YearSelector",
+define(["jquery","preloading/filterDatafields/CountrySelector",
+        "preloading/filterDatafields/DatabaseSelector",
+        "preloading/filterDatafields/CommoditySelector",
+        "preloading/filterDatafields/YearSelector",
         "loading/LoadingController"],
     function($, CountrySelector, DataBaseSelector, CommSelector, YearSelector, LoadingObserver) {
 
@@ -13,6 +13,9 @@ define(["jquery","preloading/countrySelection/CountrySelector",
 
         // vars returned from the models
         var regionCode, databaseText,databaseValue, productCode ,yearPost, yearPostNat, yearChosen;
+
+        // to control the grid
+        var pivotGrid;
 
         function PreloadingController(){
             countrySelector = new CountrySelector;
@@ -27,6 +30,7 @@ define(["jquery","preloading/countrySelection/CountrySelector",
                 databaseText:   databaseText,
                 databaseValue : databaseValue
             };
+            pivotGrid = document.getElementById('pivotGrid');
         };
 
 
@@ -40,6 +44,8 @@ define(["jquery","preloading/countrySelection/CountrySelector",
 
             // Database
             databaseText=  dbSelector.init(regionCode);
+            console.log('qui!')
+            console.log(databaseText)
             that.updateDBSel(databaseText);
 
             // Commodity
@@ -157,6 +163,10 @@ define(["jquery","preloading/countrySelection/CountrySelector",
                 years: yearChosen
             }
             loadingObserver.init(preloadingData);
+        }
+
+
+        PreloadingController.prototype.getModalViewToGrid = function(){
         }
 
 

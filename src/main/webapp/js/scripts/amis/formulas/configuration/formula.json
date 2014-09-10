@@ -321,5 +321,11 @@
             }
 
         ]
+    },
+    "editableValues":{
+        "directEditing" : {
+            "values" : []
+        }
+
     }
 }

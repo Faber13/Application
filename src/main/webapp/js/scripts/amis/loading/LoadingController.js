@@ -4,19 +4,18 @@
 define(["jquery", "balanceSheet/BalanceSheet", "formatter/DatatypesFormatter"],
     function($, BalanceSheet, Formatter) {
 
-    var urlElements = "http://localhost:8080/dataset/national";
-    var urlPopulation = "http://localhost:8080/dataset/population"
-    var mostRecentUlr = "http://localhost:8080/dataset/recentDate"
-    var previousForecastUrl =  "http://localhost:8080/dataset/recentDate"
+        var urlElements = "http://localhost:8080/dataset/national";
+        var urlPopulation = "http://localhost:8080/dataset/population"
+        var mostRecentUlr = "http://localhost:8080/dataset/recentDate"
+        var previousForecastUrl = "http://localhost:8080/dataset/recentDate"
 
-    var balanceSheet, dataFiltered,firstIstance;
+        var balanceSheet, dataFiltered;
 
-    function LoadingController(){
-        balanceSheet = new BalanceSheet
-        formatter = new Formatter;
-        firstIstance = false;
-    }
-
+        function LoadingController() {
+            balanceSheet = new BalanceSheet
+            formatter = new Formatter;
+            firstIstance = false;
+        }
 
     LoadingController.prototype.init = function(preloadingData) {
         dataFiltered = preloadingData;
@@ -44,17 +43,12 @@ define(["jquery", "balanceSheet/BalanceSheet", "formatter/DatatypesFormatter"],
             actualForecast = result;
         })
 
-
         // Put dates in DSD format
         for(var i =0; i<actualForecast.length -1; i++){
-
             var data = actualForecast[i][2]
-
             actualForecast[i][2] = formatter.fromVisualizationToDSDFormat(data, "date")
             // also for updateDate
         }
-
-
 
         var filterPopulationActual = {
             "region" : region,
@@ -91,7 +85,6 @@ define(["jquery", "balanceSheet/BalanceSheet", "formatter/DatatypesFormatter"],
         // take the most recent date betweeen the previous year
 
         var mostRecentDateFilter  = {"region": region, "product":product,"year":previousYearFilter }
-     //   var dates =  [ [ "2013-07-15" ], [ "2014-07-25" ] ]
         var dates;
         $.ajax({
             async: false,
@@ -121,8 +114,6 @@ define(["jquery", "balanceSheet/BalanceSheet", "formatter/DatatypesFormatter"],
         }).done(function(result) {
             prevYearForecast = result;
         })
-
-
 
         // Put dates in DSD format
         for(var i =0; i<prevYearForecast.length; i++){
@@ -165,14 +156,14 @@ define(["jquery", "balanceSheet/BalanceSheet", "formatter/DatatypesFormatter"],
             firstIstance = true
             // Choice of DSD dependent on the product (if rice has been chosen)
              url = (product == 4)?  urlDSDRice: urlDSD;
-            balanceSheet.init(totalForecast, url)
+            balanceSheet.init(totalForecast, url, dataFiltered)
         }else {
             if(product !=4) {
                 url = urlDSD
-                balanceSheet.init(totalForecast, url)
+                balanceSheet.init(totalForecast, url, dataFiltered)
             }else{
                 url = urlDSDRice;
-                balanceSheet.init(totalForecast, url)
+                balanceSheet.init(totalForecast, url, dataFiltered)
             }
         }
 
@@ -180,5 +171,10 @@ define(["jquery", "balanceSheet/BalanceSheet", "formatter/DatatypesFormatter"],
             debugger;
         })
     };
+
+        LoadingController.prototype.getFilterData = function(){
+            return dataFiltered;
+        }
+
         return LoadingController;
     });
