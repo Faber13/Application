@@ -24,7 +24,15 @@ define(["jquery", "moment", "numeral"], function ($) {
                 break;
 
             case "date":
-                result = (typeof value != 'undefined' && value !== 'undefined' && value != null) ? moment(value).format("YYYYMMDD") : undefined;
+                if (typeof value != 'undefined' && value !== 'undefined' && value != null) {
+                    if (value != "Previous Year") {
+                        result = moment(value).format("YYYYMMDD")
+                    } else {
+                        result = "20000103"
+                    }
+                } else {
+                    result = undefined
+                }
                 break;
 
             case "code" || "codeList" || "customCode":
@@ -56,6 +64,7 @@ define(["jquery", "moment", "numeral"], function ($) {
         var result;
         switch (datatype[0]) {
             case "time":
+
                 var date = new Date(value);
                 result = moment(date).format(configurationKeyColumn.properties.cellProperties.dateFormat)
                 break;
@@ -74,12 +83,17 @@ define(["jquery", "moment", "numeral"], function ($) {
                 break;
 
             case "date":
-            
-                var year = value.substr(0, 4);
-                var month = value.substr(4, 2);
-                var day = value.substr(6, 2);
-                var date = new Date(year, month - 1, day);
-                result = moment(date).format(configurationKeyColumn.properties.cellProperties.dateFormat)
+                if (typeof value != 'undefined' && value !== 'undefined' && value != null) {
+                    if (value != "20000103") {
+                        var year = value.substr(0, 4);
+                        var month = value.substr(4, 2);
+                        var day = value.substr(6, 2);
+                        var date = new Date(year, month - 1, day);
+                        result = moment(date).format(configurationKeyColumn.properties.cellProperties.dateFormat)
+                    } else {
+                        result = "Previous Year"
+                    }
+                } else result = undefined
                 break;
 
             case "code" || "codeList" || "customCode":
@@ -110,18 +124,15 @@ define(["jquery", "moment", "numeral"], function ($) {
     }
 
     // Convert into a fixed number of decimals
-    DatatypesFormatter.prototype.convertNumberOfDecimals = function(data, numberOfDecimals){
+    DatatypesFormatter.prototype.convertNumberOfDecimals = function (data, numberOfDecimals) {
         var result;
-        if(typeof data != 'undefined' && data != null && data != 'null') {
+        if (typeof data != 'undefined' && data != null && data != 'null') {
             result = parseInt(data).toFixed(numberOfDecimals);
-        }else{
+        } else {
             result = data;
         }
         return result;
     }
-
-
-
 
 
     return DatatypesFormatter;

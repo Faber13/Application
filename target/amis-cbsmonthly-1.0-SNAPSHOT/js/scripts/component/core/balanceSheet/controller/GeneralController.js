@@ -2,16 +2,19 @@
  * Created by fabrizio on 7/7/14.
  */
 define(["jquery", "view/GridDataView", "editorController/FormController",
-        "exporter/controller/ExportController", "adapter/AdapterPivot", "formulasAmis/controller/FormulaController", "jqwidgets"],
-    function ($, GridDataView, EditorController, ExportController, Adapter, FormulaController) {
+        "exporter/controller/ExportController", "adapter/AdapterPivot", "formulasAmis/controller/FormulaController",
+        "editingSpecial/controller/ControllerEditors", "jqwidgets"],
+    function ($, GridDataView, EditorController, ExportController, Adapter, FormulaController, SpecialEditorController) {
 
-        var ViewGrid, ModelController, FormController, dsd, Configurator, adapterPivot, formulaController, supportUtility;
+        var ViewGrid, ModelController, FormController, dsd, Configurator, adapterPivot, formulaController, supportUtility,
+            specialControlEditor;
 
         function GeneralController() {
             ViewGrid = new GridDataView;
             FormController = new EditorController;
             adapterPivot = new Adapter;
             formulaController = new FormulaController;
+            specialControlEditor = new SpecialEditorController;
         };
 
 
@@ -40,7 +43,7 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
             var grid = $("#" + idPivot).igPivotGrid("grid");
             var that = this;
 
-            var DELAY = 250,
+            var DELAY = 150,
                 clicks = 0,
                 timer = null;
 
@@ -54,53 +57,57 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
                 var indexesObject = ModelController.getIndexesNewFirstColumnLeft();
                 var resultedClicked = adapterPivot.getClickedCell(cellTableModel, Configurator, ui, indexesObject);
                 var clickedCell = resultedClicked["clickedCell"]
-                clicks++;
+                var isEditable = formulaController.checkIfEditableCell(clickedCell)
+                if( isEditable== 1) {
+                    clicks++;
 
-                // Editing Cell
-                if(clicks === 1) {
-                    timer = setTimeout(function () {
-                        evt.preventDefault();
-                        clicks = 0;
-                        var cell = ui.cellElement;
-                        var oldCell = document.getElementById("clickedCell")
-                        var functionChanges = function (evt, ui) {
-                            if (ui.oldValue != ui.value) {
-                                clickedCell[3] = parseFloat(ui.value);
-                                var indTable = resultedClicked["indTable"];
-                                var rowGridIndex = resultedClicked["rowGridIndex"];
-                                var columnGridIndex = resultedClicked["columnGridIndex"];
-                                that.updateGrid(clickedCell, indTable, rowGridIndex, columnGridIndex);
-                            }
-                        }
-                        if (cell.parentElement !== oldCell) {
-                            if (typeof oldCell !== 'undefined' && oldCell != null) {
-                                if(oldCell.firstElementChild != null) {
-                                    $("#" + oldCell.id).igTextEditor('destroy');
+                    // Editing Cell
+                    if (clicks === 1) {
+                        timer = setTimeout(function () {
+                            evt.preventDefault();
+                            clicks = 0;
+                            var cell = ui.cellElement;
+                            var oldCell = document.getElementById("clickedCell")
+                            var functionChanges = function (evt, ui) {
+                                if (ui.oldValue != ui.value) {
+                                    clickedCell[3] = parseFloat(ui.value);
+                                    var indTable = resultedClicked["indTable"];
+                                    var rowGridIndex = resultedClicked["rowGridIndex"];
+                                    var columnGridIndex = resultedClicked["columnGridIndex"];
+                                    that.updateGrid(clickedCell, indTable, rowGridIndex, columnGridIndex);
                                 }
-                                oldCell.removeAttribute("id")
-                                oldCell.removeAttribute("class")
                             }
-                            cell.setAttribute("id", "clickedCell");
-                            console.log("clickCell")
-                            $("#clickedCell").igTextEditor({
-                                width: 160,
-                                height: 41,
-                                value: clickedCell[3],
-                                valueChanged: functionChanges
-                            });
+                            if (cell.parentElement !== oldCell) {
+                                if (typeof oldCell !== 'undefined' && oldCell != null) {
+                                    if (oldCell.firstElementChild != null) {
+                                        $("#" + oldCell.id).igTextEditor('destroy');
+                                    }
+                                    oldCell.removeAttribute("id")
+                                    oldCell.removeAttribute("class")
+                                }
+                                cell.setAttribute("id", "clickedCell");
+                                console.log("clickCell")
+                                $("#clickedCell").igTextEditor({
+                                    width: 160,
+                                    height: 41,
+                                    value: clickedCell[3],
+                                    valueChanged: functionChanges
+                                });
+                            }
+                        }, DELAY)
+                    } else {
+                        if (document.getElementById('clickedCell') != null) {
+                            $('#clickedCell').igTextEditor('destroy');
                         }
-                    }, DELAY)
-                }else{
-                    if(document.getElementById('clickedCell') != null){
-                        $('#clickedCell').igTextEditor('destroy');
-                    }
-                    that.startFullEditing(resultedClicked)
-                    clicks = 0;
+                        that.startFullEditing(resultedClicked)
+                        clicks = 0;
 
-                    console.log('doubleClick')
+                        console.log('doubleClick')
+                    }
+                }else if(isEditable == 2){
+                    specialControlEditor.init(ModelController.getData(), resultedClicked,FormulaController);
                 }
 
-            //    $('#clickedCell').dblclick(that.startFullEditing(resultedClicked))
             })
             $('#clickedCell').dblclick(function(e){
                 e.preventDefault()
@@ -164,6 +171,7 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
                 ViewGrid.updateGridView(newCell, indTable);
             }
         }
+
 
         return GeneralController;
 

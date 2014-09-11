@@ -24,7 +24,6 @@ define(["jquery", "formulasAmis/support/FormulaConfigurator", "formulasAmis/supp
         this.applyFormulas(model)
 
         this.sortInitialValue(model)
-
     }
 
     FormulaController.prototype.applyFormulas = function(model){
@@ -73,6 +72,7 @@ define(["jquery", "formulasAmis/support/FormulaConfigurator", "formulasAmis/supp
                     } else {
                         startIndex = numberOfRows * indexColumn
                     }
+                    debugger;
                     var index = supportModel.lookForCode(code,model,startIndex, numberOfRows)
                     if(typeof model[index][indexValue] != 'undefined' && model[index][indexValue] !=null) {
                         addendums.push(model[index][indexValue])
@@ -144,9 +144,6 @@ define(["jquery", "formulasAmis/support/FormulaConfigurator", "formulasAmis/supp
         return null;
     }
 
-
-
-
     FormulaController.prototype.checkIfBindedCode = function(listOfBindedCodes, code){
         var result =false;
         for(var i=0; i<listOfBindedCodes.length && !result; i++) {
@@ -208,6 +205,30 @@ define(["jquery", "formulasAmis/support/FormulaConfigurator", "formulasAmis/supp
                 return 0;
             }
         });
+    }
+    // it returns:
+    // 0, if the cell is not editable;
+    // 1 if the cell is directly editable;
+    // 2 if the cell is editable by a form
+    FormulaController.prototype.checkIfEditableCell = function(cell) {
+        var result = 0;
+        var directEditableValues = configurator.getDirectEditableValues();
+        for (var i = 0; i < directEditableValues.length && result == 0; i++) {
+            debugger;
+            if (cell[0] == directEditableValues[i]) {
+                result = 1;
+            }
+        }
+        if (result == 0) {
+            var specialEditable = configurator.getSpecialEditableValues();
+            for (var i = 0; i < specialEditable.length && result == 0; i++) {
+                if (cell[0] == specialEditable[i]) {
+                    result = 2;
+                }
+            }
+        }
+
+        return result;
     }
 
     return FormulaController;

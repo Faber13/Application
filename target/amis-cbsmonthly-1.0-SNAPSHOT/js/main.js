@@ -19,7 +19,9 @@ requirejs.config({
         validator         :  "../component/core/balanceSheet/validator",
         formatter         :  "../component/core/balanceSheet/formatter",
         adapter           :  "../component/core/balanceSheet/visualization/ignite/adapter",
-        formulasAmis      :  "../amis/formulas"
+        formulasAmis      :  "../amis/formulas",
+        dataLoader        :  "../amis/loading/logic",
+        editingSpecial    :  "../amis/editing/special"
     },
     "shim": {
         "bootstrap": {

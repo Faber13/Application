@@ -67,7 +67,7 @@
                     "cellProperties": {
                         "dependencyRule": "",
                         "dateFormat" : "",
-                        "numericFormat": "0,0",
+                        "numericFormat": "0,0.0",
                         "coloursCharacters": "",
                         "coloursBackground": ""
                     },

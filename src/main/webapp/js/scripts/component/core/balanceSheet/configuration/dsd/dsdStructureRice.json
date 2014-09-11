@@ -637,7 +637,7 @@
                     ],
                     "enumeration": "",
                     "period": {
-                        "from": "20100101",
+                        "from": "20000101",
                         "to": "20150601"
                     },
                     "columnLink": "",

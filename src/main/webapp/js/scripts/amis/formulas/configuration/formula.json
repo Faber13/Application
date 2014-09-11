@@ -1,43 +1,9 @@
 {
     "initFormulas":[
+
         {
             "variable":{
                 "formulaId":1,
-                "dataType":"code",
-                "value":[
-                    999
-                ],
-                "otherColumn":false,
-                "columnNumber":""
-            },
-            "addendums":[
-                {
-                    "dataType":"code",
-                    "value":[
-                        19
-                    ],
-                    "otherColumn":false,
-                    "columnNumber":""
-                },
-                {
-                    "dataType":"operation",
-                    "value":"-",
-                    "otherColumn":false,
-                    "columnNumber":""
-                },
-                {
-                    "dataType":"code",
-                    "value":[
-                        35
-                    ],
-                    "otherColumn":false,
-                    "columnNumber":""
-                }
-            ]
-        },
-        {
-            "variable":{
-                "formulaId":2,
                 "dataType":"code",
                 "value":[
                     27
@@ -72,7 +38,7 @@
         },
         {
             "variable":{
-                "formulaId":3,
+                "formulaId":2,
                 "dataType":"code",
                 "value":[
                     19
@@ -107,7 +73,7 @@
         },
         {
             "variable":{
-                "formulaId":4,
+                "formulaId":3,
                 "dataType":"code",
                 "value":[
                     4
@@ -142,7 +108,7 @@
         },
         {
             "variable":{
-                "formulaId":5,
+                "formulaId":4,
                 "dataType":"code",
                 "value":[
                     20
@@ -191,7 +157,7 @@
         },
         {
             "variable":{
-                "formulaId":6,
+                "formulaId":5,
                 "dataType":"code",
                 "value":[
                     35
@@ -232,6 +198,41 @@
                     "dataType":"code",
                     "value":[
                         16
+                    ],
+                    "otherColumn":false,
+                    "columnNumber":""
+                }
+            ]
+        },
+        {
+            "variable":{
+                "formulaId":6,
+                "dataType":"code",
+                "value":[
+                    999
+                ],
+                "otherColumn":false,
+                "columnNumber":""
+            },
+            "addendums":[
+                {
+                    "dataType":"code",
+                    "value":[
+                        19
+                    ],
+                    "otherColumn":false,
+                    "columnNumber":""
+                },
+                {
+                    "dataType":"operation",
+                    "value":"-",
+                    "otherColumn":false,
+                    "columnNumber":""
+                },
+                {
+                    "dataType":"code",
+                    "value":[
+                        35
                     ],
                     "otherColumn":false,
                     "columnNumber":""
@@ -324,8 +325,9 @@
     },
     "editableValues":{
         "directEditing" : {
-            "values" : []
-        }
-
+            "values" : [8,7,12,10,14,13,16,17]
+        },
+        "specialEditing": {
+            "values" : [ 2,37, 4, 5]}
     }
 }

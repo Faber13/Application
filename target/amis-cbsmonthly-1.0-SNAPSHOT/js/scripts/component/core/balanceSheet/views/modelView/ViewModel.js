@@ -191,13 +191,16 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
                 break;
 
             case "date":
-
-                var yearFrom = value.substr(0, 4);
-                var mmFrom = value.substr(4, 2);
-                var ddFrom = value.substr(6, 2);
-                var dateFrom = new Date(yearFrom, mmFrom - 1, ddFrom)
-                // var date = (value !== 'undefined') ? moment(value).format("YYYYMMDD") : undefined;
-                result = moment(dateFrom).format(configurationKeyColumn.properties.cellProperties.dateFormat)
+                if(value != "20000103") {
+                    var yearFrom = value.substr(0, 4);
+                    var mmFrom = value.substr(4, 2);
+                    var ddFrom = value.substr(6, 2);
+                    var dateFrom = new Date(yearFrom, mmFrom - 1, ddFrom)
+                    // var date = (value !== 'undefined') ? moment(value).format("YYYYMMDD") : undefined;
+                    result = moment(dateFrom).format(configurationKeyColumn.properties.cellProperties.dateFormat)
+                }else{
+                    result = "Previous Year"
+                }
                 break;
 
         }

@@ -52,9 +52,6 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel"], function ($, pi
 
         var filterData = supportUtility.getFilterData()
 
-        debugger;
-
-
         dataSource2 = new $.ig.OlapFlatDataSource({
             dataSource: model,
             metadata: {
@@ -320,6 +317,7 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel"], function ($, pi
                 break;
 
             case "date":
+                if(value != "")
                 var year = value.substr(0, 4);
                 var month = value.substr(4, 2);
                 var day = value.substr(6, 2);

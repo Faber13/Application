@@ -79,6 +79,22 @@ define(["jquery" ], function ($) {
         return result;
     }
 
-    return FormulaConfigurator;
+    FormulaConfigurator.prototype.getDirectEditableValues = function(){
+       return config.editableValues.directEditing.values;
+    }
 
+    FormulaConfigurator.prototype.getSpecialEditableValues = function(){
+        return config.editableValues.specialEditing.values;
+    }
+
+    FormulaConfigurator.prototype.getAllEditableValues = function(){
+        var result = this.getDirectEditableValues();
+        var special = this.getSpecialEditableValues();
+        for(var i = 0; i<special.length; i++){
+            result.push(special[i])
+        }
+        return special;
+    }
+
+    return FormulaConfigurator;
 });

@@ -50,17 +50,7 @@ define(["jquery", "configurator/Configurator", "modelController/ModelsController
         })
 
 
-        supportUtility.init(filterData)
-/*
-        // data
-        $.ajax({
-            async: false,
-            type: 'GET',
-            url: urlData,
-            success: function (data) {
-                dataInput = JSON.parse(data);
-            }
-        })*/
+        supportUtility.init(filterData )
 
         configurator.init(dsd, componentConfiguration)
         modelController.init(dataInput, configurator)
@@ -77,7 +67,6 @@ define(["jquery", "configurator/Configurator", "modelController/ModelsController
     }
 
     BalanceSheet.prototype.setTableData = function (TableData) {
-
         var tableModel = tableDataModel.init(TableData, dsd, componentConfiguration, configurator);
         return tableModel;
     }
@@ -97,22 +86,6 @@ define(["jquery", "configurator/Configurator", "modelController/ModelsController
 
     BalanceSheet.prototype.getDataToSave = function(){
         return modelController.getDataToSave();
-    }
-
-    BalanceSheet.prototype.addRow = function (row) {
-        // TODO
-    }
-
-    BalanceSheet.prototype.deleteRow = function (idRow) {
-        // TODO
-    }
-
-    BalanceSheet.prototype.addColumn = function (column) {
-        // TODO
-    }
-
-    BalanceSheet.prototype.removeColumn = function (idColumn) {
-        // TODO
     }
 
     return BalanceSheet;
