@@ -21,7 +21,9 @@ requirejs.config({
         adapter           :  "../component/core/balanceSheet/visualization/ignite/adapter",
         formulasAmis      :  "../amis/formulas",
         dataLoader        :  "../amis/loading/logic",
-        editingSpecial    :  "../amis/editing/special"
+        editingSpecial    :  "../amis/editing/special",
+        specialEditor     :  "../amis/editing/special/editor/GenericSpecialEditor"
+
     },
     "shim": {
         "bootstrap": {

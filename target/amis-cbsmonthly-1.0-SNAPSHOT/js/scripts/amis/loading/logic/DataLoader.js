@@ -65,7 +65,6 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
     }
 
     DataLoader.prototype.getPreviousYearForecast = function (mostRecentDateFilter, filterPreviousYear, filterPrevPopulation) {
-        debugger;
         var dates;
         $.ajax({
             async: false,

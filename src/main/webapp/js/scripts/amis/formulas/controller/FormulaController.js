@@ -72,7 +72,6 @@ define(["jquery", "formulasAmis/support/FormulaConfigurator", "formulasAmis/supp
                     } else {
                         startIndex = numberOfRows * indexColumn
                     }
-                    debugger;
                     var index = supportModel.lookForCode(code,model,startIndex, numberOfRows)
                     if(typeof model[index][indexValue] != 'undefined' && model[index][indexValue] !=null) {
                         addendums.push(model[index][indexValue])
@@ -159,7 +158,6 @@ define(["jquery", "formulasAmis/support/FormulaConfigurator", "formulasAmis/supp
         for (var i = 0; i < formulas.length; i++) {
             var indexFormula = formulas[i];
             var formula = configurator.getEntireFormulaFromNumber(indexFormula);
-            debugger;
             var newValue = this.createFormula(model, formula, indexColumn, indexRow)
             if(newValue != null && typeof newValue !== 'undefined')
                 newValues.push(newValue);
@@ -214,7 +212,6 @@ define(["jquery", "formulasAmis/support/FormulaConfigurator", "formulasAmis/supp
         var result = 0;
         var directEditableValues = configurator.getDirectEditableValues();
         for (var i = 0; i < directEditableValues.length && result == 0; i++) {
-            debugger;
             if (cell[0] == directEditableValues[i]) {
                 result = 1;
             }
@@ -229,6 +226,12 @@ define(["jquery", "formulasAmis/support/FormulaConfigurator", "formulasAmis/supp
         }
 
         return result;
+    }
+
+    FormulaController.prototype.getInvolvedItems = function( cell){
+        var map = configurator.getOrCreateMapInvolvedCells();
+        debugger;
+        return map[cell[0]]
     }
 
     return FormulaController;

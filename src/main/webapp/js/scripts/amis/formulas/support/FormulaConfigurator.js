@@ -5,7 +5,7 @@ define(["jquery" ], function ($) {
 
     var ulrFormulas = "./js/scripts/amis/formulas/configuration/formula.json"
 
-    var config;
+    var config, mapSpecialFormulas;
 
     function FormulaConfigurator() {}
 
@@ -94,6 +94,27 @@ define(["jquery" ], function ($) {
             result.push(special[i])
         }
         return special;
+    }
+
+    FormulaConfigurator.prototype.getSpecialFormulas = function(){
+        return config.specialFormulas;
+    }
+
+    FormulaConfigurator.prototype.getSpecialFormulaFromId = function(id){
+        return config.specialFormulas[id-1];
+    }
+
+    FormulaConfigurator.prototype.getOrCreateMapInvolvedCells = function(){
+
+        if(typeof  mapSpecialFormulas =='undefined' || mapSpecialFormulas == null){ // create
+            mapSpecialFormulas = {};
+            var specialFormulas = this.getSpecialFormulas();
+            for(var i =0; i< specialFormulas.length; i++){
+                for( var j=0; j< specialFormulas[i].cellsClicked.length; j++)
+                    mapSpecialFormulas[specialFormulas[i].cellsClicked[j]] = specialFormulas[i].itemsInvolved
+            }
+        }
+        return mapSpecialFormulas;
     }
 
     return FormulaConfigurator;

@@ -294,7 +294,7 @@
                 "otherColumns":false,
                 "columnNumber":"",
                 "conditions":"",
-                "formulasBinded":[3,1]
+                "formulasBinded":[3,6]
             },
             {
                 "updateFormulaID" : 2,
@@ -302,7 +302,7 @@
                 "otherColumns":false,
                 "columnNumber":"",
                 "conditions":"",
-                "formulasBinded":[5,6,1]
+                "formulasBinded":[5,1,6]
             },
             {
                 "updateFormulaID" : 3,
@@ -310,7 +310,7 @@
                 "otherColumns":false,
                 "columnNumber":"",
                 "conditions":"",
-                "formulasBinded":[5,6,1]
+                "formulasBinded":[5,1,6]
             },
             {
                 "updateFormulaID" : 4,
@@ -318,7 +318,7 @@
                 "otherColumns":false,
                 "columnNumber":"",
                 "conditions":"",
-                "formulasBinded":[6,1]
+                "formulasBinded":[1,6]
             }
 
         ]
@@ -328,6 +328,38 @@
             "values" : [8,7,12,10,14,13,16,17]
         },
         "specialEditing": {
-            "values" : [ 2,37, 4, 5]}
-    }
+            "values" : [ 2,37, 4, 5, 15, 998]}
+    },
+    "specialFormulas": [
+        {
+            "id" : 1,
+            "cellsClicked" :    [2,4,5,37],
+            "itemsInvolved":    [2,4,5,37],
+            "exogeneous"   :    false,
+            "location"     : {
+                "insideBalance" : [],
+                "outsideBalance" : []
+            }
+        },
+        {
+            "id" : 2,
+            "cellsClicked" : [15],
+            "itemsInvolved": [21,28,29,30,31,32,33,34],
+            "exogeneous"   :    true,
+            "location"     : {
+                "insideBalance" : [],
+                "outsideBalance" : []
+            }
+        },
+        {
+            "id" : 3,
+            "cellsClicked" : [998],
+            "itemsInvolved": [2,997, 998],
+            "exogeneous"   :    true,
+            "location"     : {
+                "insideBalance" : [998,2],
+                "outsideBalance" : [997]
+            }
+        }
+    ]
 }

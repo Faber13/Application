@@ -43,7 +43,7 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
             var grid = $("#" + idPivot).igPivotGrid("grid");
             var that = this;
 
-            var DELAY = 150,
+            var DELAY = 400,
                 clicks = 0,
                 timer = null;
 
@@ -80,6 +80,7 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
                             if (cell.parentElement !== oldCell) {
                                 if (typeof oldCell !== 'undefined' && oldCell != null) {
                                     if (oldCell.firstElementChild != null) {
+                                        console.log('oldeCell diversa da undefined')
                                         $("#" + oldCell.id).igTextEditor('destroy');
                                     }
                                     oldCell.removeAttribute("id")
@@ -105,7 +106,7 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
                         console.log('doubleClick')
                     }
                 }else if(isEditable == 2){
-                    specialControlEditor.init(ModelController.getData(), resultedClicked,FormulaController);
+                    specialControlEditor.init(ModelController.getData(), resultedClicked,formulaController);
                 }
 
             })
