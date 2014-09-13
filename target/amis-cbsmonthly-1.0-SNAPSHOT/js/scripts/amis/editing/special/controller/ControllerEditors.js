@@ -1,30 +1,29 @@
 /**
  * Created by fabrizio on 9/11/14.
  */
-define(["jquery", "editingSpecial/utils/DataHandler", "specialEditor"], function($, DataHandler, Editor){
+define(["jquery", "editingSpecial/utils/DataHandler", "productionEditor/creator/ProductionEditor"], function($, DataHandler, ProductionEditor){
 
-    var specialFormulaController, dataHandler, genericEditor;
+    var specialFormulaController, dataHandler, productionEditor, dsdConfigurator;
 
     function ControllerEditors(){
         dataHandler = new DataHandler;
-        genericEditor = new Editor;
+        productionEditor = new ProductionEditor;
     }
 
-    ControllerEditors.prototype.init = function(allData,resultedClicked, formulaController){
+    ControllerEditors.prototype.init = function(allData,resultedClicked, formulaController, DsdConfigurator){
+        dsdConfigurator = DsdConfigurator;
+        var everyData = allData;
 
-        var tCell =resultedClicked.clickedCell
-        var cell = resultedClicked.clickedcell;
+        var takenCell =resultedClicked.clickedCell
         specialFormulaController = formulaController;
-        var codes = specialFormulaController.getInvolvedItems(resultedClicked.clickedCell);
-        var dataInvolved = dataHandler.getInvolvedData(codes, allData, resultedClicked.clickedCell);
-        alert()
-        debugger;
-        var condition =parseInt(resultedClicked.clickedCell[0])
+        var codes = specialFormulaController.getInvolvedItems(takenCell);
+        var dataInvolved = dataHandler.getInvolvedData(codes, everyData, takenCell);
+        var condition =parseInt(takenCell[0])
         switch (condition) {
             case 5 :
-                alert('preso!');
+                alert()
                 debugger;
-                genericEditor.createProductionEditor(resultedClicked.clickedcell,dataInvolved,codes)
+                productionEditor.init(takenCell,dataInvolved,codes, dsdConfigurator)
                 break;
 
             case 15:
@@ -33,10 +32,6 @@ define(["jquery", "editingSpecial/utils/DataHandler", "specialEditor"], function
             case 998:
                 break;
         }
-
-
-
-
 
     }
 

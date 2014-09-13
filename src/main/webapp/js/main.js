@@ -22,8 +22,9 @@ requirejs.config({
         formulasAmis      :  "../amis/formulas",
         dataLoader        :  "../amis/loading/logic",
         editingSpecial    :  "../amis/editing/special",
-        specialEditor     :  "../amis/editing/special/editor/GenericSpecialEditor"
-
+        productionEditor  :  "../amis/editing/special/editors/productionEditor",
+        otherUsesEditor   :  "../amis/editing/special/editors/otherUsesEditor",
+        paddyEditor       :  "../amis/editing/special/editors/paddyEditor"
     },
     "shim": {
         "bootstrap": {

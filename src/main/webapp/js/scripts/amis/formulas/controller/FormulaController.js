@@ -42,8 +42,11 @@ define(["jquery", "formulasAmis/support/FormulaConfigurator", "formulasAmis/supp
         return model;
     }
 
-    FormulaController.prototype.createFormula = function(model, formula, indexColumn, indexRow, indexFormula) {
+    FormulaController.prototype.createFormula = function(modelData, formulaData, indexColumnData, indexRow2, indexFormula) {
         console.log("createFormula")
+        var model = modelData;
+        var formula = formulaData;
+        var indexColumn = indexColumnData
         var addendums = [];
         var operations = [];
         var startIndex, indexRow;
@@ -229,6 +232,8 @@ define(["jquery", "formulasAmis/support/FormulaConfigurator", "formulasAmis/supp
     }
 
     FormulaController.prototype.getInvolvedItems = function( cell){
+        var $newdiv1 = $("<div id='dialogForm' type='hidden'></div>");
+        $("#pivotGrid").append($newdiv1);
         var map = configurator.getOrCreateMapInvolvedCells();
         debugger;
         return map[cell[0]]

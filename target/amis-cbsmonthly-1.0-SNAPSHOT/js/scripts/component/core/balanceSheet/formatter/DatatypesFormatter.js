@@ -1,9 +1,7 @@
 define(["jquery", "moment", "numeral"], function ($) {
 
-    var mapLabelToCode = [];
 
-    function DatatypesFormatter() {
-    }
+    function DatatypesFormatter() {}
 
 
     // From editing or visualization to DSD format
@@ -97,8 +95,10 @@ define(["jquery", "moment", "numeral"], function ($) {
                 break;
 
             case "code" || "codeList" || "customCode":
-                var codeToLabel = this.lookForCodeFromLabel(value);
+
                 var columnsCodes = configurator.lookForCode(configurationKeyColumn.columnId);
+                console.log('columnsCodes')
+                console.log(columnsCodes)
                 result = columnsCodes.mapCodeLabel[value];
                 break;
 
@@ -107,18 +107,6 @@ define(["jquery", "moment", "numeral"], function ($) {
                     numeral(value).format(configurationKeyColumn.properties.cellProperties.numericFormat) :
                     value;
                 break;
-        }
-        return result;
-
-    }
-
-
-    DatatypesFormatter.prototype.lookForCodeFromLabel = function (label) {
-        var result;
-        for (var i = 0; i < mapLabelToCode.length; i++) {
-            if (typeof mapLabelToCode[i].map[label] !== 'undefined') {
-                result = mapLabelToCode[i].map[label]
-            }
         }
         return result;
     }

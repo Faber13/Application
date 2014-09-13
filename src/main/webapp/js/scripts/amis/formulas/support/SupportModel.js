@@ -35,9 +35,13 @@ define(["jquery" ], function ($) {
     }
 
     // get or find into the table model
-    SupportModel.prototype.lookForCode = function (code, model, startIndex, numberOfRows) {
+    SupportModel.prototype.lookForCode = function (codeData, modelData, startIndexData, numberOfRowsData) {
         var result;
         var found = false;
+        var code = codeData;
+        var model =modelData;
+        var startIndex = startIndexData;
+        var numberOfRows = numberOfRowsData;
         for (var i = startIndex; !found && i < startIndex + numberOfRows; i++) {
             if (model[i][0] == code) {
                 found = true

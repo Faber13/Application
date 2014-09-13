@@ -106,7 +106,8 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
                         console.log('doubleClick')
                     }
                 }else if(isEditable == 2){
-                    specialControlEditor.init(ModelController.getData(), resultedClicked,formulaController);
+                    var allData = ModelController.getData();
+                    specialControlEditor.init(allData, resultedClicked,formulaController, Configurator);
                 }
 
             })
