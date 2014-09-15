@@ -3,11 +3,11 @@
  */
 define(["jquery", "view/GridDataView", "editorController/FormController",
         "exporter/controller/ExportController", "adapter/AdapterPivot", "formulasAmis/controller/FormulaController",
-        "editingSpecial/controller/ControllerEditors", "jqwidgets"],
+        "editingSpecial/controller/ControllerEditors", "jquery.sidebar"],
     function ($, GridDataView, EditorController, ExportController, Adapter, FormulaController, SpecialEditorController) {
 
         var ViewGrid, ModelController, FormController, dsd, Configurator, adapterPivot, formulaController, supportUtility,
-            specialControlEditor;
+            specialControlEditor, editingOnCell;
 
         function GeneralController() {
             ViewGrid = new GridDataView;
@@ -15,10 +15,12 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
             adapterPivot = new Adapter;
             formulaController = new FormulaController;
             specialControlEditor = new SpecialEditorController;
+            editingOnCell = true
         };
 
 
         GeneralController.prototype.init = function (gridModel, tableModel, configurator, modelController, utility) {
+
             ModelController = modelController;
             dsd = configurator.getDSD();
             Configurator = configurator;
@@ -32,7 +34,9 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
             // visualization model
             ViewGrid.init(tableModelWithFormula, configurator, supportUtility)
             // append listeners to events
-            this.createListeners()
+            this.createListeners();
+            this.onChangeModalityEditing()
+
         }
 
 
@@ -43,12 +47,10 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
             var grid = $("#" + idPivot).igPivotGrid("grid");
             var that = this;
 
-            var DELAY = 400,
-                clicks = 0,
-                timer = null;
+
 
             $(document.body).delegate("#" + grid.id(), "iggridcellclick", function (evt, ui) {
-
+                console.log('EDiting on cell: '+editingOnCell)
                 evt.stopImmediatePropagation();
 
                 var cellTableModel2 = ModelController.getTableDataModel();
@@ -59,55 +61,58 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
                 var clickedCell = resultedClicked["clickedCell"]
                 var isEditable = formulaController.checkIfEditableCell(clickedCell)
                 if( isEditable== 1) {
-                    clicks++;
+                    if(editingOnCell) {
 
-                    // Editing Cell
-                    if (clicks === 1) {
-                        timer = setTimeout(function () {
-                            evt.preventDefault();
-                            clicks = 0;
-                            var cell = ui.cellElement;
-                            var oldCell = document.getElementById("clickedCell")
-                            var functionChanges = function (evt, ui) {
-                                if (ui.oldValue != ui.value) {
-                                    clickedCell[3] = parseFloat(ui.value);
-                                    var indTable = resultedClicked["indTable"];
-                                    var rowGridIndex = resultedClicked["rowGridIndex"];
-                                    var columnGridIndex = resultedClicked["columnGridIndex"];
-                                    that.updateGrid(clickedCell, indTable, rowGridIndex, columnGridIndex);
-                                }
+                        evt.preventDefault();
+                        var cell = ui.cellElement;
+                        var oldCell = document.getElementById("clickedCell")
+                        var functionChanges = function (evt, ui) {
+                            if (ui.oldValue != ui.value) {
+                                clickedCell[3] = parseFloat(ui.value);
+                                var indTable = resultedClicked["indTable"];
+                                var rowGridIndex = resultedClicked["rowGridIndex"];
+                                var columnGridIndex = resultedClicked["columnGridIndex"];
+                                that.updateGrid(clickedCell, indTable, rowGridIndex, columnGridIndex);
                             }
-                            if (cell.parentElement !== oldCell) {
-                                if (typeof oldCell !== 'undefined' && oldCell != null) {
-                                    if (oldCell.firstElementChild != null) {
-                                        console.log('oldeCell diversa da undefined')
-                                        $("#" + oldCell.id).igTextEditor('destroy');
-                                    }
-                                    oldCell.removeAttribute("id")
-                                    oldCell.removeAttribute("class")
+                        }
+                        if (cell.parentElement !== oldCell) {
+                            if (typeof oldCell !== 'undefined' && oldCell != null) {
+                                if (oldCell.firstElementChild != null) {
+                                    console.log('oldeCell diversa da undefined')
+                                    $("#" + oldCell.id).igTextEditor('destroy');
                                 }
-                                cell.setAttribute("id", "clickedCell");
-                                console.log("clickCell")
-                                $("#clickedCell").igTextEditor({
-                                    width: 160,
-                                    height: 41,
-                                    value: clickedCell[3],
-                                    valueChanged: functionChanges
-                                });
+                                oldCell.removeAttribute("id")
+                                oldCell.removeAttribute("class")
                             }
-                        }, DELAY)
-                    } else {
+                            cell.setAttribute("id", "clickedCell");
+                            console.log("clickCell")
+                            $("#clickedCell").igTextEditor({
+                                width: 160,
+                                height: 41,
+                                value: clickedCell[3],
+                                valueChanged: functionChanges
+                            });
+                        }
+                    }
+                         else { // editing total
                         if (document.getElementById('clickedCell') != null) {
                             $('#clickedCell').igTextEditor('destroy');
                         }
                         that.startFullEditing(resultedClicked)
-                        clicks = 0;
-
                         console.log('doubleClick')
                     }
+                // if it is a special editable value
                 }else if(isEditable == 2){
-                    var allData = ModelController.getData();
-                    specialControlEditor.init(allData, resultedClicked,formulaController, Configurator);
+                    // production form
+                    if(resultedClicked.clickedCell[0] == 5 || resultedClicked.clickedCell[0] == 2 || resultedClicked.clickedCell[0] == 4) {
+                        alert('qui!')
+
+                        var allData = ModelController.getData();
+                        specialControlEditor.init(allData, resultedClicked, formulaController, Configurator, supportUtility);
+                    }else{
+                        var allData = ModelController.getTableData();
+                        specialControlEditor.init(allData, resultedClicked, formulaController, Configurator, supportUtility);
+                    }// other form
                 }
 
             })
@@ -172,6 +177,15 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
             } else {
                 ViewGrid.updateGridView(newCell, indTable);
             }
+        }
+
+
+        GeneralController.prototype.onChangeModalityEditing = function() {
+            $("#editingChoice").bind('change', function (event) {
+                alert()
+                editingOnCell = !event.args.checked;
+                $('#editingTypeSelection').sidebar("close")
+            })
         }
 
 

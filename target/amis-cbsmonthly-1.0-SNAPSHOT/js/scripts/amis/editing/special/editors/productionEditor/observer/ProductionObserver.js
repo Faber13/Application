@@ -6,7 +6,10 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
     function ProductionObserver() {
     }
 
-    ProductionObserver.prototype.init = function () {
+    ProductionObserver.prototype.applyListeners = function () {
+        this.listenToCheckboxes();
+        this.listenToRecalculateButton();
+        this.listenToTabs();
     }
 
     ProductionObserver.prototype.listenToCheckboxes = function () {
@@ -30,7 +33,6 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
     }
 
     ProductionObserver.prototype.onUncheckBox = function (others) {
-        debugger;
         for (var i = 0; i < others.length; i++) {
             switch (others[i]) {
                 case 1:
@@ -54,7 +56,6 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
 
     ProductionObserver.prototype.onCheckBox = function (clicked) {
         var result = []
-        debugger;
         switch (clicked) {
             case 1:
                 if ($("#secondCheckBox").attr("aria-checked") == 'true') {
@@ -82,6 +83,21 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
                 }
                 break;
         }
+    }
+
+    ProductionObserver.prototype.listenToRecalculateButton = function(){
+        $('#applyRulesFormula').on('click', function(){
+
+        })
+    }
+
+
+    ProductionObserver.prototype.listenToTabs = function(){
+        $('#productionTabs').on('tabclick', function (event)
+        {
+            var clickedItem = event.args.item;
+            console.log(clickedItem)
+        });
     }
 
 

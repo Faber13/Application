@@ -44,6 +44,9 @@ requirejs.config({
         },
         "timepicker":{
             deps: ["jquery-ui"]
+        },
+        "jquery.sidebar" :{
+            deps : ["jquery", "jquery-ui"]
         }
     }
 });
@@ -57,32 +60,7 @@ require(["../../IndexContext", "domReady!", "bootstrap"], function(IndexContext)
 
 });
 
-/*
-require([ 'jquery', "domReady!", "bootstrap"], function($) {
-    console.log("index.js() - require() on domReady!");
-    console.log($.fn.jquery)
-   $.ajax({
-        url: "http://localhost:8080/dataset/national",
-        type: 'POST',
-        ContentType: 'application/json',
-        data: JSON.stringify({
-            "region":12,
-            "product":5,
-            "year":2010
-        }),
-        success : function(data){
-            console.log("SUCCESS" )
-            console.log(data)
-        },
-        error:function(jqXHR,textStatus,errorThrown)
-        {
-            console.log(jqXHR)
-            console.log(textStatus)
-            console.log(errorThrown)
-            alert("You can not send Cross Domain AJAX requests: "+errorThrown);
-        }
-    });
- })*/
+
 
 
 

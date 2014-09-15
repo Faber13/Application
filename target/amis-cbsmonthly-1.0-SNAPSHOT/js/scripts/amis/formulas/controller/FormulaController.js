@@ -187,6 +187,7 @@ define(["jquery", "formulasAmis/support/FormulaConfigurator", "formulasAmis/supp
 
     }
 
+    // Sort for pivot's rows
     FormulaController.prototype.sortInitialValue = function(model){
         model.sort(function (a,b) {
             if (mapCodes[a["0"]] < mapCodes[b["0"]]) {
@@ -231,6 +232,7 @@ define(["jquery", "formulasAmis/support/FormulaConfigurator", "formulasAmis/supp
         return result;
     }
 
+    // get codes of the cells involved in special editing
     FormulaController.prototype.getInvolvedItems = function( cell){
         var $newdiv1 = $("<div id='dialogForm' type='hidden'></div>");
         $("#pivotGrid").append($newdiv1);

@@ -1,29 +1,25 @@
 /**
  * Created by fabrizio on 9/13/14.
  */
-define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/ProductionObserver"], function($, Formatter, Observer){
+define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/ProductionObserver",
+    "productionEditor/model/ProductionModel"], function($, Formatter, Observer, ModelProduction){
 
-    var observer ;
+    var observer, model, supportUtility ;
 
     function ProductionEditor(){
         observer = new Observer;
+        model = new ModelProduction;
     }
 
-    ProductionEditor.prototype.init = function(clickedItem, itemsInvolved, codesInvolved, configurator){
+    ProductionEditor.prototype.init = function(clickedItem, itemsInvolved, codesInvolved, configurator, Utility){
         var involvedItems = itemsInvolved;
-        var map=  {
-            2 : "Area Harvested",
-            5 : "Production",
-            4 : "Yield",
-            37: "Area Planted"
-        }
+        supportUtility = Utility;
+        model.init(involvedItems, supportUtility);
 
         var ItemsObj = []
 
-        for(var i =0; i< involvedItems.length; i++){
-            var code = involvedItems[i][0]
-            involvedItems[i].push(map[code])
-        }
+        debugger;
+
 /*
         dsdConfigurator = configurator;
 
@@ -35,18 +31,16 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
         var source = {
             datatype: "array",
             datafields: [
-                { name: '0', type: 'string' },
-                { name: '1', type: 'string' },
-                { name: '2', type: 'string'},
+                { name: 6, type: 'string' },
+                { name: 3, type: 'float' },
+                { name: 4, type: 'string'},
+                {name : 5, type: 'string'}
             ],
             id: 'ppp',
             localdata: involvedItems
         };
 
         var dataAdapter = new $.jqx.dataAdapter(source);
-
-
-
 
         /* To mantain generic profile
          var datatype = ["code"]
@@ -57,11 +51,11 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
             '<div class="modal-content">'+
             '<div class="modal-header">'+
             '<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>'+
-            '<h4 class="modal-title" id="myModalLabel">Modal title</h4>'+
+            '<h4 class="modal-title" id="myModalLabel">Production Form</h4>'+
             '</div>'+
             '<div class="modal-body" id ="toappendData">'+
 
-            '<div id="jqxTabs">' +
+            '<div id="productionTabs">' +
             '<ul>'+
             '<li>Total Values </li>' +
             '<li>Singe Crop Values </li>' +
@@ -78,11 +72,19 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
             '</div>'+
             '<div class="col-lg-3">' +
             '<div class ="singleCropBoxes" id="thirdCheckBox">'+map[2]+'</div>' +
+            '</div><br><br>'+
+            '<div class="row">'+
+            '<div class="col-lg-3 col-lg-offset-4">'+
+            '<button type="button" class="btn btn-primary" id="applyRulesFormula">Recalculate Data</button>'+
             '</div>'+
+            '</div><hr>'+
             '</div>'+
              '<br>'+
             '<div id="grid"></div>'+
-
+            '<div class="modal-footer">'+
+            '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>'+
+            '<button type="button" class="btn btn-primary">Save changes</button>'+
+            '</div>'+
             '</div>'+
 
 
@@ -98,10 +100,8 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
             '</div'+
             '</div>';
 
-
-
         $("#pivotGrid").append(modal);
-        $('#jqxTabs').jqxTabs();
+        $('#productionTabs').jqxTabs();
         $('#firstCheckBox').jqxCheckBox({ width: 120, height: 25 , checked: true});
         $('#secondCheckBox').jqxCheckBox({ width: 120, height: 25 , checked : true});
         $('#thirdCheckBox').jqxCheckBox({ width: 120, height: 25 , disabled:true });
@@ -116,20 +116,18 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
             pageable: true,
             autoheight: true,
             columns: [
-                { text: 'Code', datafield: '[0]' },
-                { text: 'Value', datafield: '[1]' },
-                { text: 'Flag', datafield: '[2]' }
+                { text: 'Code', datafield: 6 },
+                { text: 'Value', datafield:3 },
+                { text: 'Flag', datafield: 4 },
+                { text: 'Notes', datafield: 5 }
             ]
         });
 
-        $("#myModal").modal();
-        observer.listenToCheckboxes()
+        $("#myModal").modal({ backdrop: 'static',
+            keyboard: false});
+        $( "#myModal" ).draggable();
+        observer.applyListeners()
     }
-
-
-
-
-
 
     return ProductionEditor;
 })

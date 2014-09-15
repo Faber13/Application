@@ -1,7 +1,7 @@
 /**
  * Created by fabrizio on 7/7/14.
  */
-define(["jquery" , "infragistics", "views/modelView/ViewModel"], function ($, pivot, ViewModel) {
+define(["jquery" , "infragistics", "views/modelView/ViewModel", "jquery.sidebar", "jqwidgets"], function ($, pivot, ViewModel) {
 
     var model, table, Configurator, titlesUp, titlesLeft, accessorMap, fullModel, configurationKeys, indexValues, modelView,
         leftDimensions, upDimensions, valueColumn, dataSource2, idOlapGrid, language, viewModel, supportUtility
@@ -49,6 +49,9 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel"], function ($, pi
             };
         };
 
+        var allerta = function(){
+            alert('qui')
+        }
 
         var filterData = supportUtility.getFilterData()
 
@@ -110,12 +113,36 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel"], function ($, pi
                 ]
             },
             width: "100%",
-            height: "100%"
+            height: "100%",
+            pivotGridRendered: function(evt, ui){
+                var toAppend =
+                    '<ul id="editingTypeSelection"><strong>EDITING MODALITY</strong><br>'+
+                    '<li><br><br>Change editing modality</li>'+
+                    '<li><div class="row"><div class="col-lg-6 col-lg-offset-2">'+
+                    '<div id="editingChoice"/></div></div></li></ul>'
+                if(document.getElementsByClassName('sidebar-container left').length == 0){
+                    $('#selector').append(toAppend);
+                    $('#editingTypeSelection').sidebar()
+                    $('#editingChoice').jqxCheckBox({width: 120, height: 25});
+                }else{
+                    var node = document.getElementsByClassName('sidebar-container left')[0]
+                    node.parentNode.removeChild(node);
+                    $('#selector').append(toAppend);
+                    $('#editingTypeSelection').sidebar()
+                    $('#editingChoice').jqxCheckBox({width: 120, height: 25});
+                }
+            }
+
         });
+
     }
 
 
     GridDataView.prototype.updateGridView = function (newCell, indexCell) {
+
+        var allerta = function(){
+            alert('qui')
+        }
 
         var cellTransformed = viewModel.updateItem(newCell)
         modelView[indexCell] = cellTransformed;
@@ -149,12 +176,33 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel"], function ($, pi
             measures: "[Measures].[value]"
 
         });
+        $("#pivotGrid").igPivotGrid({ pivotGridRendered: function(evt, ui){
+            var toAppend =
+                '<ul id="editingTypeSelection"><strong>EDITING MODALITY</strong><br>'+
+                '<li><br><br>Change editing modality</li>'+
+                '<li><div class="row"><div class="col-lg-6 col-lg-offset-2">'+
+                '<div id="editingChoice"/></div></div></li></ul>'
+            if(document.getElementsByClassName('sidebar-container left').length == 0){
+                $('#selector').append(toAppend);
+                $('#editingTypeSelection').sidebar()
+                $('#editingChoice').jqxCheckBox({width: 120, height: 25});
+            }else{
+                var node = document.getElementsByClassName('sidebar-container left')[0]
+                node.parentNode.removeChild(node);
+                $('#selector').append(toAppend);
+                $('#editingTypeSelection').sidebar()
+                $('#editingChoice').jqxCheckBox({width: 120, height: 25});
+            }
+        } })
 
         $("#pivotGrid").igPivotGrid("option", "dataSource", dataSource2)
 
     }
 
     GridDataView.prototype.updateBatchGridView = function (tableModel, cells) {
+        var allerta = function(){
+            alert('qui')
+        }
 
         for(var i =0; i<cells.length; i++){
             modelView[cells[i]["index"]] = viewModel.updateItem(cells[i]["row"])
@@ -190,7 +238,28 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel"], function ($, pi
 
         });
 
-        $("#pivotGrid").igPivotGrid("option", "dataSource", dataSource2)
+
+
+        $("#pivotGrid").igPivotGrid({ pivotGridRendered: function(evt, ui){
+            var toAppend =
+                '<ul id="editingTypeSelection"><strong>EDITING MODALITY</strong><br>'+
+                '<li><br><br>Change editing modality</li>'+
+                '<li><div class="row"><div class="col-lg-6 col-lg-offset-2">'+
+                '<div id="editingChoice"/></div></div></li></ul>'
+            if(document.getElementsByClassName('sidebar-container left').length == 0){
+                $('#selector').append(toAppend);
+                $('#editingTypeSelection').sidebar()
+                $('#editingChoice').jqxCheckBox({width: 120, height: 25});
+            }else{
+                var node = document.getElementsByClassName('sidebar-container left')[0]
+                node.parentNode.removeChild(node);
+                $('#selector').append(toAppend);
+                $('#editingTypeSelection').sidebar()
+                $('#editingChoice').jqxCheckBox({width: 120, height: 25});
+            }
+        } })
+
+
 
     }
 
