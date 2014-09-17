@@ -6,6 +6,18 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel", "jquery.sidebar"
     var model, table, Configurator, titlesUp, titlesLeft, accessorMap, fullModel, configurationKeys, indexValues, modelView,
         leftDimensions, upDimensions, valueColumn, dataSource2, idOlapGrid, language, viewModel, supportUtility
 
+    Element.prototype.remove = function () {
+        this.parentElement.removeChild(this);
+    }
+
+    NodeList.prototype.remove = HTMLCollection.prototype.remove = function () {
+        for (var i = 0, len = this.length; i < len; i++) {
+            if (this[i] && this[i].parentElement) {
+                this[i].parentElement.removeChild(this[i]);
+            }
+        }
+    }
+
     function GridDataView() {
 
     }
@@ -31,8 +43,9 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel", "jquery.sidebar"
         valueColumn = Configurator.getValueColumnConfiguration();
         indexValues = Configurator.getValueIndex();
         idOlapGrid = Configurator.getIdOlapGrid();
-        modelView = viewModel.init(table, Configurator)
+        modelView = viewModel.init(table, Configurator, supportUtility)
         this.renderGrid(modelView)
+
     }
 
 
@@ -85,6 +98,7 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel", "jquery.sidebar"
             measures: "[Measures].[value]"
         });
 
+        var grid, gridI;
         $("#" + idOlapGrid).igPivotGrid({
             allowSorting: true,
             allowHeaderRowsSorting: true,
@@ -97,14 +111,19 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel", "jquery.sidebar"
             compactColumnHeaders: false,
             compactRowHeaders: true,
             disableMeasuresDropArea : true,
+            disableRowsDropArea : true,
+            disableColumnsDropArea : true,
+            disabledColumnsHeader: true,
+            disabledRowsHeader : true,
             disableFiltersDropArea: true,
+            hideFiltersDropArea : true,
             compactHeaderIndentation: 2000,
-            defaultRowHeaderWidth : 350,
+            defaultRowHeaderWidth : 280,
             isParentInFrontForColumns: true,
             hideFiltersDropArea: true,
             gridOptions: {
                 caption : "Forecast for season: "+filterData.season+" , "+filterData.country+" , "+filterData.product+" , "+filterData.dataSource,
-                defaultColumnWidth: 160,
+                defaultColumnWidth: 120,
                 features: [
                     {
                         name: "Selection",
@@ -113,30 +132,34 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel", "jquery.sidebar"
                 ]
             },
             width: "100%",
-            height: "100%",
-            pivotGridRendered: function(evt, ui){
-                var toAppend =
-                    '<ul id="editingTypeSelection"><strong>EDITING MODALITY</strong><br>'+
-                    '<li><br><br>Change editing modality</li>'+
-                    '<li><div class="row"><div class="col-lg-6 col-lg-offset-2">'+
-                    '<div id="editingChoice"/></div></div></li></ul>'
-                if(document.getElementsByClassName('sidebar-container left').length == 0){
-                    $('#selector').append(toAppend);
-                    $('#editingTypeSelection').sidebar()
-                    $('#editingChoice').jqxCheckBox({width: 120, height: 25});
-                }else{
-                    var node = document.getElementsByClassName('sidebar-container left')[0]
-                    node.parentNode.removeChild(node);
-                    $('#selector').append(toAppend);
-                    $('#editingTypeSelection').sidebar()
-                    $('#editingChoice').jqxCheckBox({width: 120, height: 25});
-                }
-            }
+            height: '100%'
+
 
         });
+        debugs = function(){
+            debugger;
+            alert('AASD')
+        }
+
+        var rows;
+
+
+
+
+
+        var options =  document.getElementById('options')
+        options.style.visibility = "visible" ;
+        var toappend = document.getElementById('toAppend');
+        if(toappend != null){
+            toappend.remove()
+        }
+
+        $('#options').append('<div id="toAppend"><div class="col-lg-2"><h4>' +
+            '<span class="label label-default" id="labelEditingMode">Set full editing mode</span>' +
+            '</h3></div><div class="col-lg-2"><div id="editingChoice"></div></div></div>') ;
+        $('#editingChoice').jqxCheckBox({width: 30, height: 25});
 
     }
-
 
     GridDataView.prototype.updateGridView = function (newCell, indexCell) {
 
@@ -176,26 +199,11 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel", "jquery.sidebar"
             measures: "[Measures].[value]"
 
         });
-        $("#pivotGrid").igPivotGrid({ pivotGridRendered: function(evt, ui){
-            var toAppend =
-                '<ul id="editingTypeSelection"><strong>EDITING MODALITY</strong><br>'+
-                '<li><br><br>Change editing modality</li>'+
-                '<li><div class="row"><div class="col-lg-6 col-lg-offset-2">'+
-                '<div id="editingChoice"/></div></div></li></ul>'
-            if(document.getElementsByClassName('sidebar-container left').length == 0){
-                $('#selector').append(toAppend);
-                $('#editingTypeSelection').sidebar()
-                $('#editingChoice').jqxCheckBox({width: 120, height: 25});
-            }else{
-                var node = document.getElementsByClassName('sidebar-container left')[0]
-                node.parentNode.removeChild(node);
-                $('#selector').append(toAppend);
-                $('#editingTypeSelection').sidebar()
-                $('#editingChoice').jqxCheckBox({width: 120, height: 25});
-            }
-        } })
 
         $("#pivotGrid").igPivotGrid("option", "dataSource", dataSource2)
+        var options =  document.getElementById('options')
+        debugger;
+        options.style.visibility = 'visible';
 
     }
 
@@ -238,26 +246,14 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel", "jquery.sidebar"
 
         });
 
+        $("#pivotGrid").igPivotGrid("option", "dataSource", dataSource2)
+
+        var options =  document.getElementById('loading')
+        debugger;
+        options.style.visibility = 'visible';
 
 
-        $("#pivotGrid").igPivotGrid({ pivotGridRendered: function(evt, ui){
-            var toAppend =
-                '<ul id="editingTypeSelection"><strong>EDITING MODALITY</strong><br>'+
-                '<li><br><br>Change editing modality</li>'+
-                '<li><div class="row"><div class="col-lg-6 col-lg-offset-2">'+
-                '<div id="editingChoice"/></div></div></li></ul>'
-            if(document.getElementsByClassName('sidebar-container left').length == 0){
-                $('#selector').append(toAppend);
-                $('#editingTypeSelection').sidebar()
-                $('#editingChoice').jqxCheckBox({width: 120, height: 25});
-            }else{
-                var node = document.getElementsByClassName('sidebar-container left')[0]
-                node.parentNode.removeChild(node);
-                $('#selector').append(toAppend);
-                $('#editingTypeSelection').sidebar()
-                $('#editingChoice').jqxCheckBox({width: 120, height: 25});
-            }
-        } })
+
 
 
 

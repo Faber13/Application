@@ -40,7 +40,7 @@ input.ui-button,input.ui-igbutton {
 }
 
 .ui-iggrid tbody>tr>th.ui-iggrid-rowselector-class {
-    border-right:0 none!important;
+    border-right:1;
 }
 
 .ui-iggrid th.ui-iggrid-rowselector-class>.ui-icon {
@@ -127,9 +127,9 @@ input.ui-button,input.ui-igbutton {
 }
 
 .ui-widget {
-    font-family:"Segoe UI",Arial,sans-serif;
+    font-family: Verdana,Arial,sans-serif;
     outline:0;
-    font-size:1.1em;
+    font-size:0.94em;
 }
 
 .ui-widget .ui-widget {
@@ -137,7 +137,7 @@ input.ui-button,input.ui-igbutton {
 }
 
 .ui-widget input,.ui-widget select,.ui-widget textarea,.ui-widget button {
-    font-family:"Segoe UI",Arial,sans-serif;
+    font-family: Verdana,Arial,sans-serif;
     font-size:1em;
 }
 
@@ -1841,7 +1841,7 @@ body .ui-tooltip {
 }
 
 .ui-draggable-dragging .ui-iggrid-headertext {
-    font-family:"Segoe UI",Arial,sans-serif;
+    font-family: Verdana,Arial,sans-serif;
 }
 
 .ui-iggrid-groupbyarea a,.ui-iggrid-groupbyareatext a {

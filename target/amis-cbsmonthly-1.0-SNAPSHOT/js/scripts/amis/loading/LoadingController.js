@@ -49,11 +49,9 @@ define(["jquery", "balanceSheet/BalanceSheet", "dataLoader/DataLoader"],
 
             var prevYearForecast = dataLoader.getPreviousYearForecast(mostRecentDateFilter, filterPreviousYear, filterPrevPopulation)
 
-            // check if previous forecast date is equal to the first actual forecast date
-             if(dataLoader.checkIfEqualForecastDates(actualForecast[0], prevYearForecast[0])){
-                 // set the fake date (20000102)
-                 prevYearForecast = dataLoader.setFakeForecastDate(prevYearForecast)
-             }
+
+             prevYearForecast = dataLoader.setFakeForecastDate(prevYearForecast)
+
             var totalForecast = prevYearForecast.concat(actualForecast)
         }else{
             var totalForecast = actualForecast;

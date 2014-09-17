@@ -3558,7 +3558,7 @@ a.ui-iggrid-pagelink,a.ui-iggrid-pagelinkcurrent,.ui-iggrid .ui-iggrid-results s
 }
 
 .ui-iggrid-sortableheader>a,span.ui-iggrid-headertext,.touch .ui-igPathFinder,.ui-igpivot-filterdropdown .ui-igtree-node a {
-    font-size:1em;
+    font-size:0.94em;
 }
 
 .ui-iggrid-headertext,.ui-igsplitter-splitbar-collapsed,.ui-igsplitter-splitbar-collapsed .ui-igsplitter-splitbar-resize-handler-inner-vertical,.ui-igsplitter-splitbar-collapsed .ui-igsplitter-splitbar-resize-handler-inner-horizontal {

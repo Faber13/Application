@@ -1,12 +1,13 @@
 define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
 
     var configurator, fullModel, configurationKeys, valueColumn, indexValues, idOlapGrid, accessorMap, dsd, accessorModel,
-        formatter;
+        formatter, supportUtility;
 
     function ViewModel() {
     }
 
-    ViewModel.prototype.init = function (tableData, Configurator) {
+    ViewModel.prototype.init = function (tableData, Configurator, SupportUtility) {
+        supportUtility = SupportUtility;
         formatter = new Formatter;
         configurator = Configurator;
         dsd = configurator.getDSD()
@@ -157,7 +158,7 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
                     secondCondition = secondCondition.slice(0, -1);
                     var stringAppend = secondCondition.replace(onlyValue, function (match) {
                         var returnedValue;
-                        returnedValue = (match.substring(1) == "value") ? item[indexValue] : "   "+item[accessorMap[match.substring(1)]];
+                        returnedValue = (match.substring(1) == "value") ? item[indexValue] : " &nbsp  "+item[accessorMap[match.substring(1)]];
                         return returnedValue;
                     })
                     result +=stringAppend;
@@ -199,7 +200,7 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
                     // var date = (value !== 'undefined') ? moment(value).format("YYYYMMDD") : undefined;
                     result = moment(dateFrom).format(configurationKeyColumn.properties.cellProperties.dateFormat)
                 }else{
-                    result = "Previous Year"
+                    result = supportUtility.getPreviousSeasonLabel()
                 }
                 break;
 

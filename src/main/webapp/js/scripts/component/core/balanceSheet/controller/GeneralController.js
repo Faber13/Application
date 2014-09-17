@@ -47,10 +47,8 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
             var grid = $("#" + idPivot).igPivotGrid("grid");
             var that = this;
 
-
-
             $(document.body).delegate("#" + grid.id(), "iggridcellclick", function (evt, ui) {
-                console.log('EDiting on cell: '+editingOnCell)
+                console.log('Editing on cell: '+editingOnCell)
                 evt.stopImmediatePropagation();
 
                 var cellTableModel2 = ModelController.getTableDataModel();
@@ -62,7 +60,6 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
                 var isEditable = formulaController.checkIfEditableCell(clickedCell)
                 if( isEditable== 1) {
                     if(editingOnCell) {
-
                         evt.preventDefault();
                         var cell = ui.cellElement;
                         var oldCell = document.getElementById("clickedCell")
@@ -78,14 +75,12 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
                         if (cell.parentElement !== oldCell) {
                             if (typeof oldCell !== 'undefined' && oldCell != null) {
                                 if (oldCell.firstElementChild != null) {
-                                    console.log('oldeCell diversa da undefined')
                                     $("#" + oldCell.id).igTextEditor('destroy');
                                 }
                                 oldCell.removeAttribute("id")
                                 oldCell.removeAttribute("class")
                             }
                             cell.setAttribute("id", "clickedCell");
-                            console.log("clickCell")
                             $("#clickedCell").igTextEditor({
                                 width: 160,
                                 height: 41,
@@ -94,9 +89,13 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
                             });
                         }
                     }
-                         else { // editing total
+                    else { // editing total
+                        var cell = ui.cellElement;
+                        var oldCell = document.getElementById("clickedCell")
                         if (document.getElementById('clickedCell') != null) {
                             $('#clickedCell').igTextEditor('destroy');
+                            oldCell.removeAttribute("id")
+                            oldCell.removeAttribute("class")
                         }
                         that.startFullEditing(resultedClicked)
                         console.log('doubleClick')
@@ -105,12 +104,10 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
                 }else if(isEditable == 2){
                     // production form
                     if(resultedClicked.clickedCell[0] == 5 || resultedClicked.clickedCell[0] == 2 || resultedClicked.clickedCell[0] == 4) {
-                        alert('qui!')
-
                         var allData = ModelController.getData();
                         specialControlEditor.init(allData, resultedClicked, formulaController, Configurator, supportUtility);
                     }else{
-                        var allData = ModelController.getTableData();
+                        var allData = ModelController.getTableDataModel();
                         specialControlEditor.init(allData, resultedClicked, formulaController, Configurator, supportUtility);
                     }// other form
                 }
@@ -120,15 +117,15 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
                 e.preventDefault()
             })
 
-            $("#exportButton").click(function () {
+            $("#export").click(function () {
                 var ExportControl = new ExportController;
                 var table = ModelController.getTableDataModel();
+                debugger;
                 ExportControl.init(table, Configurator)
             })
         }
 
         GeneralController.prototype.startFullEditing = function (resultedClicked) {
-
 
             var clickedCell = resultedClicked["clickedCell"]
             var indTable = resultedClicked["indTable"];
@@ -136,7 +133,6 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
             var columnGridIndex = resultedClicked["columnGridIndex"];
             FormController.init(Configurator, clickedCell, dsd)
             this.onSaveButton(indTable, clickedCell, rowGridIndex, columnGridIndex);
-
         }
 
 
@@ -144,9 +140,11 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
 
             var that = this;
             $("#saveButton").on('click', function (e) {
+
                 e.stopImmediatePropagation();
                 $('#saveButton').off();
                 var newCell = FormController.getValue(cell)
+                debugger;
                 if (newCell.length > 0) {
                     that.updateGrid(newCell, indTable, rowIndex, columnIndex)
                 }
@@ -159,6 +157,7 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
             ModelController.updateModels(newCell, indTable, rowIndex, columnIndex)
             // check if need to apply a formula
             var codeNewCell = newCell[0]
+            debugger;
             if (formulaController.checkIfBindedCode(bindedKeys, codeNewCell)) {
 
                 var tableModel = ModelController.getTableDataModel();
@@ -182,9 +181,7 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
 
         GeneralController.prototype.onChangeModalityEditing = function() {
             $("#editingChoice").bind('change', function (event) {
-                alert()
                 editingOnCell = !event.args.checked;
-                $('#editingTypeSelection').sidebar("close")
             })
         }
 

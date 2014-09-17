@@ -1,7 +1,7 @@
 /**
  * Created by fabrizio on 7/7/14.
  */
-define(["jquery", "formatter/DatatypesFormatter", "jquery.dirtyFields", "infragistics", "jqwidgets"], function ($, Formatter) {
+define(["jquery", "formatter/DatatypesFormatter","chosen.jquery", "jquery.dirtyFields", "infragistics", "jqwidgets"], function ($, Formatter) {
 
     var formatter, language, columns, valueIndex, accessorIndexes , mapPreviousValues;
 
@@ -573,14 +573,21 @@ define(["jquery", "formatter/DatatypesFormatter", "jquery.dirtyFields", "infragi
 
             default:
                 if (ConfColumn.values.editable) {
-                    debugger;
                     if (title == "note") {
                         $('#form').append("<div class ='row'>" +
                             "<div class='col-lg-6'><label for='" + container + "'>" + title
                             + "</label></div>" +
                             "<div class='col-lg-6'><textarea type='text' class='input-group-lg form-control' name='name'  rows='3' id='" + container + "'>"+value+"</textarea></div>" +
                             "</div><br>")
-                    } else {
+                    }
+                    // Case Multiple flag
+                    else if (title =="flag") {
+                        alert()
+                        $('#form').append(this.getMultipleFlagToAppend())
+                        $('#chosen-select').chosen({allow_single_deselect:true})
+                    }
+
+                    else {
                         $('#form').append("<div class ='row'>" +
                             "<div class='col-lg-6'><label for='" + container + "'>" + title
                             + "</label></div>" +
@@ -588,6 +595,7 @@ define(["jquery", "formatter/DatatypesFormatter", "jquery.dirtyFields", "infragi
                             "</div><br>")
 
                     }
+
                 }
                 else {
                     $('#form').append("<div class ='row'>" +
@@ -654,6 +662,28 @@ define(["jquery", "formatter/DatatypesFormatter", "jquery.dirtyFields", "infragi
                 result = $("#" + htmlvalue.id).val();
         }
         return result;
+    }
+
+
+    CellEditor.prototype.getMultipleFlagToAppend = function(){
+       var stringToAppend = '<div>'+
+        '<div class="row"><div class="col-lg-6">'+
+        '<label for="multiple-label-example">Flags</label></div>'+
+        '<div class="col-lg-6">'    +
+        '<select data-placeholder="Your Favorite Types of Bear" id="chosen-select" tabindex="18" multiple="true" autocomplete="on">'+
+        '<option value=""></option>'+
+        '<option>American Black Bear</option>'+
+        '<option>Asiatic Black Bear</option>'+
+        '<option>Brown Bear</option>'+
+        '<option selected>Giant Panda</option>'+
+        '<option>Sloth Bear</option>'+
+        '<option>Sun Bear</option>'+
+        '<option>Polar Bear</option>'+
+        '<option>Spectacled Bear</option>'+
+        '</select></div></div>'+
+        '<br>';
+
+        return stringToAppend
     }
 
 

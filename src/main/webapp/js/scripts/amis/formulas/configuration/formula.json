@@ -1,8 +1,8 @@
 {
     "initFormulas":[
-
         {
-            "variable":{
+            "variable":
+            {
                 "formulaId":1,
                 "dataType":"code",
                 "value":[

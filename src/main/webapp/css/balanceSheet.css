@@ -43,3 +43,49 @@
     text-align: left;
     vertical-align: middle;
 }
+
+#options {
+    visibility : hidden;
+    background: #888;
+    width : 945px;
+    height: 40px;
+    widows: inherit;
+    border-bottom: 1px solid #777;
+    border-right: 1px solid #777;;
+}
+
+#editingChoice{
+    margin-top: 12px;
+}
+
+#labelEditingMode {
+    font-size: 120;
+}
+
+/*
+[data-id="2912959359"], [data-id="2912959359"]>th{
+    color : red;
+
+}
+
+
+[data-id="4214993387"], [data-id="4214993387"]>th,[data-id="112335355"], [data-id="112335355"]>th,
+[data-id="2271481948"], [data-id="2271481948"]>th, [data-id="2271481948"], [data-id="2271481948"]>th,
+[data-id="3484225860"], [data-id="3484225860"]>th, [data-id="3751768364"], [data-id="3751768364"]>th
+{
+    color : blue;
+}
+
+
+[data-id="1943833587"], [data-id="1943833587"]>th,[data-id="1354470332"], [data-id="1354470332"]>th,
+[data-id="985901126"], [data-id="985901126"]>th, [data-id="1015489101"], [data-id="1015489101"]>th{
+    color: lightgreen;
+}*/
+
+
+
+
+#toAppend {
+    
+
+}

@@ -675,7 +675,7 @@
                     }
                 },
                 "dataTypes": [
-                    "code"
+                    "string"
                 ],
                 "values": [
 

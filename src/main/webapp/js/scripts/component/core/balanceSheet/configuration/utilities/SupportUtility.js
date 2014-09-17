@@ -23,5 +23,9 @@ define(["jquery", "jqwidgets"], function($) {
         return {"season" : season, "dataSource": datasourceFilt, "product" : product, "country": country}
     }
 
+    SupportUtility.prototype.getPreviousSeasonLabel = function(){
+        return filterData.years.previousYearLabel;
+    }
+
     return SupportUtility;
 })

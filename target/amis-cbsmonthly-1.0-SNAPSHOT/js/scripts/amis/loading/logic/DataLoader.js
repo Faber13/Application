@@ -9,7 +9,7 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
     var urlMostRecentDate = "http://168.202.28.178:8080/dataset/recentDate";
     var urlPreviousYear = "http://168.202.28.178:8080/dataset/previousYear";
 
-    var firstForecastDateToInsert, formatter;
+    var firstForecastDateToInsert, formatter, realPreviousDate;
 
     function DataLoader() {
         formatter = new Formatter;
@@ -134,11 +134,16 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
 
 
     DataLoader.prototype.setFakeForecastDate = function(prevYearForecast){
+        realPreviousDate = prevYearForecast[0][2]
         var fakeDate = "20000103";
         for(var i =0; i< prevYearForecast.length; i++){
             prevYearForecast[i][2] = fakeDate;
         }
         return prevYearForecast;
+    }
+
+    DataLoader.prototype.getRealPreviousYear = function(){
+        return realPreviousDate;
     }
 
     return DataLoader;
