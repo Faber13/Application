@@ -82,7 +82,7 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
                             }
                             cell.setAttribute("id", "clickedCell");
                             $("#clickedCell").igTextEditor({
-                                width: 160,
+                                width: 120,
                                 height: 41,
                                 value: clickedCell[3],
                                 valueChanged: functionChanges

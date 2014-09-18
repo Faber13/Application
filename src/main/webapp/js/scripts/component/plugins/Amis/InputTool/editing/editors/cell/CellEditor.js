@@ -1,9 +1,10 @@
 /**
  * Created by fabrizio on 7/7/14.
  */
-define(["jquery", "formatter/DatatypesFormatter","chosen.jquery", "jquery.dirtyFields", "infragistics", "jqwidgets"], function ($, Formatter) {
+define(["jquery", "formatter/DatatypesFormatter","flagTranslator/controller/FlagController","select2", "jquery.dirtyFields",
+    "infragistics", "jqwidgets"], function ($, Formatter, FlagController) {
 
-    var formatter, language, columns, valueIndex, accessorIndexes , mapPreviousValues;
+    var formatter, language, columns, valueIndex, accessorIndexes , mapPreviousValues, flagController;
 
     // ---------------------- SUPPORT FUNCTIONS -------------------------------------------
 
@@ -27,6 +28,7 @@ define(["jquery", "formatter/DatatypesFormatter","chosen.jquery", "jquery.dirtyF
 
     CellEditor.prototype.init = function (Configurator, cell, dsd) {
 
+        flagController = new FlagController;
         formatter = new Formatter;
         var configuration = Configurator.getComponentConfigurator();
         columns = dsd.dsd.columns
@@ -527,7 +529,7 @@ define(["jquery", "formatter/DatatypesFormatter","chosen.jquery", "jquery.dirtyF
                         "<div class='col-lg-6'><label for='" + container + "'>" + title
                         + "</label></div>" +
                         "<div class='col-lg-6'><input type='number' class='input-group-lg' name='name' id='" + container + "' value='" + value +
-                        "' min='" + numberFrom + "' max='" + numberTo + "'  step='any'></div>" +
+                        "' min='" + numberFrom + "' max='" + numberTo + "'  step='any' style='width:100%'></div>" +
                         "</div><br>")
                 } else {
                     $('#form').append("<div class ='row'>" +
@@ -582,9 +584,8 @@ define(["jquery", "formatter/DatatypesFormatter","chosen.jquery", "jquery.dirtyF
                     }
                     // Case Multiple flag
                     else if (title =="flag") {
-                        alert()
-                        $('#form').append(this.getMultipleFlagToAppend())
-                        $('#chosen-select').chosen({allow_single_deselect:true})
+                        $('#form').append(this.getMultipleFlagToAppend(value, container, title))
+                        $('#'+container).select2()
                     }
 
                     else {
@@ -593,9 +594,7 @@ define(["jquery", "formatter/DatatypesFormatter","chosen.jquery", "jquery.dirtyF
                             + "</label></div>" +
                             "<div class='col-lg-6'><input type='text' class='input-group-lg form-control' name='name' id='" + container + "' value='" + value + "'/></div>" +
                             "</div><br>")
-
                     }
-
                 }
                 else {
                     $('#form').append("<div class ='row'>" +
@@ -619,7 +618,16 @@ define(["jquery", "formatter/DatatypesFormatter","chosen.jquery", "jquery.dirtyF
      */
     CellEditor.prototype.getValuesFromCellEditor = function () {
         var array = [];
-        var $input = document.getElementsByClassName('input-group-lg');
+        var $inputs = document.getElementsByClassName('input-group-lg');
+        var $input = [];
+
+        for(var i =0;i< $inputs.length; i++){
+            if(i != 2) {
+                $input.push($inputs[i])
+            }
+        }
+        debugger;
+
         for (var i = 0; i < $input.length; i++) {
             // VALUE column
             if (i == 0) {
@@ -659,28 +667,29 @@ define(["jquery", "formatter/DatatypesFormatter","chosen.jquery", "jquery.dirtyF
                 }
                 break;
             default :
-                result = $("#" + htmlvalue.id).val();
+                if (htmlvalue.id == 'accessorInput1') {
+                    var codes = $("#" + htmlvalue.id).select2("val");
+                    alert('chosen!!')
+                    debugger;
+                    result = flagController.getStringFromCodes(codes);
+
+                } else {
+                    result = $("#" + htmlvalue.id).val();
+                }
         }
         return result;
     }
 
 
-    CellEditor.prototype.getMultipleFlagToAppend = function(){
+    CellEditor.prototype.getMultipleFlagToAppend = function(value, container, title){
+       var stringValue = value;
        var stringToAppend = '<div>'+
         '<div class="row"><div class="col-lg-6">'+
-        '<label for="multiple-label-example">Flags</label></div>'+
+        '<label for="'+container+'">'+title+'</label></div>'+
         '<div class="col-lg-6">'    +
-        '<select data-placeholder="Your Favorite Types of Bear" id="chosen-select" tabindex="18" multiple="true" autocomplete="on">'+
-        '<option value=""></option>'+
-        '<option>American Black Bear</option>'+
-        '<option>Asiatic Black Bear</option>'+
-        '<option>Brown Bear</option>'+
-        '<option selected>Giant Panda</option>'+
-        '<option>Sloth Bear</option>'+
-        '<option>Sun Bear</option>'+
-        '<option>Polar Bear</option>'+
-        '<option>Spectacled Bear</option>'+
-        '</select></div></div>'+
+        '<select multiple tabindex="-1" id="'+container+'" style="width:100%" class="input-group-lg">';
+        stringToAppend += flagController.getOptions(stringValue)
+        stringToAppend +='</select></div></div>'+
         '<br>';
 
         return stringToAppend

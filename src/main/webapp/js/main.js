@@ -24,7 +24,9 @@ requirejs.config({
         editingSpecial    :  "../amis/editing/special",
         productionEditor  :  "../amis/editing/special/editors/productionEditor",
         otherUsesEditor   :  "../amis/editing/special/editors/otherUsesEditor",
-        paddyEditor       :  "../amis/editing/special/editors/paddyEditor"
+        paddyEditor       :  "../amis/editing/special/editors/paddyEditor",
+        flagTranslator    :  "..//component/plugins/Amis/InputTool/utils/flagFormatter"
+
     },
     "shim": {
         "bootstrap": {
@@ -47,6 +49,9 @@ requirejs.config({
         },
         "jquery.sidebar" :{
             deps : ["jquery", "jquery-ui"]
+        },
+        "chosen.jquery" : {
+            deps : ["jquery"]
         }
     }
 });

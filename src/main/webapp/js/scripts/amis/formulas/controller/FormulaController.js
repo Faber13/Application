@@ -135,7 +135,8 @@ define(["jquery", "formulasAmis/support/FormulaConfigurator", "formulasAmis/supp
         }
             if(!notRealizeable) {
                 rowModel[indexValue] = value;
-                rowModel[4] = 2;
+                // Insert the flag
+                rowModel[4] = 'C';
                 var newIndexRow = supportModel.createIndexOriginalModel(numberOfColumns, indexColumn,mapCodes, codeValue)
 
             }else{
@@ -237,7 +238,6 @@ define(["jquery", "formulasAmis/support/FormulaConfigurator", "formulasAmis/supp
         var $newdiv1 = $("<div id='dialogForm' type='hidden'></div>");
         $("#pivotGrid").append($newdiv1);
         var map = configurator.getOrCreateMapInvolvedCells();
-        debugger;
         return map[cell[0]]
     }
 
