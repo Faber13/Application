@@ -56,8 +56,10 @@ define(['jquery'], function($){
     }
 
 
-    DataHandler.prototype.getInvolvedData = function(codes, data, cell){
+    DataHandler.prototype.getInvolvedData = function(codes, data2, tableData2,cell){
 
+        var data = $.extend([],true,data2);
+        var tableData = $.extend([],true,tableData2);
         var result = [];
         var copyCodes = $.extend([], true, codes);
         var date = cell[2];
@@ -66,6 +68,15 @@ define(['jquery'], function($){
                 if(data[i][0] == copyCodes[j] && data[i][2] == date ){
                     copyCodes.splice(j,1)
                     result.push(data[i])
+                }
+            }
+        }if(copyCodes.length !=0){
+            for(var j = 0; j< copyCodes.length; j++){
+                for(var i =0; i< tableData.length; i++){
+                    if(tableData[i][0] == copyCodes[j] && tableData[i][2] == date ){
+                        copyCodes.splice(j,1)
+                        result.push(tableData[i])
+                    }
                 }
             }
         }

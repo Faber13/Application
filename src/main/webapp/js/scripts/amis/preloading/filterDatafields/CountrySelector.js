@@ -11,7 +11,7 @@ define(["jquery", "jqwidgets"], function($) {
 
     CountrySelector.prototype.init = function(){
 
-        var that = this;
+      /*  var that = this;
         combo = $("#selectionCountryBox")
         var url = "http://faostat3.fao.org:7777/msd/cl/system/AMIS_GAUL/1.0";
         var sources = [];
@@ -50,6 +50,32 @@ define(["jquery", "jqwidgets"], function($) {
 
          // Take the Preselected Value
         regionCode = combo.jqxComboBox('getItem', combo.jqxComboBox('selectedIndex')).value;
+        return regionCode;*/
+        combo = $("#selectionCountryBox")
+        var data = {"code":12, "label":"Argentina"}
+        var source =
+        {
+            datatype: "json",
+            datafields: [
+                { name: 'code' },
+                { name: 'label' }
+            ],
+            localdata: data
+        };
+
+        var dataAdapter = new $.jqx.dataAdapter(source);
+
+        // comboBox
+        combo.jqxComboBox({
+            source: dataAdapter ,
+            displayMember: "label",
+            valueMember: "code",
+            selectedIndex: 0,
+            width: '200px',
+            height: '25px'
+        })
+
+        var regionCode = combo.jqxComboBox('getItem', combo.jqxComboBox('selectedIndex')).value;
         return regionCode;
     };
 

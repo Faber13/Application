@@ -1,63 +1,46 @@
 /**
- * Created by fabrizio on 9/15/14.
+ * Created by fabrizio on 9/19/14.
  */
-define(['jquery'], function($){
 
-    function ProdFormulaController(){}
+define(["jquery", "specialFormulaConf/formulaUtils/FormulaConfigurator", "specialFormulaConf/dataUtils/CommonUtils"],
+    function ($, FormulaConfigurator, CommonUtils) {
 
-    ProdFormulaController.prototype.applyFormulas = function(model){
+    var formulaConfigurator, commonUtils;
 
-        var allInitFormulas = configurator.getAllInitFormulas();
-
-        numberOfRows = Object.keys(mapCodes).length;
-        numberOfColumns = model.length/ Object.keys(mapCodes).length;
-        // for each column
-        for(var z= 0; z<numberOfColumns; z++) {
-            // for each formula
-            for (var i = 0; i < allInitFormulas.length; i++) {
-                this.createFormula(model, allInitFormulas[i], z, numberOfColumns, i)
-            }
-        }
-        return model;
+    function FormulaHandler() {
+        formulaConfigurator = new FormulaConfigurator;
+        commonUtils = new CommonUtils;
     }
 
-    ProdFormulaController.prototype.createFormula = function(modelData, formulaData, indexColumnData, indexRow2, indexFormula) {
+    FormulaHandler.prototype.getInitFormulaFromConf = function (numberOfForm, typeOfForm) {
+        return formulaConfigurator.getInitFormula(numberOfForm, typeOfForm)
+    }
+
+
+    FormulaHandler.prototype.createFormula = function (modelData, formulaData) {
         console.log("createFormula")
         var model = modelData;
-        var formula = formulaData;
-        var indexColumn = indexColumnData
+        var formula =  formulaData;
         var addendums = [];
         var operations = [];
         var startIndex, indexRow;
         // set the start index and the range
         var codeValue = formula.variable.value[0]
-        if (formula.otherColumn) {
-            var indexColumnVariable = formula.columnNumber;
-            startIndex = numberOfRows * indexColumnVariable;
-        } else {
-            startIndex = numberOfRows * indexColumn
-        }
+
         var notRealizeable = false;
 
-        indexRow  =supportModel.lookForCode(codeValue,model,startIndex, numberOfRows)
-        var rowModel =  model[indexRow]
         //  initialize a label
         label1:
-            for( var i =0; i< formula.addendums.length; i++){
-                var addendum= formula.addendums[i]
-                switch (addendum.dataType){
+            for (var i = 0; i < formula.addendums.length; i++) {
+                var addendum = formula.addendums[i]
+                switch (addendum.dataType) {
                     case "code":
                         var code = addendum.value[0];
-                        if (addendum.otherColumn) {
-                            var indexColumnVariable = addendum.columnNumber;
-                            startIndex = numberOfRows * indexColumnVariable;
+
+                        if (typeof model[index][3] != 'undefined' && model[index][3] != null) {
+                            if (addendum.hasConditions && addendum.condition == "exists")
+                                addendums.push(model[index][3])
                         } else {
-                            startIndex = numberOfRows * indexColumn
-                        }
-                        var index = supportModel.lookForCode(code,model,startIndex, numberOfRows)
-                        if(typeof model[index][indexValue] != 'undefined' && model[index][indexValue] !=null) {
-                            addendums.push(model[index][indexValue])
-                        }else{
                             notRealizeable = true;
                             break label1;
                         }
@@ -71,7 +54,7 @@ define(['jquery'], function($){
                 }
             }
 
-        if(!notRealizeable) {
+        if (!notRealizeable) {
             var value = addendums[0];
             label2:
                 for (var j = 0; j < operations.length; j++) {
@@ -114,21 +97,17 @@ define(['jquery'], function($){
                     }
                 }
         }
-        if(!notRealizeable) {
-            rowModel[indexValue] = value;
+        if (!notRealizeable) {
+            model[3] = value;
             // Insert the flag
-            rowModel[4] = 'C';
-            var newIndexRow = supportModel.createIndexOriginalModel(numberOfColumns, indexColumn,mapCodes, codeValue)
-
-        }else{
-            rowModel[indexValue] = rowModel[indexValue];
+            model[4] = 'C';
+        } else {
+            model[3] = model[3];
         }
-        if(typeof newIndexRow!== ' undefined')
-            return {"index": newIndexRow, "row": rowModel}
-        return null;
+
+        return model;
+
     }
 
-
-
-    return ProdFormulaController;
+    return FormulaHandler;
 })

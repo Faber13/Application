@@ -583,7 +583,7 @@ define(["jquery", "formatter/DatatypesFormatter","flagTranslator/controller/Flag
                             "</div><br>")
                     }
                     // Case Multiple flag
-                    else if (title =="flag") {
+                    else if (title =="Flags") {
                         $('#form').append(this.getMultipleFlagToAppend(value, container, title))
                         $('#'+container).select2()
                     }
@@ -682,15 +682,15 @@ define(["jquery", "formatter/DatatypesFormatter","flagTranslator/controller/Flag
 
 
     CellEditor.prototype.getMultipleFlagToAppend = function(value, container, title){
-       var stringValue = value;
-       var stringToAppend = '<div>'+
-        '<div class="row"><div class="col-lg-6">'+
-        '<label for="'+container+'">'+title+'</label></div>'+
-        '<div class="col-lg-6">'    +
-        '<select multiple tabindex="-1" id="'+container+'" style="width:100%" class="input-group-lg">';
+        var stringValue = value;
+        var stringToAppend = '<div>'+
+            '<div class="row"><div class="col-lg-6">'+
+            '<label for="'+container+'">'+title+'</label></div>'+
+            '<div class="col-lg-6">'    +
+            '<select multiple tabindex="-1" id="'+container+'" style="width:100%" class="input-group-lg">';
         stringToAppend += flagController.getOptions(stringValue)
         stringToAppend +='</select></div></div>'+
-        '<br>';
+            '<br>';
 
         return stringToAppend
     }

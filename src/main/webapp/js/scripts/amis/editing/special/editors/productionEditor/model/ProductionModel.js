@@ -4,13 +4,13 @@
 define(["jquery"], function($){
 
 // models
-    var originalData, modelData, totalCropsData;
+   var originalData, totalCropsData;
 
 // variables
     var numberOfCrops;
 
 // Modules
-    var supportUtiltity;
+    var supportUtility;
 
 // URL
     var cropsUrl = "http://168.202.28.178:8080/dataset/crops"
@@ -24,11 +24,31 @@ define(["jquery"], function($){
 
     function ProductionModel(){}
 
-    ProductionModel.prototype.init = function(data, Utility){
-        supportUtiltity = Utility;
-        originalData =data;
-        modelData = $.extend([], true, data)
-        this.convertModelDataToOriginal();
+    ProductionModel.prototype.getTotalCropsModel = function(involvedItems, Utility){
+        originalData = involvedItems;
+        var result;
+        supportUtility = Utility;
+        console.log('before Total')
+        console.log(involvedItems)
+        var modelData = $.extend([], true, involvedItems)
+        result = this.convertOriginalToModelData('total', modelData);
+        console.log('after Total')
+        console.log(involvedItems)
+
+        return result;
+    }
+
+    ProductionModel.prototype.getSingleCropsModel = function(involvedItemsSingleCrops, Utility){
+        var result;
+        supportUtility = Utility;
+        console.log('before Single')
+        console.log(involvedItemsSingleCrops)
+        var modelDataSingCrops = $.extend([], true, involvedItemsSingleCrops)
+        result =this.convertOriginalToModelData('single', modelDataSingCrops);
+        console.log('after Single')
+        console.log(involvedItemsSingleCrops)
+        return result;
+
     }
 
     ProductionModel.prototype.getOriginalData = function(){
@@ -39,15 +59,23 @@ define(["jquery"], function($){
         return modelData;
     }
 
-    ProductionModel.prototype.convertOriginalToModelData = function(){
+    ProductionModel.prototype.convertOriginalToModelData = function(modality, modelData){
+      var result = [];
+        var dataModel = $.extend([],true,modelData);
         var copyMap = $.extend([], true, map);
-        // delete Area Planted from object
-        delete copyMap[37]
-
-        for(var i =0; i< modelData.length; i++){
-            var code = modelData[i][0]
-            modelData[i].push(copyMap[code])
+        debugger;
+        if(modality == 'total') {
+            // delete Area Planted from object
+            delete copyMap[37]
+            dataModel.splice(2,1)
         }
+
+        for(var i =0; i< dataModel.length; i++){
+            result[i] = $.extend([],true,dataModel[i])
+            var code = dataModel[i][0]
+            result[i].push(copyMap[code])
+        }
+        return result;
     }
 
     ProductionModel.prototype.convertModelDataToOriginal = function(){

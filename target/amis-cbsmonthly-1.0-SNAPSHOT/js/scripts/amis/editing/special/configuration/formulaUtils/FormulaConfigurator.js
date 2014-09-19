@@ -1,14 +1,13 @@
 /**
  * Created by fabrizio on 9/15/14.
  */
-define(['../../../../../libs/jquery'], function($){
+define(["jquery"], function($){
 
     var config;
-
-    function FormulaConfigurator(){}
-
     var ulrFormulaPlugins = './js/scripts/amis/editing/special/configuration/formulaPlugin/formulaPlugins.json'
-    FormulaConfigurator.prototype.init = function(){
+
+
+    function FormulaConfigurator(){
         $.ajax({
             type: 'GET',
             url: ulrFormulaPlugins,
@@ -16,23 +15,33 @@ define(['../../../../../libs/jquery'], function($){
                 config = data;
             }
         })
-
-
     }
 
-    FormulaConfigurator.prototype.getInitFormula = function(numberOfFormUsed, subcase){
+
+    // 1: Production; 2: OtherUses; 3: Paddy
+    // Get one or mor formulas
+    FormulaConfigurator.prototype.getInitFormula = function(numberOfFormUsed, typeOfForm){
         var result;
         switch (numberOfFormUsed){
             case 1:
+                var typeOfForm = config.formulaPlugins[numberOfFormUsed-1];
+                if(typeOfForm == "totalValues"){
+                    result = typeOfForm.typeOfForm.init
+                }else if(typeOfForm == "singleCrops"){
+                    result = typeOfForm.typeOfForm.init
+                }
+                break;
 
+            case 2:
+                //TODO (other uses)
+                break;
+            case 3:
+                //TODO (paddy form)
                 break;
         }
-
-
+        return result;
     }
 
-
-    return FormulaConfigurator;
-
+     return FormulaConfigurator;
 
 })

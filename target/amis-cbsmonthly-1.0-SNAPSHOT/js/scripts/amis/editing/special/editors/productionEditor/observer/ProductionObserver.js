@@ -87,7 +87,14 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
 
     ProductionObserver.prototype.listenToRecalculateButton = function(){
         $('#applyRulesFormula').on('click', function(){
+            // third is disabled
+            if ($("#thirdCheckBox").attr("aria-disabled") == 'true'){
 
+            }else if($("#secondCheckBox").attr("aria-disabled") == 'true'){
+
+            }else if($("#firstCheckBox").attr("aria-disabled") == 'true'){
+
+            }
         })
     }
 

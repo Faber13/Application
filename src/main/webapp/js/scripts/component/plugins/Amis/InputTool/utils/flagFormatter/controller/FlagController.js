@@ -17,7 +17,6 @@ define(["jquery", "flagTranslator/translator/MultiFlagTranslator"], function($, 
                 flagDoc = data;
             }
         })
-        debugger;
     }
 
 

@@ -9,7 +9,6 @@ define(['jquery'], function($){
     // if stringValues is undefined or doesn't contain a value codes is null
     MultiFlagTranslator.prototype.fromStringToCodes = function( stringValues){
         var codes;
-        var prova = "A,C,D";
         var conditionRegExpression = /((\w))/g;
         if(typeof stringValues !=='undefined' && stringValues != null && stringValues != "") {
             codes = stringValues.match(conditionRegExpression);
@@ -23,7 +22,6 @@ define(['jquery'], function($){
     // return null
     MultiFlagTranslator.prototype.fromCodesToString = function(codes) {
         var result = ""
-        var prova = ["A", "B", "C"]
         if (typeof codes != 'undefined' && codes != null && codes.length != 0) {
             for (var i = 0; i < codes.length; i++) {
                 if (result != "" && result != null) {

@@ -27,7 +27,7 @@ define(["jquery", "editor/cell/CellEditor", "formatter/DatatypesFormatter",
 
         var result
         var input = FormEditor.getValuesFromCellEditor();
-        alert('saving data')
+
         debugger;
         console.log('INPUT : FormController.getValue')
         console.log(input)

@@ -2,6 +2,8 @@
     "formulaPlugins": [
         {
             "id" : 1,
+            "form": "Production",
+            "hasNestedForms" : true,
             "totalValues":{
                 "init":[
                     {
@@ -16,10 +18,13 @@
                         },
                         "addendums":[
                             {
+                                "hasCondition" : false,
+                                "condition" : "",
                                 "dataType":"code",
                                 "value":[
                                     5
                                 ],
+                                "otherValue" : "",
                                 "otherColumn":false,
                                 "columnNumber":""
                             },
@@ -30,17 +35,20 @@
                                 "columnNumber":""
                             },
                             {
+                                "hasCondition" : false,
+                                "condition" : "",
                                 "dataType":"code",
                                 "value":[
                                     2
                                 ],
+                                "otherValue" : "",
                                 "otherColumn":false,
                                 "columnNumber":""
                             }
                         ]
                     }
                 ],
-                "valueDisabled":[
+                "valuesDisabled":[
                     {
                         "Yield":{
                             "variable":{
@@ -54,10 +62,13 @@
                             },
                             "addendums":[
                                 {
+                                    "hasCondition" : false,
+                                    "condition" : "",
                                     "dataType":"code",
                                     "value":[
                                         5
                                     ],
+                                    "otherValue" : "",
                                     "otherColumn":false,
                                     "columnNumber":""
                                 },
@@ -68,10 +79,13 @@
                                     "columnNumber":""
                                 },
                                 {
+                                    "hasCondition" : false,
+                                    "condition" : "",
                                     "dataType":"code",
                                     "value":[
                                         2
                                     ],
+                                    "otherValue" : "",
                                     "otherColumn":false,
                                     "columnNumber":""
                                 }
@@ -90,10 +104,13 @@
                         },
                         "addendums":[
                             {
+                                "hasCondition" : false,
+                                "condition" : "",
                                 "dataType":"code",
                                 "value":[
                                     4
                                 ],
+                                "otherValue" : "",
                                 "otherColumn":false,
                                 "columnNumber":""
                             },
@@ -104,10 +121,13 @@
                                 "columnNumber":""
                             },
                             {
+                                "hasCondition" : false,
+                                "condition" : "",
                                 "dataType":"code",
                                 "value":[
                                     2
                                 ],
+                                "otherValue" : "",
                                 "otherColumn":false,
                                 "columnNumber":""
                             }
@@ -126,10 +146,13 @@
                             },
                             "addendums":[
                                 {
+                                    "hasCondition" : false,
+                                    "condition" : "",
                                     "dataType":"code",
                                     "value":[
                                         4
                                     ],
+                                    "otherValue" : "",
                                     "otherColumn":false,
                                     "columnNumber":""
                                 },
@@ -140,10 +163,13 @@
                                     "columnNumber":""
                                 },
                                 {
+                                    "hasCondition" : false,
+                                    "condition" : "",
                                     "dataType":"code",
                                     "value":[
                                         5
                                     ],
+                                    "otherValue" : "",
                                     "otherColumn":false,
                                     "columnNumber":""
                                 }
@@ -152,7 +178,7 @@
                     }
                 ]
             },
-            "cropValues":{
+            "singleCrops":{
                 "init":[
                     {
                         "variable":{
@@ -166,100 +192,80 @@
                         },
                         "addendums":[
                             {
+                                "hasCondition" : false,
+                                "condition" : "",
                                 "dataType":"code",
                                 "value":[
                                     5
                                 ],
+                                "otherValue" : "",
                                 "otherColumn":false,
                                 "columnNumber":""
                             },
                             {
+
                                 "dataType":"operation",
                                 "value":"/",
                                 "otherColumn":false,
                                 "columnNumber":""
                             },
                             {
+                                "hasCondition" : true,
+                                "condition" : "exists",
                                 "dataType":"code",
                                 "value":[
                                     2
                                 ],
+                                "otherValue" : [37],
                                 "otherColumn":false,
                                 "columnNumber":""
                             }
                         ]
                     }
                 ],
-                "valueDisabled":[
+                "valuesDisabled":[
                     {
-                        "Yield":{
-                            "variable":{
-                                "formulaId":3,
-                                "dataType":"code",
-                                "value":[
-                                    4
-                                ],
-                                "otherColumn":false,
-                                "columnNumber":""
-                            },
-                            "addendums":[
-                                {
-                                    "dataType":"code",
-                                    "value":[
+                        "Production": [
+                            {
+                                "variable": {
+                                    "formulaId": 3,
+                                    "dataType": "code",
+                                    "value": [
                                         5
                                     ],
-                                    "otherColumn":false,
-                                    "columnNumber":""
+                                    "otherColumn": false,
+                                    "columnNumber": ""
                                 },
-                                {
-                                    "dataType":"operation",
-                                    "value":"/",
-                                    "otherColumn":false,
-                                    "columnNumber":""
-                                },
-                                {
-                                    "dataType":"code",
-                                    "value":[
-                                        2
-                                    ],
-                                    "otherColumn":false,
-                                    "columnNumber":""
-                                }
-                            ]
-                        }
-                    },
-                    {
-                        "variable":{
-                            "formulaId":3,
-                            "dataType":"code",
-                            "value":[
-                                5
-                            ],
-                            "otherColumn":false,
-                            "columnNumber":""
-                        },
-                        "addendums":[
-                            {
-                                "dataType":"code",
-                                "value":[
-                                    4
-                                ],
-                                "otherColumn":false,
-                                "columnNumber":""
-                            },
-                            {
-                                "dataType":"operation",
-                                "value":"*",
-                                "otherColumn":false,
-                                "columnNumber":""
-                            },
-                            {
-                                "dataType":"code",
-                                "value":[
-                                    2
-                                ],
-                                "otherColumn":false,
-                                "columnNumber":""
+                                "addendums": [
+                                    {
+                                        "hasCondition" : true,
+                                        "conditions" : "exists" ,
+                                        "dataType": "code",
+                                        "value": [
+                                            4
+                                        ],
+                                        "otherValue" : [37],
+                                        "otherColumn": false,
+                                        "columnNumber": ""
+                                    },
+                                    {
+                                        "dataType": "operation",
+                                        "value": "*",
+                                        "otherColumn": false,
+                                        "columnNumber": ""
+                                    },
+                                    {
+                                        "hasCondition" : false,
+                                        "condition" : "",
+                                        "dataType": "code",
+                                        "value": [
+                                            2
+                                        ],
+                                        "otherValue" : "",
+                                        "otherColumn": false,
+                                        "columnNumber": ""
+                                    }
+                                ]
                             }
                         ]
                     },
@@ -276,24 +282,29 @@
                             },
                             "addendums":[
                                 {
+                                    "hasCondition" : false,
+                                    "condition" : "",
                                     "dataType":"code",
                                     "value":[
-                                        4
+                                        5
                                     ],
                                     "otherColumn":false,
                                     "columnNumber":""
                                 },
                                 {
                                     "dataType":"operation",
-                                    "value":"*",
+                                    "value":"/",
                                     "otherColumn":false,
                                     "columnNumber":""
                                 },
                                 {
+                                    "hasCondition" : true,
+                                    "condition" : "exists",
                                     "dataType":"code",
                                     "value":[
-                                        5
+                                        4
                                     ],
+                                    "otherValue" : [37],
                                     "otherColumn":false,
                                     "columnNumber":""
                                 }

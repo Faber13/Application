@@ -114,6 +114,7 @@ define(["jquery", "formulasAmis/support/FormulaConfigurator", "formulasAmis/supp
                                 break label2;
                             }
                             break;
+
                         case "*":
                             if (typeof addendums[j + 1] !== 'undefined' && addendums[j + 1] != null && addendums[j + 1] != '') {
                                 value = value * addendums[j + 1]
@@ -122,6 +123,7 @@ define(["jquery", "formulasAmis/support/FormulaConfigurator", "formulasAmis/supp
                                 break label2;
                             }
                             break;
+
                         case "/":
                             if (typeof addendums[j + 1] !== 'undefined' && addendums[j + 1] != 0 && addendums[j + 1] != null && addendums[j + 1] != '') {
                                 value = value / addendums[j + 1]

@@ -10,7 +10,7 @@ define(["jquery", "jqwidgets"], function($) {
 
     CommoditySelector.prototype.init = function(){
 
-        var that = this;
+     /*   var that = this;
         combo = $("#selectionCommodity")
         var url = "http://faostat3.fao.org:7777/msd/cl/system/AMIS_PRODUCTS/1.0";
         var sources = [];
@@ -50,8 +50,34 @@ define(["jquery", "jqwidgets"], function($) {
 
         // Take the Preselected Value
         productCode = combo.jqxComboBox('getItem', combo.jqxComboBox('selectedIndex')).value;
+*/
 
-        return productCode;
+        combo = $("#selectionCommodity")
+        var data = {"code":5, "label":"Maize"}
+        var source =
+        {
+            datatype: "json",
+            datafields: [
+                { name: 'code' },
+                { name: 'label' }
+            ],
+            localdata: data
+        };
+
+        var dataAdapter = new $.jqx.dataAdapter(source);
+
+        // comboBox
+        combo.jqxComboBox({
+            source: dataAdapter ,
+            displayMember: "label",
+            valueMember: "code",
+            selectedIndex: 0,
+            width: '200px',
+            height: '25px'
+        })
+
+        var commodityCode = combo.jqxComboBox('getItem', combo.jqxComboBox('selectedIndex')).value;
+        return commodityCode;
     };
 
 

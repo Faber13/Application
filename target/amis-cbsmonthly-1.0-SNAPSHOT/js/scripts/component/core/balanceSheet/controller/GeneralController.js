@@ -41,6 +41,7 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
 
 
         GeneralController.prototype.createListeners = function () {
+            console.log('listeners')
 
             var idPivot = Configurator.getIdOlapGrid()
             // Transform pivotGrid into grid
@@ -104,8 +105,9 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
                 }else if(isEditable == 2){
                     // production form
                     if(resultedClicked.clickedCell[0] == 5 || resultedClicked.clickedCell[0] == 2 || resultedClicked.clickedCell[0] == 4) {
-                        var allData = ModelController.getData();
-                        specialControlEditor.init(allData, resultedClicked, formulaController, Configurator, supportUtility);
+                        var allData = $.extend([],true,ModelController.getData());
+                        var tableData = ModelController.getTableDataModel();
+                        specialControlEditor.init(allData, tableData,resultedClicked, formulaController, Configurator, supportUtility);
                     }else{
                         var allData = ModelController.getTableDataModel();
                         specialControlEditor.init(allData, resultedClicked, formulaController, Configurator, supportUtility);
@@ -140,7 +142,6 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
 
             var that = this;
             $("#saveButton").on('click', function (e) {
-
                 e.stopImmediatePropagation();
                 $('#saveButton').off();
                 var newCell = FormController.getValue(cell)

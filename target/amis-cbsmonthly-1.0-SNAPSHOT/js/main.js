@@ -1,8 +1,8 @@
 // Place third party dependencies in the lib folder
 requirejs.config({
-    "baseUrl": "js/scripts/libs",
+    "baseUrl":              "js/scripts/libs",
     "paths": {
-        jquery : "//code.jquery.com/jquery-2.1.1.min",
+        jquery            : "//code.jquery.com/jquery-2.1.1.min",
         preloading        :  "../amis/preloading",
         loading           :  "../amis/loading",
         utilities         :  "../component/core/balanceSheet/configuration/utilities",
@@ -25,8 +25,8 @@ requirejs.config({
         productionEditor  :  "../amis/editing/special/editors/productionEditor",
         otherUsesEditor   :  "../amis/editing/special/editors/otherUsesEditor",
         paddyEditor       :  "../amis/editing/special/editors/paddyEditor",
-        flagTranslator    :  "..//component/plugins/Amis/InputTool/utils/flagFormatter"
-
+        flagTranslator    :  "../component/plugins/Amis/InputTool/utils/flagFormatter",
+        specialFormulaConf:  "../amis/editing/special/configuration"
     },
     "shim": {
         "bootstrap": {
@@ -60,11 +60,10 @@ requirejs.config({
 require(["../../IndexContext", "domReady!", "bootstrap"], function(IndexContext) {
     console.log("index.js() - require() on domReady!");
 
-    var indexContext = new IndexContext();
+   var indexContext = new IndexContext;
     indexContext.init();
 
 });
-
 
 
 

@@ -702,7 +702,7 @@
                     "virtual": true,
                     "id": 5,
                     "title": {
-                        "EN": "flag",
+                        "EN": "Flags",
                         "FR": ""
                     },
                     "supplemental": {
@@ -768,7 +768,7 @@
                     "virtual": true,
                     "id": 6,
                     "title": {
-                        "EN": "note",
+                        "EN": "Note",
                         "FR": ""
                     },
                     "supplemental": {

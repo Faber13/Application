@@ -10,16 +10,18 @@ define(["jquery", "editingSpecial/utils/DataHandler", "productionEditor/creator/
         productionEditor = new ProductionEditor;
     }
 
-    ControllerEditors.prototype.init = function(allData,resultedClicked, formulaController, DsdConfigurator, Utility){
+    ControllerEditors.prototype.init = function(allData,modelDataTable,resultedClicked, formulaController, DsdConfigurator, Utility){
         dsdConfigurator = DsdConfigurator;
         var everyData = allData;
+        var tableData = modelDataTable;
         supportUtiliy = Utility;
-        debugger;
 
         var takenCell =resultedClicked.clickedCell
         specialFormulaController = formulaController;
+        // first take all the involvedCodes
         var codes = specialFormulaController.getInvolvedItems(takenCell);
-        var dataInvolved = dataHandler.getInvolvedData(codes, everyData, takenCell);
+        var dataInvolved = dataHandler.getInvolvedData(codes, everyData,tableData, takenCell);
+        alert('dataInvolved')
         var condition =parseInt(takenCell[0])
         switch (condition) {
             case 5 :

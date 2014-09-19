@@ -2,31 +2,55 @@
  * Created by fabrizio on 9/13/14.
  */
 define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/ProductionObserver",
-    "productionEditor/model/ProductionModel"], function($, Formatter, Observer, ModelProduction){
+    "productionEditor/model/ProductionModel", "specialFormulaConf/formulaHandler/FormulaHandler"],
+    function($, Formatter, Observer, ModelProduction, FormulaHandler){
 
-    var observer, model, supportUtility ;
+    var observer, model, supportUtility, formulaHandler ;
 
     function ProductionEditor(){
         observer = new Observer;
         model = new ModelProduction;
+        formulaHandler = new FormulaHandler;
     }
 
     ProductionEditor.prototype.init = function(clickedItem, itemsInvolved, codesInvolved, configurator, Utility){
-        var involvedItems = itemsInvolved;
+        var involvedItems = $.extend([],true,itemsInvolved);
         supportUtility = Utility;
-        model.init(involvedItems, supportUtility);
+        console.log('before getTotlaCropsModel (invovledItems)')
+        console.log(involvedItems)
+        console.log(itemsInvolved)
+        // take data and calculate initial formulas
+        var totCropsModel =  model.getTotalCropsModel(involvedItems, supportUtility);
+        var formulaTotCrops = formulaHandler.getInitFormulaFromConf(1,'totalValues')
+        var totalCropsModel = formulaHandler.createFormula(totalCropsModel)
+        console.log('after getTotlaCropsModel (invovledItems)')
+        console.log(involvedItems)
+        console.log(itemsInvolved)
+
+        var singleCropsModel = model.getSingleCropsModel(involvedItems, supportUtility);
+        var totalCropsCalculated = formulaHandler.getInitFormulaFromConf(1,'singleCrop')
+
+        console.log('before getSingleCropsModel (invovledItems)')
+        console.log(involvedItems)
+        console.log(itemsInvolved)
 
         var ItemsObj = []
 
-        debugger;
 
 /*
         dsdConfigurator = configurator;
-
         var configurationColumn = dsdConfigurator.getKeyColumnConfiguration().leftKeyColumnConfiguration[0]*/
 
         var valueCodeItem = parseInt(clickedItem[0])
-        debugger;
+
+        var map=  {
+            2 : "Area Harvested",
+            5 : "Production",
+            4 : "Yield",
+            37: "Area Planted"
+        }
+        console.log('InovolvedItems')
+        console.log(involvedItems)
 
         var source = {
             datatype: "array",
@@ -37,7 +61,7 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
                 {name : 5, type: 'string'}
             ],
             id: 'ppp',
-            localdata: involvedItems
+            localdata: totalCropsModel
         };
 
         var dataAdapter = new $.jqx.dataAdapter(source);
@@ -46,7 +70,7 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
          var datatype = ["code"]
          var title = formatterDatatatypes.fromDSDToVisualizationFormat(valueCodeItem, configurationColumn, datatype, dsdConfigurator);*/
         var lab
-        var modal ='<div class="modal fade" id="myModal"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'+
+        var modal ='<div class="modal fade" id="productionForm"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'+
             '<div class="modal-dialog">'+
             '<div class="modal-content">'+
             '<div class="modal-header">'+
@@ -68,10 +92,10 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
             '</div>'+
 
             '<div class="col-lg-3">' +
-            '<div class ="singleCropBoxes" id="secondCheckBox">'+map[4]+'</div>' +
+            '<div class ="singleCropBoxes" id="secondCheckBox">'+map[2]+'</div>' +
             '</div>'+
             '<div class="col-lg-3">' +
-            '<div class ="singleCropBoxes" id="thirdCheckBox">'+map[2]+'</div>' +
+            '<div class ="singleCropBoxes" id="thirdCheckBox">'+map[4]+'</div>' +
             '</div><br><br>'+
             '<div class="row">'+
             '<div class="col-lg-3 col-lg-offset-4">'+
@@ -87,9 +111,7 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
             '</div>'+
             '</div>'+
 
-
             '<div id="totalCrop">Secondo<div></div>'+
-
 
             '<div class="modal-footer">'+
             '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>'+
@@ -106,26 +128,25 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
         $('#secondCheckBox').jqxCheckBox({ width: 120, height: 25 , checked : true});
         $('#thirdCheckBox').jqxCheckBox({ width: 120, height: 25 , disabled:true });
 
-        alert('Grid')
-        debugger;
-
         $('#grid').jqxGrid({
             source: dataAdapter,
             width: "100%",
+            editable: true,
+            selectionmode: 'singlecell',
             columnsresize: true,
             pageable: true,
             autoheight: true,
             columns: [
-                { text: 'Code', datafield: 6 },
+                { text: 'Element', datafield: 6 },
                 { text: 'Value', datafield:3 },
                 { text: 'Flag', datafield: 4 },
                 { text: 'Notes', datafield: 5 }
             ]
         });
 
-        $("#myModal").modal({ backdrop: 'static',
+        $("#productionForm").modal({ backdrop: 'static',
             keyboard: false});
-        $( "#myModal" ).draggable();
+        $( "#productionForm" ).draggable();
         observer.applyListeners()
     }
 
