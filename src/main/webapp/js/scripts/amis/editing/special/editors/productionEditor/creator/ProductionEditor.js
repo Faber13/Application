@@ -16,26 +16,19 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
     ProductionEditor.prototype.init = function(clickedItem, itemsInvolved, codesInvolved, configurator, Utility){
         var involvedItems = $.extend([],true,itemsInvolved);
         supportUtility = Utility;
-        console.log('before getTotlaCropsModel (invovledItems)')
-        console.log(involvedItems)
-        console.log(itemsInvolved)
+
         // take data and calculate initial formulas
         var totCropsModel =  model.getTotalCropsModel(involvedItems, supportUtility);
         var formulaTotCrops = formulaHandler.getInitFormulaFromConf(1,'totalValues')
-        var totalCropsModel = formulaHandler.createFormula(totalCropsModel)
-        console.log('after getTotlaCropsModel (invovledItems)')
-        console.log(involvedItems)
-        console.log(itemsInvolved)
+        console.log('formula')
+
+        console.log(formulaTotCrops)
+        var totalCropsModel = formulaHandler.createFormula(totCropsModel, formulaTotCrops)
 
         var singleCropsModel = model.getSingleCropsModel(involvedItems, supportUtility);
-        var totalCropsCalculated = formulaHandler.getInitFormulaFromConf(1,'singleCrop')
-
-        console.log('before getSingleCropsModel (invovledItems)')
-        console.log(involvedItems)
-        console.log(itemsInvolved)
+        var totalCropsCalculated = formulaHandler.getInitFormulaFromConf(1,'singleCrops')
 
         var ItemsObj = []
-
 
 /*
         dsdConfigurator = configurator;

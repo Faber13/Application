@@ -13,7 +13,11 @@ define(["jquery", "specialFormulaConf/formulaUtils/FormulaConfigurator", "specia
     }
 
     FormulaHandler.prototype.getInitFormulaFromConf = function (numberOfForm, typeOfForm) {
-        return formulaConfigurator.getInitFormula(numberOfForm, typeOfForm)
+        console.log(numberOfForm);
+        console.log(typeOfForm)
+        console.log(formulaConfigurator.getInitFormula(numberOfForm, typeOfForm))
+       var result =  formulaConfigurator.getInitFormula(numberOfForm, typeOfForm)
+        return result;
     }
 
 
@@ -36,13 +40,28 @@ define(["jquery", "specialFormulaConf/formulaUtils/FormulaConfigurator", "specia
                 switch (addendum.dataType) {
                     case "code":
                         var code = addendum.value[0];
-
-                        if (typeof model[index][3] != 'undefined' && model[index][3] != null) {
-                            if (addendum.hasConditions && addendum.condition == "exists")
+                        var index =  commonUtils.getIndexModelFromCode(code,model);
+                        if (addendum.hasConditions && addendum.condition == "exists"){
+                            if (typeof model[index][3] == 'undefined' || model[index][3] == null || model[index][3] == "") {
+                                code = addendum.otherValue[0];
+                                index =  commonUtils.getIndexModelFromCode(code,model);
+                                if (typeof model[index][3] != 'undefined' && model[index][3] != null ) {
+                                    addendums.push(model[index][3])
+                                }
+                                else{
+                                    notRealizeable = true;
+                                    break label1;
+                                }
+                            }
+                        }else{
+                            if (typeof model[index][3] != 'undefined' && model[index][3] != null ) {
                                 addendums.push(model[index][3])
-                        } else {
-                            notRealizeable = true;
-                            break label1;
+                            }
+                            else
+                            {
+                                notRealizeable = true;
+                                break label1;
+                            }
                         }
                         break;
                     case "operation":

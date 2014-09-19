@@ -575,7 +575,7 @@ define(["jquery", "formatter/DatatypesFormatter","flagTranslator/controller/Flag
 
             default:
                 if (ConfColumn.values.editable) {
-                    if (title == "note") {
+                    if (title == "Note") {
                         $('#form').append("<div class ='row'>" +
                             "<div class='col-lg-6'><label for='" + container + "'>" + title
                             + "</label></div>" +
