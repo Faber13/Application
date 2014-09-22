@@ -5,34 +5,49 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
     "productionEditor/model/ProductionModel", "specialFormulaConf/formulaHandler/FormulaHandler"],
     function($, Formatter, Observer, ModelProduction, FormulaHandler){
 
-    var observer, model, supportUtility, formulaHandler ;
+    var observer, modelProduction, supportUtility, formulaHandler, originalTotCropsModel ;
 
-    function ProductionEditor(){
-        observer = new Observer;
-        model = new ModelProduction;
-        formulaHandler = new FormulaHandler;
+
+   // ---------------------- SUPPORT FUNCTIONS -------------------------------------------
+
+   Element.prototype.remove = function () {
+            this.parentElement.removeChild(this);
+        }
+
+   NodeList.prototype.remove = HTMLCollection.prototype.remove = function () {
+            for (var i = 0, len = this.length; i < len; i++) {
+                if (this[i] && this[i].parentElement) {
+                    this[i].parentElement.removeChild(this[i]);
+                }
+            }
+        }
+   // ------------------------------------------------------------------------------------
+
+
+   function ProductionEditor(){
+      observer = new Observer;
+      modelProduction = new ModelProduction;
+      formulaHandler = new FormulaHandler;
     }
 
     ProductionEditor.prototype.init = function(clickedItem, itemsInvolved, codesInvolved, configurator, Utility){
-        var involvedItems = $.extend([],true,itemsInvolved);
+
+        var involvedItems = $.extend(true,[],itemsInvolved);
         supportUtility = Utility;
 
         // take data and calculate initial formulas
-        var totCropsModel =  model.getTotalCropsModel(involvedItems, supportUtility);
+        originalTotCropsModel =  modelProduction.getTotalCropsModel(involvedItems, supportUtility);
+        var copyOriginalModelTot =$.extend(true,[],originalTotCropsModel);
+
         var formulaTotCrops = formulaHandler.getInitFormulaFromConf(1,'totalValues')
-        console.log('formula')
+        var totalCropsCalc = formulaHandler.createFormula(copyOriginalModelTot, formulaTotCrops)
 
-        console.log(formulaTotCrops)
-        var totalCropsModel = formulaHandler.createFormula(totCropsModel, formulaTotCrops)
+        var singleCropsModel = modelProduction.getSingleCropsModel(involvedItems, supportUtility);
+        var copyOriginalModelSingle =$.extend(true,[],singleCropsModel);
 
-        var singleCropsModel = model.getSingleCropsModel(involvedItems, supportUtility);
-        var totalCropsCalculated = formulaHandler.getInitFormulaFromConf(1,'singleCrops')
+        var singleCropsFormula = formulaHandler.getInitFormulaFromConf(1,'singleCrops')
+        var singleCropsCalc = formulaHandler.createFormula(copyOriginalModelSingle, singleCropsFormula)
 
-        var ItemsObj = []
-
-/*
-        dsdConfigurator = configurator;
-        var configurationColumn = dsdConfigurator.getKeyColumnConfiguration().leftKeyColumnConfiguration[0]*/
 
         var valueCodeItem = parseInt(clickedItem[0])
 
@@ -51,18 +66,33 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
                 { name: 6, type: 'string' },
                 { name: 3, type: 'float' },
                 { name: 4, type: 'string'},
+                 {name : 5, type: 'string'}
+            ],
+            id: 'ppp',
+            localdata: totalCropsCalc
+        };
+
+        var source2 = {
+            datatype: "array",
+            datafields: [
+                { name: 6, type: 'string' },
+                { name: 3, type: 'float' },
+                { name: 4, type: 'string'},
                 {name : 5, type: 'string'}
             ],
             id: 'ppp',
-            localdata: totalCropsModel
+            localdata: singleCropsCalc
         };
 
         var dataAdapter = new $.jqx.dataAdapter(source);
+        var dataAdapter2 = new $.jqx.dataAdapter(source2);
 
-        /* To mantain generic profile
-         var datatype = ["code"]
-         var title = formatterDatatatypes.fromDSDToVisualizationFormat(valueCodeItem, configurationColumn, datatype, dsdConfigurator);*/
-        var lab
+        var f = document.getElementById("productionForm");
+
+        if (f !== null) {
+            f.remove()
+        }
+
         var modal ='<div class="modal fade" id="productionForm"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'+
             '<div class="modal-dialog">'+
             '<div class="modal-content">'+
@@ -71,40 +101,60 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
             '<h4 class="modal-title" id="myModalLabel">Production Form</h4>'+
             '</div>'+
             '<div class="modal-body" id ="toappendData">'+
-
             '<div id="productionTabs">' +
             '<ul>'+
             '<li>Total Values </li>' +
             '<li>Singe Crop Values </li>' +
             '</ul>'+
 
-            '<div id="singleCrop"><br>'+
+            '<div id="totalValues"><br>'+
             '<div class="row"><br>' +
             '<div class="col-lg-3 col-lg-offset-1">' +
-            '<div class ="singleCropBoxes" id="firstCheckBox">'+map[5]+'</div>' +
+            '<div class ="totalValuesBoxes" id="firstCheckBoxTotVal">'+map[5]+'</div>' +
             '</div>'+
 
             '<div class="col-lg-3">' +
-            '<div class ="singleCropBoxes" id="secondCheckBox">'+map[2]+'</div>' +
+            '<div class ="totalValuesBoxes" id="secondCheckBoxTotVal">'+map[2]+'</div>' +
             '</div>'+
             '<div class="col-lg-3">' +
-            '<div class ="singleCropBoxes" id="thirdCheckBox">'+map[4]+'</div>' +
+            '<div class ="totalValuesBoxes" id="thirdCheckBoxTotVal">'+map[4]+'</div>' +
+            '</div><br><br>'+
+            '<div class="row">'+
+            '<div class="col-lg-3 col-lg-offset-4">'+
+            '<button type="button" class="btn btn-primary" id="applyRulesFormulaTot">Recalculate Data</button>'+
+            '</div>'+
+            '</div><div class="row"><br><div class = "col-lg-10 col-lg-offset-1" id="alert"></div></div><hr>'+
+            '</div>'+
+             '<br>'+
+            '<div class="row"><div class="col-lg-10 col-lg-offset-1">'+
+            '<div id="gridTotalValues"></div></div></div>'+
+            '<div class="modal-footer">'+
+            '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>'+
+            '<button type="button" class="btn btn-primary">Save changes</button>'+
+            '</div>'+
+            '</div>'+
+
+            '<div id="singleCropValues"><br>'+
+            '<div class="row"><br>' +
+            '<div class="col-lg-3 col-lg-offset-1">' +
+            '<div class ="singleCropsBoxes" id="firstCheckBoxSingleCrops">'+map[5]+'</div>' +
+            '</div>'+
+
+            '<div class="col-lg-3">' +
+            '<div class ="singleCropsBoxes" id="secondCheckBoxSingleCrops">'+map[2]+'</div>' +
+            '</div>'+
+            '<div class="col-lg-3">' +
+            '<div class ="singleCropsBoxes" id="thirdCheckBoxSingleCrops">'+map[4]+'</div>' +
             '</div><br><br>'+
             '<div class="row">'+
             '<div class="col-lg-3 col-lg-offset-4">'+
             '<button type="button" class="btn btn-primary" id="applyRulesFormula">Recalculate Data</button>'+
             '</div>'+
-            '</div><hr>'+
+            '</div><div class="row"><br><div class = "col-lg-10 col-lg-offset-1" id="alert"></div></div><hr>'+
             '</div>'+
-             '<br>'+
-            '<div id="grid"></div>'+
-            '<div class="modal-footer">'+
-            '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>'+
-            '<button type="button" class="btn btn-primary">Save changes</button>'+
-            '</div>'+
-            '</div>'+
-
-            '<div id="totalCrop">Secondo<div></div>'+
+            '<br>'+
+            '<div class="row"><div class="col-lg-10 col-lg-offset-1">'+
+            '<div id="gridSingleCrops"></div></div></div>'+
 
             '<div class="modal-footer">'+
             '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>'+
@@ -112,16 +162,21 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
             '</div>'+
             '</div>'+
             '</div>'+
-            '</div'+
+            '</div>'+
+            '</div>'+
             '</div>';
 
-        $("#pivotGrid").append(modal);
-        $('#productionTabs').jqxTabs();
-        $('#firstCheckBox').jqxCheckBox({ width: 120, height: 25 , checked: true});
-        $('#secondCheckBox').jqxCheckBox({ width: 120, height: 25 , checked : true});
-        $('#thirdCheckBox').jqxCheckBox({ width: 120, height: 25 , disabled:true });
 
-        $('#grid').jqxGrid({
+        $("#pivotGrid").append(modal);
+        $('#firstCheckBoxTotVal').jqxCheckBox({ width: 120, height: 25 , checked: true});
+        $('#secondCheckBoxTotVal').jqxCheckBox({ width: 120, height: 25 , checked : true});
+        $('#thirdCheckBoxTotVal').jqxCheckBox({ width: 120, height: 25 , disabled:true });
+
+        $('#firstCheckBoxSingleCrops').jqxCheckBox({ width: 120, height: 25 , checked: true});
+        $('#secondCheckBoxSingleCrops').jqxCheckBox({ width: 120, height: 25 , checked : true});
+        $('#thirdCheckBoxSingleCrops').jqxCheckBox({ width: 120, height: 25 , disabled:true });
+
+        $('#gridTotalValues').jqxGrid({
             source: dataAdapter,
             width: "100%",
             editable: true,
@@ -137,11 +192,116 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
             ]
         });
 
+        $('#gridSingleCrops').jqxGrid({
+            source: dataAdapter2,
+            width: "100%",
+            editable: true,
+            selectionmode: 'singlecell',
+            columnsresize: true,
+            pageable: true,
+            autoheight: true,
+            columns: [
+                { text: 'Element', datafield: 6 },
+                { text: 'Value', datafield:3 },
+                { text: 'Flag', datafield: 4 },
+                { text: 'Notes', datafield: 5 }
+            ]
+        });
+
+        $('#productionForm').on('shown.bs.modal', function (e) {
+            $('#productionTabs').jqxTabs();
+        })
         $("#productionForm").modal({ backdrop: 'static',
             keyboard: false});
-        $( "#productionForm" ).draggable();
-        observer.applyListeners()
+
+        observer.applyListeners(this)
     }
+
+
+    ProductionEditor.prototype.updateTotalValueGridWithFormula = function(formulaToApply){
+
+        var formulaToUpdate  =formulaHandler.getUpdateFormula(1,'totalValues',formulaToApply)
+        var originalTotCrops = modelProduction.getOriginalTotalCropsModel()
+        var modelTotalCrops = $.extend(true,[],originalTotCropsModel)
+
+        var calculatedModel = formulaHandler.createFormula(modelTotalCrops, formulaToUpdate)
+
+        var source = {
+            datatype: "array",
+            datafields: [
+                { name: 6, type: 'string' },
+                { name: 3, type: 'float' },
+                { name: 4, type: 'string'},
+                {name : 5, type: 'string'}
+            ],
+            id: 'ppp',
+            localdata: calculatedModel
+        };
+
+        var dataAdapter = new $.jqx.dataAdapter(source);
+
+        $('#gridTotalValues').jqxGrid({
+            source: dataAdapter,
+            width: "100%",
+            editable: true,
+            selectionmode: 'singlecell',
+            columnsresize: true,
+            pageable: true,
+            autoheight: true,
+            columns: [
+                { text: 'Element', datafield: 6 },
+                { text: 'Value', datafield:3 },
+                { text: 'Flag', datafield: 4 },
+                { text: 'Notes', datafield: 5 }
+            ]
+        });
+
+    }
+
+        ProductionEditor.prototype.updateTotGridOnEditing = function(rowNumber, newValue, formulaToApply){
+            var formulaToUpdate
+            if(formulaToApply == 'init'){
+                formulaToUpdate = formulaHandler.getInitFormulaFromConf(1,'totalValues')
+            }else {
+                 formulaToUpdate = formulaHandler.getUpdateFormula(1, 'totalValues', formulaToApply)
+            }
+            modelProduction.setOriginalData(rowNumber, newValue);
+            var data = modelProduction.getOriginalTotalCropsModel()
+            var modelTotalCrops = $.extend(true,[],originalTotCropsModel)
+
+            var calculatedModel = formulaHandler.createFormula(modelTotalCrops, formulaToUpdate)
+
+            var source = {
+                datatype: "array",
+                datafields: [
+                    { name: 6, type: 'string' },
+                    { name: 3, type: 'float' },
+                    { name: 4, type: 'string'},
+                    {name : 5, type: 'string'}
+                ],
+                id: 'ppp',
+                localdata: calculatedModel
+            };
+
+            var dataAdapter = new $.jqx.dataAdapter(source);
+
+            $('#gridTotalValues').jqxGrid({
+                source: dataAdapter,
+                width: "100%",
+                editable: true,
+                selectionmode: 'singlecell',
+                columnsresize: true,
+                pageable: true,
+                autoheight: true,
+                columns: [
+                    { text: 'Element', datafield: 6 },
+                    { text: 'Value', datafield:3 },
+                    { text: 'Flag', datafield: 4 },
+                    { text: 'Notes', datafield: 5 }
+                ]
+            });
+
+        }
 
     return ProductionEditor;
 })

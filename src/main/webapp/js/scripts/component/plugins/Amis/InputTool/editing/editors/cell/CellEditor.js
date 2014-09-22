@@ -669,8 +669,6 @@ define(["jquery", "formatter/DatatypesFormatter","flagTranslator/controller/Flag
             default :
                 if (htmlvalue.id == 'accessorInput1') {
                     var codes = $("#" + htmlvalue.id).select2("val");
-                    alert('chosen!!')
-                    debugger;
                     result = flagController.getStringFromCodes(codes);
 
                 } else {

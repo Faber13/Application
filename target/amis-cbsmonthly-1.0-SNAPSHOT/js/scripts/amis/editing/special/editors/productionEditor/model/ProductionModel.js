@@ -4,7 +4,7 @@
 define(["jquery"], function($){
 
 // models
-   var originalData, totalCropsData;
+   var originalData, totalCropsData, originalTotalCropsModel;
 
 // variables
     var numberOfCrops;
@@ -28,27 +28,34 @@ define(["jquery"], function($){
         originalData = involvedItems;
         var result;
         supportUtility = Utility;
-        console.log('before Total')
-        console.log(involvedItems)
+
         var modelData = $.extend([], true, involvedItems)
         result = this.convertOriginalToModelData('total', modelData);
-        console.log('after Total')
-        console.log(involvedItems)
+        originalTotalCropsModel = $.extend([], false, result);
+
 
         return result;
+    }
+
+    ProductionModel.prototype.setOriginalData = function(rowNumber, value){
+        debugger;
+        originalTotalCropsModel[rowNumber][3] = value;
+
     }
 
     ProductionModel.prototype.getSingleCropsModel = function(involvedItemsSingleCrops, Utility){
         var result;
         supportUtility = Utility;
-        console.log('before Single')
-        console.log(involvedItemsSingleCrops)
+
         var modelDataSingCrops = $.extend([], true, involvedItemsSingleCrops)
         result =this.convertOriginalToModelData('single', modelDataSingCrops);
-        console.log('after Single')
-        console.log(involvedItemsSingleCrops)
+
         return result;
 
+    }
+
+    ProductionModel.prototype.getOriginalTotalCropsModel = function(){
+        return originalTotalCropsModel;
     }
 
     ProductionModel.prototype.getOriginalData = function(){
@@ -63,7 +70,6 @@ define(["jquery"], function($){
       var result = [];
         var dataModel = $.extend([],true,modelData);
         var copyMap = $.extend([], true, map);
-        debugger;
         if(modality == 'total') {
             // delete Area Planted from object
             delete copyMap[37]

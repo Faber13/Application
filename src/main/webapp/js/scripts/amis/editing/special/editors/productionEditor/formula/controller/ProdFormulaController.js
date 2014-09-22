@@ -9,8 +9,7 @@ define(['jquery'], function($){
 
         var allInitFormulas = configurator.getAllInitFormulas();
 
-        numberOfRows = Object.keys(mapCodes).length;
-        numberOfColumns = model.length/ Object.keys(mapCodes).length;
+
         // for each column
         for(var z= 0; z<numberOfColumns; z++) {
             // for each formula
@@ -22,7 +21,6 @@ define(['jquery'], function($){
     }
 
     ProdFormulaController.prototype.createFormula = function(modelData, formulaData, indexColumnData, indexRow2, indexFormula) {
-        console.log("createFormula")
         var model = modelData;
         var formula = formulaData;
         var indexColumn = indexColumnData

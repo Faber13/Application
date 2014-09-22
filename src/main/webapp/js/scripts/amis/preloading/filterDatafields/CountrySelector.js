@@ -11,9 +11,9 @@ define(["jquery", "jqwidgets"], function($) {
 
     CountrySelector.prototype.init = function(){
 
-      /*  var that = this;
+        var that = this;
         combo = $("#selectionCountryBox")
-        var url = "http://faostat3.fao.org:7777/msd/cl/system/AMIS_GAUL/1.0";
+        var url = "http://hqlprfenixapp2.hq.un.fao.org:7777/msd/cl/system/AMIS_GAUL/1.0";
         var sources = [];
 
         $.ajax({
@@ -38,44 +38,18 @@ define(["jquery", "jqwidgets"], function($) {
 
                 // comboBox
                 combo.jqxComboBox({
-                     source: dataAdapter ,
-                     displayMember: "label",
-                     valueMember: "code",
-                     selectedIndex: 0,
-                     width: '200px',
-                     height: '25px'
-                  })
+                    source: dataAdapter ,
+                    displayMember: "label",
+                    valueMember: "code",
+                    selectedIndex: 0,
+                    width: '200px',
+                    height: '25px'
+                })
             }
         });
 
-         // Take the Preselected Value
+        // Take the Preselected Value
         regionCode = combo.jqxComboBox('getItem', combo.jqxComboBox('selectedIndex')).value;
-        return regionCode;*/
-        combo = $("#selectionCountryBox")
-        var data = {"code":12, "label":"Argentina"}
-        var source =
-        {
-            datatype: "json",
-            datafields: [
-                { name: 'code' },
-                { name: 'label' }
-            ],
-            localdata: data
-        };
-
-        var dataAdapter = new $.jqx.dataAdapter(source);
-
-        // comboBox
-        combo.jqxComboBox({
-            source: dataAdapter ,
-            displayMember: "label",
-            valueMember: "code",
-            selectedIndex: 0,
-            width: '200px',
-            height: '25px'
-        })
-
-        var regionCode = combo.jqxComboBox('getItem', combo.jqxComboBox('selectedIndex')).value;
         return regionCode;
     };
 
@@ -88,10 +62,10 @@ define(["jquery", "jqwidgets"], function($) {
     CountrySelector.prototype.change = function(event) {
 
         // To pass the value
-            var args = event.args;
-            var item = combo.jqxComboBox('getItem', args.index);
-            this.regionCode = item.value;
-            return this.regionCode;
+        var args = event.args;
+        var item = combo.jqxComboBox('getItem', args.index);
+        this.regionCode = item.value;
+        return this.regionCode;
     };
 
 
@@ -112,5 +86,4 @@ define(["jquery", "jqwidgets"], function($) {
     return CountrySelector;
 
 });
-
 

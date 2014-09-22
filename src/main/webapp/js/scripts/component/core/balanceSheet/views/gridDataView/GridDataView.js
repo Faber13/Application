@@ -62,10 +62,6 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel", "jquery.sidebar"
             };
         };
 
-        var allerta = function(){
-            alert('qui')
-        }
-
         var filterData = supportUtility.getFilterData()
 
         dataSource2 = new $.ig.OlapFlatDataSource({
@@ -136,16 +132,8 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel", "jquery.sidebar"
 
 
         });
-        debugs = function(){
-            debugger;
-            alert('AASD')
-        }
 
         var rows;
-
-
-
-
 
         var options =  document.getElementById('options')
         options.style.visibility = "visible" ;
@@ -162,10 +150,6 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel", "jquery.sidebar"
     }
 
     GridDataView.prototype.updateGridView = function (newCell, indexCell) {
-
-        var allerta = function(){
-            alert('qui')
-        }
 
         var cellTransformed = viewModel.updateItem(newCell)
         modelView[indexCell] = cellTransformed;

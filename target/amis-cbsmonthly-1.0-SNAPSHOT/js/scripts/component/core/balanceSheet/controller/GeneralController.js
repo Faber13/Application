@@ -26,7 +26,7 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
             Configurator = configurator;
             supportUtility = utility;
             // create a copy
-            var tableModelWithFormula = $.extend(true, [], tableModel);
+            var tableModelWithFormula = $.extend(true,[], tableModel);
 
             // formula
             formulaController.init(tableModelWithFormula, Configurator)
@@ -49,11 +49,10 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
             var that = this;
 
             $(document.body).delegate("#" + grid.id(), "iggridcellclick", function (evt, ui) {
-                console.log('Editing on cell: '+editingOnCell)
+                evt.preventDefault();
                 evt.stopImmediatePropagation();
-
                 var cellTableModel2 = ModelController.getTableDataModel();
-                var cellTableModel = $.extend(true, [], cellTableModel2);
+                var cellTableModel = $.extend(true,{}, cellTableModel2);
                 // To identify when the first new nested row starts
                 var indexesObject = ModelController.getIndexesNewFirstColumnLeft();
                 var resultedClicked = adapterPivot.getClickedCell(cellTableModel, Configurator, ui, indexesObject);
@@ -61,7 +60,6 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
                 var isEditable = formulaController.checkIfEditableCell(clickedCell)
                 if( isEditable== 1) {
                     if(editingOnCell) {
-                        evt.preventDefault();
                         var cell = ui.cellElement;
                         var oldCell = document.getElementById("clickedCell")
                         var functionChanges = function (evt, ui) {
@@ -99,14 +97,13 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
                             oldCell.removeAttribute("class")
                         }
                         that.startFullEditing(resultedClicked)
-                        console.log('doubleClick')
                     }
                 // if it is a special editable value
                 }else if(isEditable == 2){
                     // production form
                     if(resultedClicked.clickedCell[0] == 5 || resultedClicked.clickedCell[0] == 2 || resultedClicked.clickedCell[0] == 4) {
-                        var allData = $.extend([],true,ModelController.getData());
-                        var tableData = ModelController.getTableDataModel();
+                        var allData = $.extend(true,{},ModelController.getData());
+                        var tableData = $.extend(true,{},ModelController.getTableDataModel());
                         specialControlEditor.init(allData, tableData,resultedClicked, formulaController, Configurator, supportUtility);
                     }else{
                         var allData = ModelController.getTableDataModel();
@@ -115,14 +112,11 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
                 }
 
             })
-            $('#clickedCell').dblclick(function(e){
-                e.preventDefault()
-            })
+
 
             $("#export").click(function () {
                 var ExportControl = new ExportController;
                 var table = ModelController.getTableDataModel();
-                debugger;
                 ExportControl.init(table, Configurator)
             })
         }
@@ -145,7 +139,6 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
                 e.stopImmediatePropagation();
                 $('#saveButton').off();
                 var newCell = FormController.getValue(cell)
-                debugger;
                 if (newCell.length > 0) {
                     that.updateGrid(newCell, indTable, rowIndex, columnIndex)
                 }
@@ -158,7 +151,6 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
             ModelController.updateModels(newCell, indTable, rowIndex, columnIndex)
             // check if need to apply a formula
             var codeNewCell = newCell[0]
-            debugger;
             if (formulaController.checkIfBindedCode(bindedKeys, codeNewCell)) {
 
                 var tableModel = ModelController.getTableDataModel();

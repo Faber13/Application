@@ -50,12 +50,12 @@
                 ],
                 "valuesDisabled":[
                     {
-                        "Yield":{
+                        "production":{
                             "variable":{
                                 "formulaId":3,
                                 "dataType":"code",
                                 "value":[
-                                    4
+                                    5
                                 ],
                                 "otherColumn":false,
                                 "columnNumber":""
@@ -66,7 +66,7 @@
                                     "condition" : "",
                                     "dataType":"code",
                                     "value":[
-                                        5
+                                        4
                                     ],
                                     "otherValue" : "",
                                     "otherColumn":false,
@@ -74,7 +74,7 @@
                                 },
                                 {
                                     "dataType":"operation",
-                                    "value":"/",
+                                    "value":"*",
                                     "otherColumn":false,
                                     "columnNumber":""
                                 },
@@ -93,48 +93,7 @@
                         }
                     },
                     {
-                        "variable":{
-                            "formulaId":3,
-                            "dataType":"code",
-                            "value":[
-                                5
-                            ],
-                            "otherColumn":false,
-                            "columnNumber":""
-                        },
-                        "addendums":[
-                            {
-                                "hasCondition" : false,
-                                "condition" : "",
-                                "dataType":"code",
-                                "value":[
-                                    4
-                                ],
-                                "otherValue" : "",
-                                "otherColumn":false,
-                                "columnNumber":""
-                            },
-                            {
-                                "dataType":"operation",
-                                "value":"*",
-                                "otherColumn":false,
-                                "columnNumber":""
-                            },
-                            {
-                                "hasCondition" : false,
-                                "condition" : "",
-                                "dataType":"code",
-                                "value":[
-                                    2
-                                ],
-                                "otherValue" : "",
-                                "otherColumn":false,
-                                "columnNumber":""
-                            }
-                        ]
-                    },
-                    {
-                        "Area Harvested":{
+                        "areaHarvested":{
                             "variable":{
                                 "formulaId":3,
                                 "dataType":"code",
@@ -175,6 +134,51 @@
                                 }
                             ]
                         }
+                    },
+                    {
+                        "yield":{
+                            "variable":{
+                                "formulaId":3,
+                                "dataType":"code",
+                                "value":[
+                                    4
+                                ],
+                                "otherColumn":false,
+                                "columnNumber":""
+                            },
+                            "addendums":[
+                                {
+                                    "hasCondition" : false,
+                                    "condition" : "",
+                                    "dataType":"code",
+                                    "value":[
+                                        5
+                                    ],
+                                    "otherValue" : "",
+                                    "otherColumn":false,
+                                    "columnNumber":""
+                                },
+                                {
+                                    "dataType":"operation",
+                                    "value":"/",
+                                    "otherColumn":false,
+                                    "columnNumber":""
+                                },
+                                {
+                                    "hasCondition" : false,
+                                    "condition" : "",
+                                    "dataType":"code",
+                                    "value":[
+                                        2
+                                    ],
+                                    "otherValue" : "",
+                                    "otherColumn":false,
+                                    "columnNumber":""
+                                }
+                            ]
+                        }
+
+
                     }
                 ]
             },

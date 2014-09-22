@@ -45,6 +45,38 @@ define(["jquery"], function($){
         return result;
     }
 
+
+    FormulaConfigurator.prototype.getUpdateFormula = function(numberOfFormUsed, type, dependentElement){
+
+        var result;
+        switch (numberOfFormUsed){
+            case 1:
+                var typeOfForm = config.formulaPlugins[numberOfFormUsed-1];
+                if(type == "totalValues"){
+                    var updateFormulas = typeOfForm.totalValues.valuesDisabled;
+                    if  (dependentElement == "production") {
+                        result = updateFormulas[0].production;
+
+                    }else if(dependentElement == "areaHarvested"){
+                        result = updateFormulas[1].areaHarvested;
+                    }else if( dependentElement == 'yield'){
+                        result = updateFormulas[2].yield;
+                    }
+                }else if(type == "singleCrops"){
+                    result = typeOfForm.singleCrops.init[0]
+                }
+                break;
+
+            case 2:
+                //TODO (other uses)
+                break;
+            case 3:
+                //TODO (paddy form)
+                break;
+        }
+        return result;
+    }
+
      return FormulaConfigurator;
 
 })

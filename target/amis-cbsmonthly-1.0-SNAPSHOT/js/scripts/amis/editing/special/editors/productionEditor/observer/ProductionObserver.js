@@ -3,110 +3,267 @@
  */
 define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
 
+    var editorProduction, formulaToApplyTot, formulaToApplySingle;
+
     function ProductionObserver() {
     }
 
-    ProductionObserver.prototype.applyListeners = function () {
-        this.listenToCheckboxes();
-        this.listenToRecalculateButton();
+    ProductionObserver.prototype.applyListeners = function (EditorProduction) {
+        formulaToApplyTot = 'init';
+        formulaToApplySingle = 'init';
+        editorProduction = EditorProduction;
+        this.listenToCheckboxesTotal();
+        this.listenToCheckboxesSingleCrops()
+        this.listenToRecalculateButtonTotalValues();
+        this.listenToRecalculateButtonSingleCrops();
         this.listenToTabs();
+        this.listenToEditCellTotGrid()
     }
 
-    ProductionObserver.prototype.listenToCheckboxes = function () {
+    ProductionObserver.prototype.listenToCheckboxesTotal = function () {
 
-        debugs = function () {
-            debugger;
-        }
         var that = this;
 
-        $("#firstCheckBox").on('change', function (event) {
-            (event.args.checked) ? that.onCheckBox(1) : that.onUncheckBox([2, 3]);
+        $("#firstCheckBoxTotVal").on('change', function (event) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            (event.args.checked) ? that.onCheckBoxTotal(1) : that.onUncheckBoxTotal([2, 3]);
         })
-        $("#secondCheckBox").on('change', function (event) {
-            (event.args.checked) ? that.onCheckBox(2) : that.onUncheckBox([1, 3]);
+        $("#secondCheckBoxTotVal").on('change', function (event) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            (event.args.checked) ? that.onCheckBoxTotal(2) : that.onUncheckBoxTotal([1, 3]);
         })
-        $("#thirdCheckBox").on('change', function (event) {
-            (event.args.checked) ? that.onCheckBox(3) : that.onUncheckBox([1, 2]);
+        $("#thirdCheckBoxTotVal").on('change', function (event) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            (event.args.checked) ? that.onCheckBoxTotal(3) : that.onUncheckBoxTotal([1, 2]);
         })
 
 
     }
 
-    ProductionObserver.prototype.onUncheckBox = function (others) {
-        for (var i = 0; i < others.length; i++) {
-            switch (others[i]) {
-                case 1:
-                    if ($("#firstCheckBox").attr("aria-disabled") == 'true') {
-                        $("#firstCheckBox").jqxCheckBox('enable');
-                    }
-                    break;
-                case 2:
-                    if ($("#secondCheckBox").attr("aria-disabled") == 'true') {
-                        $("#secondCheckBox").jqxCheckBox('enable');
-                    }
-                    break;
-                case 3:
-                    if ($("#thirdCheckBox").attr("aria-disabled") == 'true') {
-                        $("#thirdCheckBox").jqxCheckBox('enable');
-                    }
-                    break;
-            }
-        }
+    ProductionObserver.prototype.listenToCheckboxesSingleCrops = function () {
+
+        var that = this;
+
+        $("#firstCheckBoxSingleCrops").on('change', function (event) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            (event.args.checked) ? that.onCheckBoxSingleCrops(1) : that.onUncheckBoxSingleCrops([2, 3]);
+        })
+        $("#secondCheckBoxSingleCrops").on('change', function (event) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            (event.args.checked) ? that.onCheckBoxSingleCrops(2) : that.onUncheckBoxSingleCrops([1, 3]);
+        })
+        $("#thirdCheckBoxSingleCrops").on('change', function (event) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            (event.args.checked) ? that.onCheckBoxSingleCrops(3) : that.onUncheckBoxSingleCrops([1, 2]);
+        })
     }
 
-    ProductionObserver.prototype.onCheckBox = function (clicked) {
+    ProductionObserver.prototype.onCheckBoxTotal = function (clicked) {
         var result = []
         switch (clicked) {
             case 1:
-                if ($("#secondCheckBox").attr("aria-checked") == 'true') {
-                    $("#thirdCheckBox").jqxCheckBox('disable');
+                if ($("#secondCheckBoxTotVal").attr("aria-checked") == 'true') {
+                    $("#thirdCheckBoxTotVal").jqxCheckBox('disable');
+                    formulaToApplyTot = 'yield';
+
                 }
-                else if($("#thirdCheckBox").attr("aria-checked") == 'true'){
-                    $("#secondCheckBox").jqxCheckBox('disable');
+                else if($("#thirdCheckBoxTotVal").attr("aria-checked") == 'true'){
+                    $("#secondCheckBoxTotVal").jqxCheckBox('disable');
+                    formulaToApplyTot = 'areaHarvested';
                 }
                 break;
 
             case 2:
-                if ($("#firstCheckBox").attr("aria-checked") == 'true') {
-                    $("#thirdCheckBox").jqxCheckBox('disable');
-                }else if($("#thirdCheckBox").attr("aria-checked") == 'true'){
-                    $("#firstCheckBox").jqxCheckBox('disable');
+                if ($("#firstCheckBoxTotVal").attr("aria-checked") == 'true') {
+                    $("#thirdCheckBoxTotVal").jqxCheckBox('disable');
+                    formulaToApplyTot = 'yield';
+
+                }else if($("#thirdCheckBoxTotVal").attr("aria-checked") == 'true'){
+                    $("#firstCheckBoxTotVal").jqxCheckBox('disable');
+                    formulaToApplyTot = 'production'
                 }
                 break;
 
             case 3:
-                if ($("#firstCheckBox").attr("aria-checked") == 'true') {
-                    $("#secondCheckBox").jqxCheckBox('disable');
+                if ($("#firstCheckBoxTotVal").attr("aria-checked") == 'true') {
+                    $("#secondCheckBoxTotVal").jqxCheckBox('disable');
+                    formulaToApplyTot = 'areaHarvested';
+
                 }
-                else if ($("#secondCheckBox").attr("aria-checked") == 'true') {
-                    $("#firstCheckBox").jqxCheckBox('disable');
+                else if ($("#secondCheckBoxTotVal").attr("aria-checked") == 'true') {
+                    $("#firstCheckBoxTotVal").jqxCheckBox('disable');
+                    formulaToApplyTot = 'production'
+
                 }
                 break;
         }
     }
 
-    ProductionObserver.prototype.listenToRecalculateButton = function(){
-        $('#applyRulesFormula').on('click', function(){
-            // third is disabled
-            if ($("#thirdCheckBox").attr("aria-disabled") == 'true'){
+    ProductionObserver.prototype.onCheckBoxSingleCrops = function (clicked) {
+        var result = []
+        switch (clicked) {
+            case 1:
+                if ($("#secondCheckBoxSingleCrops").attr("aria-checked") == 'true') {
+                    $("#thirdCheckBoxSingleCrops").jqxCheckBox('disable');
+                    formulaToApplySingle = 'yield';
 
-            }else if($("#secondCheckBox").attr("aria-disabled") == 'true'){
+                }
+                else if($("#thirdCheckBoxSingleCrops").attr("aria-checked") == 'true'){
+                    $("#secondCheckBoxSingleCrops").jqxCheckBox('disable');
+                    formulaToApplySingle = 'areaHarvested';
+                }
+                break;
 
-            }else if($("#firstCheckBox").attr("aria-disabled") == 'true'){
+            case 2:
+                if ($("#firstCheckBoxSingleCrops").attr("aria-checked") == 'true') {
+                    $("#thirdCheckBoxSingleCrops").jqxCheckBox('disable');
+                    formulaToApplySingle = 'yield';
 
+                }else if($("#thirdCheckBoxSingleCrops").attr("aria-checked") == 'true'){
+                    $("#firstCheckBoxSingleCrops").jqxCheckBox('disable');
+                    formulaToApplySingle = 'production'
+                }
+                break;
+
+            case 3:
+                if ($("#firstCheckBoxSingleCrops").attr("aria-checked") == 'true') {
+                    $("#secondCheckBoxSingleCrops").jqxCheckBox('disable');
+                    formulaToApplySingle = 'areaHarvested';
+
+                }
+                else if ($("#secondCheckBoxSingleCrops").attr("aria-checked") == 'true') {
+                    $("#firstCheckBoxSingleCrops").jqxCheckBox('disable');
+                    formulaToApplySingle = 'production'
+
+                }
+                break;
+        }
+    }
+
+    ProductionObserver.prototype.onUncheckBoxTotal = function (others) {
+        for (var i = 0; i < others.length; i++) {
+            switch (others[i]) {
+                case 1:
+                    if ($("#firstCheckBoxTotVal").attr("aria-disabled") == 'true') {
+                        $("#firstCheckBoxTotVal").jqxCheckBox('enable');
+                    }
+                    break;
+                case 2:
+                    if ($("#secondCheckBoxTotVal").attr("aria-disabled") == 'true') {
+                        $("#secondCheckBoxTotVal").jqxCheckBox('enable');
+                    }
+                    break;
+                case 3:
+                    if ($("#thirdCheckBoxTotVal").attr("aria-disabled") == 'true') {
+                        $("#thirdCheckBoxTotVal").jqxCheckBox('enable');
+                    }
+                    break;
+            }
+        }
+    }
+
+    ProductionObserver.prototype.onUncheckBoxSingleCrops = function (others) {
+        for (var i = 0; i < others.length; i++) {
+            switch (others[i]) {
+                case 1:
+                    if ($("#firstCheckBoxSingleCrops").attr("aria-disabled") == 'true') {
+                        $("#firstCheckBoxSingleCrops").jqxCheckBox('enable');
+                    }
+                    break;
+                case 2:
+                    if ($("#secondCheckBoxSingleCrops").attr("aria-disabled") == 'true') {
+                        $("#secondCheckBoxSingleCrops").jqxCheckBox('enable');
+                    }
+                    break;
+                case 3:
+                    if ($("#thirdCheckBoxSingleCrops").attr("aria-disabled") == 'true') {
+                        $("#thirdCheckBoxSingleCrops").jqxCheckBox('enable');
+                    }
+                    break;
+            }
+        }
+    }
+
+    ProductionObserver.prototype.listenToRecalculateButtonTotalValues = function(){
+        $('#applyRulesFormulaTot').on('click', function(evt){
+            // third is disabled on default
+            evt.preventDefault();
+            evt.stopImmediatePropagation();
+            var counter = 0;
+            counter += $("#firstCheckBoxTotVal").val()? 1:0;
+            counter += $("#secondCheckBoxTotVal").val()? 1:0;
+            counter += $("#thirdCheckBoxTotVal").val()? 1:0;
+            if(counter == 2){ //OK
+                editorProduction.updateTotalValueGridWithFormula(formulaToApplyTot);
+            }else{
+                var alert = '<div class="alert alert-danger alert-dismissible" role="alert">'+
+                    '<button type="button" class="close" data-dismiss="alert">'+
+                    '<span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>'+
+                    '<strong>Attention!</strong> You have to select <strong>2 elements</strong></div>';
+                $('#alert').append(alert)
             }
         })
     }
 
+    ProductionObserver.prototype.listenToRecalculateButtonSingleCrops = function(){
+        $('#applyRulesFormulaTot').on('click', function(evt){
+            // third is disabled on default
+            evt.preventDefault();
+            evt.stopImmediatePropagation();
+            var counter = 0;
+            counter += $("#firstCheckBoxSingleCrops").val()? 1:0;
+            counter += $("#secondCheckBoxSingleCrops").val()? 1:0;
+            counter += $("#thirdCheckBoxSingleCrops").val()? 1:0;
+            if(counter == 2){ //OK
+                editorProduction.updateTotalValueGridWithFormula(formulaToApplyTot);
+            }else{
+                var alert = '<div class="alert alert-danger alert-dismissible" role="alert">'+
+                    '<button type="button" class="close" data-dismiss="alert">'+
+                    '<span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>'+
+                    '<strong>Attention!</strong> You have to select <strong>2 elements</strong></div>';
+                $('#alert').append(alert)
+            }
+        })
+    }
 
     ProductionObserver.prototype.listenToTabs = function(){
-        $('#productionTabs').on('tabclick', function (event)
-        {
+        $('#productionTabs').on('tabclick', function (event) {
+            event.preventDefault()
             var clickedItem = event.args.item;
-            console.log(clickedItem)
         });
     }
 
+    ProductionObserver.prototype.listenToEditCellTotGrid = function(){
+        var checkAll = function(object){
+            return typeof object!=='undefined' && object != null && object != '';
+        }
+        $("#gridTotalValues").on('cellendedit', function (event){
+            alert('taken Event')
+            event.preventDefault();
+            event.stopPropagation()
+            event.stopImmediatePropagation();
+            var dataField = event.args.datafield;
+            var oldvalue = event.args.oldvalue;
+            var value = event.args.value;
+            if(checkAll(oldvalue)){
+                oldvalue = parseFloat(oldvalue)
+                if(checkAll(value)){
+                    value = parseFloat(value)
+                }
+            }
+            if(dataField == 3 && (oldvalue !=value)){
+                var numberOfRow = event.args.rowindex;
+                editorProduction.updateTotGridOnEditing(numberOfRow, value,formulaToApplyTot)
+            }
+        })
+
+    }
 
     return ProductionObserver;
 })

@@ -12,11 +12,18 @@ define(["jquery", "specialFormulaConf/formulaUtils/FormulaConfigurator", "specia
         commonUtils = new CommonUtils;
     }
 
+    // For Production, number of forms are:
+    //  1) total Values
+    //  2) single Crops
     FormulaHandler.prototype.getInitFormulaFromConf = function (numberOfForm, typeOfForm) {
-        console.log(numberOfForm);
-        console.log(typeOfForm)
-        console.log(formulaConfigurator.getInitFormula(numberOfForm, typeOfForm))
+
        var result =  formulaConfigurator.getInitFormula(numberOfForm, typeOfForm)
+       return result;
+    }
+
+    FormulaHandler.prototype.getUpdateFormula = function(numberOfForm, typeOfForm, dependentElement){
+
+        var result = formulaConfigurator.getUpdateFormula(numberOfForm, typeOfForm, dependentElement);
         return result;
     }
 
@@ -30,6 +37,9 @@ define(["jquery", "specialFormulaConf/formulaUtils/FormulaConfigurator", "specia
         var startIndex, indexRow;
         // set the start index and the range
         var codeValue = formula.variable.value[0]
+        var indexValue =  commonUtils.getIndexModelFromCode(codeValue,model);
+
+
 
         var notRealizeable = false;
 
@@ -115,14 +125,16 @@ define(["jquery", "specialFormulaConf/formulaUtils/FormulaConfigurator", "specia
                             break;
                     }
                 }
+            if (!notRealizeable) {
+
+                model[indexValue][3] = value;
+                // Insert the flag
+                model[indexValue][4] = 'C';
+            } else {
+                model[indexValue][3] = model[indexValue][3];
+            }
         }
-        if (!notRealizeable) {
-            model[3] = value;
-            // Insert the flag
-            model[4] = 'C';
-        } else {
-            model[3] = model[3];
-        }
+
 
         return model;
 

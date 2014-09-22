@@ -21,7 +21,6 @@ define(["jquery", "editingSpecial/utils/DataHandler", "productionEditor/creator/
         // first take all the involvedCodes
         var codes = specialFormulaController.getInvolvedItems(takenCell);
         var dataInvolved = dataHandler.getInvolvedData(codes, everyData,tableData, takenCell);
-        alert('dataInvolved')
         var condition =parseInt(takenCell[0])
         switch (condition) {
             case 5 :
