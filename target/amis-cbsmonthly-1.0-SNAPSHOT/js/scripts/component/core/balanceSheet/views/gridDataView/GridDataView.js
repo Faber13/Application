@@ -73,7 +73,7 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel", "jquery.sidebar"
                     measuresDimension: {
                         caption: "Measures",
                         measures: [ //for each measure, name and aggregator are required
-                            { caption: "value", name: "value", aggregator: getValue(indexValues) }
+                            { caption: "Value", name: "value", aggregator: getValue(indexValues) }
                         ]
                     },
                     dimensions: [ // for each dimension
@@ -113,7 +113,6 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel", "jquery.sidebar"
             disabledRowsHeader : true,
             disableFiltersDropArea: true,
             hideFiltersDropArea : true,
-            compactHeaderIndentation: 2000,
             defaultRowHeaderWidth : 280,
             isParentInFrontForColumns: true,
             hideFiltersDropArea: true,
@@ -142,10 +141,9 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel", "jquery.sidebar"
             toappend.remove()
         }
 
-        $('#options').append('<div id="toAppend"><div class="col-lg-2"><h4>' +
-            '<span class="label label-default" id="labelEditingMode">Set full editing mode</span>' +
-            '</h3></div><div class="col-lg-2"><div id="editingChoice"></div></div></div>') ;
-        $('#editingChoice').jqxCheckBox({width: 30, height: 25});
+        $('#options').append(
+            '<span class="label label-default" id="labelEditingMode">Set full editing mode</span>') ;
+       // $('#editingChoice').jqxCheckBox({width: 30, height: 25});
 
     }
 
@@ -185,9 +183,6 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel", "jquery.sidebar"
         });
 
         $("#pivotGrid").igPivotGrid("option", "dataSource", dataSource2)
-        var options =  document.getElementById('options')
-        debugger;
-        options.style.visibility = 'visible';
 
     }
 
@@ -231,15 +226,9 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel", "jquery.sidebar"
         });
 
         $("#pivotGrid").igPivotGrid("option", "dataSource", dataSource2)
-
+/*
         var options =  document.getElementById('loading')
-        debugger;
-        options.style.visibility = 'visible';
-
-
-
-
-
+        options.style.visibility = 'visible';*/
 
     }
 

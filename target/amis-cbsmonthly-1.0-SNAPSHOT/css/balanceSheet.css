@@ -1,3 +1,7 @@
+* {
+    font-family: 'Roboto', sans-serif;
+}
+
 .dirtyField {
     color:blue;
 }
@@ -6,7 +10,7 @@
     position: fixed !important;
 }
 
-.ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
+
 .ui-timepicker-div dl { text-align: left; }
 .ui-timepicker-div dl dt { float: left; clear:left; padding: 0 0 0 5px; }
 .ui-timepicker-div dl dd { margin: 0 10px 10px 40%; }
@@ -18,6 +22,35 @@
 .ui-timepicker-rtl dl dt{ float: right; clear: right; }
 .ui-timepicker-rtl dl dd { margin: 0 40% 10px 10px; }
 
+
+
+
+.ui-widget-header {
+    background-color: #FAFAFA;
+    color: #333;
+}
+
+#pivotGrid_measures, #pivotGrid_rows{
+    border-left: 1px solid #E2E2E2;
+}
+
+.ui-igpivotgrid.ui-iggrid-table .ui-igpivotgrid-header {
+   border-left: 1px solid #E2E2E2;
+
+}
+
+#options {
+    visibility : hidden;
+    text-align: right;
+    color: #333;
+    width : 100%;
+    height: 40px;
+    widows: inherit;
+}
+
+.label {
+    color: #333 !important;
+}
 
 #tablePivot {
     visibility : hidden
@@ -44,46 +77,43 @@
     vertical-align: middle;
 }
 
-#options {
-    visibility : hidden;
-    background: #888;
-    width : 945px;
-    height: 40px;
-    widows: inherit;
-    border-bottom: 1px solid #777;
-    border-right: 1px solid #777;;
+
+.ui-iggrid-header{
+    border-color: #E2E2E2 !important;
 }
 
 #editingChoice{
     margin-top: 12px;
 }
 
-#labelEditingMode {
-    font-size: 120;
+.ui-iggrid table tbody td, .ui-iggrid .ui-iggrid-header, .ui-iggrid table th{
+    padding: 7px !important;
 }
 
-/*
-[data-id="2912959359"], [data-id="2912959359"]>th{
-    color : red;
+.ui-iggrid .ui-iggrid-headercaption, .ui-iggrid .ui-iggrid-footer, .ui-iggrid .ui-iggrid-toolbar{
+    padding: 7px !important;
+}
+
+
+
+
+[data-id="4170397976"], [data-id="4170397976"]>th{
+    color : #7A0000;
 
 }
 
 
-[data-id="4214993387"], [data-id="4214993387"]>th,[data-id="112335355"], [data-id="112335355"]>th,
-[data-id="2271481948"], [data-id="2271481948"]>th, [data-id="2271481948"], [data-id="2271481948"]>th,
-[data-id="3484225860"], [data-id="3484225860"]>th, [data-id="3751768364"], [data-id="3751768364"]>th
+[data-id="4214993387"], [data-id="4214993387"]>th,[data-id="2845718677"], [data-id="2845718677"]>th,
+[data-id="4094889198"], [data-id="4094889198"]>th, [data-id="1619079210"], [data-id="1619079210"]>th,
+[data-id="1890799682"], [data-id="1890799682"]>th, [data-id="2730007950"], [data-id="2730007950"]>th
 {
-    color : blue;
+    color : #005C7A;
 }
 
 
 [data-id="1943833587"], [data-id="1943833587"]>th,[data-id="1354470332"], [data-id="1354470332"]>th,
-[data-id="985901126"], [data-id="985901126"]>th, [data-id="1015489101"], [data-id="1015489101"]>th{
-    color: lightgreen;
-}*/
-
-
-
-
-#toAppend {
+[data-id="1878043169"], [data-id="1878043169"]>th, [data-id="1015489101"], [data-id="1015489101"]>th,
+[data-id="3627774860"], [data-id="3627774860"]>th{
+    color: #047A00;
 }
+

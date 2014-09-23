@@ -35,7 +35,7 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
             ViewGrid.init(tableModelWithFormula, configurator, supportUtility)
             // append listeners to events
             this.createListeners();
-            this.onChangeModalityEditing()
+          //  this.onChangeModalityEditing()
 
         }
 
@@ -49,8 +49,6 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
             var that = this;
 
             $(document.body).delegate("#" + grid.id(), "iggridcellclick", function (evt, ui) {
-                evt.preventDefault();
-                evt.stopImmediatePropagation();
                 var cellTableModel2 = ModelController.getTableDataModel();
                 var cellTableModel = $.extend(true,{}, cellTableModel2);
                 // To identify when the first new nested row starts
@@ -71,22 +69,19 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
                                 that.updateGrid(clickedCell, indTable, rowGridIndex, columnGridIndex);
                             }
                         }
-                        if (cell.parentElement !== oldCell) {
-                            if (typeof oldCell !== 'undefined' && oldCell != null) {
-                                if (oldCell.firstElementChild != null) {
-                                    $("#" + oldCell.id).igTextEditor('destroy');
-                                }
-                                oldCell.removeAttribute("id")
-                                oldCell.removeAttribute("class")
+                        if (typeof oldCell !== 'undefined' && oldCell != null) {
+                            if (oldCell.firstElementChild != null) {
+                                $("#" + oldCell.id).igTextEditor('destroy');
                             }
-                            cell.setAttribute("id", "clickedCell");
-                            $("#clickedCell").igTextEditor({
-                                width: 120,
-                                height: 41,
-                                value: clickedCell[3],
-                                valueChanged: functionChanges
-                            });
+                            oldCell.removeAttribute("id")
+                            oldCell.removeAttribute("class")
                         }
+                        cell.setAttribute("id", "clickedCell");
+                        $("#clickedCell").igTextEditor({
+                            textMode : "text",
+                            value: clickedCell[3],
+                            valueChanged: functionChanges
+                        });
                     }
                     else { // editing total
                         var cell = ui.cellElement;
@@ -172,11 +167,11 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
         }
 
 
-        GeneralController.prototype.onChangeModalityEditing = function() {
+       /* GeneralController.prototype.onChangeModalityEditing = function() {
             $("#editingChoice").bind('change', function (event) {
                 editingOnCell = !event.args.checked;
             })
-        }
+        }*/
 
 
         return GeneralController;

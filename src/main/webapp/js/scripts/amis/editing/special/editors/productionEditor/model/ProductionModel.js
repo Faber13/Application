@@ -28,30 +28,26 @@ define(["jquery"], function($){
         originalData = involvedItems;
         var result;
         supportUtility = Utility;
-
         var modelData = $.extend([], true, involvedItems)
-        result = this.convertOriginalToModelData('total', modelData);
+        result = this.convertOriginalToModelDataTotal('total', modelData);
         originalTotalCropsModel = $.extend([], false, result);
-
 
         return result;
     }
 
     ProductionModel.prototype.setOriginalData = function(rowNumber, value){
-        debugger;
         originalTotalCropsModel[rowNumber][3] = value;
 
     }
 
     ProductionModel.prototype.getSingleCropsModel = function(involvedItemsSingleCrops, Utility){
         var result;
-        supportUtility = Utility;
-
+        var cropsNumber = this.getCropsNumber();
         var modelDataSingCrops = $.extend([], true, involvedItemsSingleCrops)
-        result =this.convertOriginalToModelData('single', modelDataSingCrops);
-
+        result =this.convertOriginalToSingleCrops(modelDataSingCrops, cropsNumber);
+        console.log('RESLUT SING CROPS ODEL')
+        console.log(result)
         return result;
-
     }
 
     ProductionModel.prototype.getOriginalTotalCropsModel = function(){
@@ -66,8 +62,8 @@ define(["jquery"], function($){
         return modelData;
     }
 
-    ProductionModel.prototype.convertOriginalToModelData = function(modality, modelData){
-      var result = [];
+    ProductionModel.prototype.convertOriginalToModelDataTotal = function(modality, modelData){
+        var result = [];
         var dataModel = $.extend([],true,modelData);
         var copyMap = $.extend([], true, map);
         if(modality == 'total') {
@@ -84,6 +80,25 @@ define(["jquery"], function($){
         return result;
     }
 
+    ProductionModel.prototype.convertOriginalToSingleCrops = function(modelData, cropsNumber){
+
+        var result = [];
+        var dataModel = $.extend([],true,modelData);
+        var copyMap = $.extend([], true, map);
+        debugger;
+        for(var j =0; j< cropsNumber ; j++) {
+            for (var i = 0; i < dataModel.length; i++) {
+                var index = (i==0)? j*1: j*i+i;
+                dataModel[index][3] = "";
+                result[index] = dataModel[i]
+                var code = dataModel[i][0]
+                result[index].push(copyMap[code])
+                result[index].push(j+1)
+            }
+        }
+        return result;
+    }
+
     ProductionModel.prototype.convertModelDataToOriginal = function(){
 
     }
@@ -93,11 +108,11 @@ define(["jquery"], function($){
 
     }
 
-    ProductionModel.prototype.getTotalCropsData = function(){
+    ProductionModel.prototype.getCropsNumber = function(){
 
         if(typeof numberOfCrops ==='undefined') {
-            var filterData = supportUtiltity.getFilterData()
-            var filterCrops = { "regionCode": filterData.country, "productCode": filterData.product}
+            var filterData = supportUtility.getFilterData()
+            var filterCrops = { "regionCode": filterData.countryCode, "productCode": filterData.productCode}
             // first call
             $.ajax({
                 async: false,

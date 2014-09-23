@@ -45,9 +45,7 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
         var singleCropsModel = modelProduction.getSingleCropsModel(involvedItems, supportUtility);
         var copyOriginalModelSingle =$.extend(true,[],singleCropsModel);
 
-        var singleCropsFormula = formulaHandler.getInitFormulaFromConf(1,'singleCrops')
-        var singleCropsCalc = formulaHandler.createFormula(copyOriginalModelSingle, singleCropsFormula)
-
+        console.log(copyOriginalModelSingle)
 
         var valueCodeItem = parseInt(clickedItem[0])
 
@@ -76,12 +74,13 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
             datatype: "array",
             datafields: [
                 { name: 6, type: 'string' },
+                { name: 7, type: 'string' },
                 { name: 3, type: 'float' },
                 { name: 4, type: 'string'},
-                {name : 5, type: 'string'}
+                { name: 5, type: 'string'}
             ],
             id: 'ppp',
-            localdata: singleCropsCalc
+            localdata: copyOriginalModelSingle
         };
 
         var dataAdapter = new $.jqx.dataAdapter(source);
@@ -202,6 +201,7 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
             autoheight: true,
             columns: [
                 { text: 'Element', datafield: 6 },
+                { text: 'Crop', datafield: 7},
                 { text: 'Value', datafield:3 },
                 { text: 'Flag', datafield: 4 },
                 { text: 'Notes', datafield: 5 }

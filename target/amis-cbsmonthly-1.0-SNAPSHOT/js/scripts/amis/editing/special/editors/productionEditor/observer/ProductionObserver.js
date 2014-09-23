@@ -244,7 +244,6 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
             return typeof object!=='undefined' && object != null && object != '';
         }
         $("#gridTotalValues").on('cellendedit', function (event){
-            alert('taken Event')
             event.preventDefault();
             event.stopPropagation()
             event.stopImmediatePropagation();

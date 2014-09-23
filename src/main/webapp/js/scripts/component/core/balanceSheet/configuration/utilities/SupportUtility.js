@@ -20,7 +20,8 @@ define(["jquery", "jqwidgets"], function($) {
         var product = $("#selectionCommodity").jqxComboBox('getItemByValue', productCode).label;
         var country = $("#selectionCountryBox").jqxComboBox('getItemByValue', countryCode).label;
 
-        return {"season" : season, "dataSource": datasourceFilt, "product" : product, "country": country}
+        return {"season" : season, "dataSource": datasourceFilt, "product" : product, "country": country,
+        "productCode" : productCode, "countryCode" : countryCode, "productCode": productCode}
     }
 
     SupportUtility.prototype.getPreviousSeasonLabel = function(){
