@@ -22,7 +22,15 @@
 .ui-timepicker-rtl dl dt{ float: right; clear: right; }
 .ui-timepicker-rtl dl dd { margin: 0 40% 10px 10px; }
 
-
+.fx-catalog-modular-form-handler {
+    position: absolute;
+    left: 7px;
+    top: 7px;
+    height: 15px;
+    width: 15px;
+    background: url("icons/fenix-catalog-sprite-small.png") no-repeat -15px 0;
+    cursor: pointer;
+}
 
 
 .ui-widget-header {
@@ -97,23 +105,26 @@
 
 
 
-[data-id="4170397976"], [data-id="4170397976"]>th{
+[title = "Unbalanced"], [title="Unbalanced"]~ td  {
     color : #7A0000;
-
 }
 
 
-[data-id="4214993387"], [data-id="4214993387"]>th,[data-id="2845718677"], [data-id="2845718677"]>th,
-[data-id="4094889198"], [data-id="4094889198"]>th, [data-id="1619079210"], [data-id="1619079210"]>th,
-[data-id="1890799682"], [data-id="1890799682"]>th, [data-id="2730007950"], [data-id="2730007950"]>th
-{
+[title = "Total Supply (Thousand tonnes)"], [title="Total Supply (Thousand tonnes)"]~ td,
+[title = "Domestic Supply (Thousand tonnes)"], [title="Domestic Supply (Thousand tonnes)"]~ td,
+[title = "Opening Stocks (Thousand tonnes)"], [title="Opening Stocks (Thousand tonnes)"]~ td,
+[title = "Total Utilization (Thousand tonnes)"], [title="Total Utilization (Thousand tonnes)"]~ td,
+[title = "Domestic Utilization (Thousand tonnes)"], [title="Domestic Utilization (Thousand tonnes)"]~ td,
+[title = "Population (1000s)"], [title="Population (1000s)"]~ td{
     color : #005C7A;
 }
 
 
-[data-id="1943833587"], [data-id="1943833587"]>th,[data-id="1354470332"], [data-id="1354470332"]>th,
-[data-id="1878043169"], [data-id="1878043169"]>th, [data-id="1015489101"], [data-id="1015489101"]>th,
-[data-id="3627774860"], [data-id="3627774860"]>th{
+[title = "Production (Thousand tonnes)"], [title="Production (Thousand tonnes)"]~ td,
+[title = "Other Uses (Thousand tonnes)"], [title="Other Uses (Thousand tonnes)"]~ td,
+[title = "Area Harvested (Thousand Ha)"], [title="Area Harvested (Thousand Ha)"]~ td,
+[title = "Area Planted (Thousand Ha)"], [title="Area Planted (Thousand Ha)"]~ td,
+[title = "Yield (Tonnes/Ha)"], [title="Yield (Tonnes/Ha)"]~ td{
     color: #047A00;
 }
 

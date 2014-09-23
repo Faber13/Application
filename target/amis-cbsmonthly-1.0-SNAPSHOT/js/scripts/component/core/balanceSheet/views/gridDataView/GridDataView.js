@@ -73,7 +73,7 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel", "jquery.sidebar"
                     measuresDimension: {
                         caption: "Measures",
                         measures: [ //for each measure, name and aggregator are required
-                            { caption: "Value", name: "value", aggregator: getValue(indexValues) }
+                            { caption: " ", name: "value", aggregator: getValue(indexValues) }
                         ]
                     },
                     dimensions: [ // for each dimension
@@ -141,9 +141,16 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel", "jquery.sidebar"
             toappend.remove()
         }
 
-        $('#options').append(
-            '<span class="label label-default" id="labelEditingMode">Set full editing mode</span>') ;
-       // $('#editingChoice').jqxCheckBox({width: 30, height: 25});
+        var f = document.getElementById('labelEditingMode');
+        if(typeof f != 'undefined' && f != null){
+            f.remove();
+        }
+
+        $('#options').append('<div class="btn-group-vertical">' +
+                '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">' +
+                '<span class="caret"></span><span>Options</span></button>' +
+                '<ul class="dropdown-menu" role="menu"><li><span>Edit flag and notes</span><div id="editingChoice"/></li></ul></div>') ;
+       $('#editingChoice').jqxCheckBox({width: 30, height: 25});
 
     }
 
@@ -160,7 +167,7 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel", "jquery.sidebar"
                     measuresDimension: {
                         caption: "Measures",
                         measures: [ //for each measure, name and aggregator are required
-                            { caption: "value", name: "value", aggregator: getValue(indexValues) }
+                            { caption: " ", name: "value", aggregator: getValue(indexValues) }
                         ]
                     },
                     dimensions: [ // for each dimension
@@ -203,7 +210,7 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel", "jquery.sidebar"
                     measuresDimension: {
                         caption: "Measures",
                         measures: [ //for each measure, name and aggregator are required
-                            { caption: "value", name: "value", aggregator: getValue(indexValues) }
+                            { caption: " ", name: "value", aggregator: getValue(indexValues) }
                         ]
                     },
                     dimensions: [ // for each dimension
