@@ -27,7 +27,6 @@ define(["jquery", "specialFormulaConf/formulaUtils/FormulaConfigurator", "specia
         return result;
     }
 
-
     FormulaHandler.prototype.createFormula = function (modelData, formulaData) {
         console.log("createFormula")
         var model = modelData;
@@ -37,13 +36,10 @@ define(["jquery", "specialFormulaConf/formulaUtils/FormulaConfigurator", "specia
         var startIndex, indexRow;
         // set the start index and the range
         var codeValue = formula.variable.value[0]
+        var notRealizeable = false;
+        //  initialize a label
         var indexValue =  commonUtils.getIndexModelFromCode(codeValue,model);
 
-
-
-        var notRealizeable = false;
-
-        //  initialize a label
         label1:
             for (var i = 0; i < formula.addendums.length; i++) {
                 var addendum = formula.addendums[i]
@@ -51,7 +47,10 @@ define(["jquery", "specialFormulaConf/formulaUtils/FormulaConfigurator", "specia
                     case "code":
                         var code = addendum.value[0];
                         var index =  commonUtils.getIndexModelFromCode(code,model);
-                        if (addendum.hasConditions && addendum.condition == "exists"){
+                        var hasCondition = addendum.hasCondition
+                        var existCondition = addendum.condition == "exists"
+                        if (hasCondition&& existCondition){
+                            debugger;
                             if (typeof model[index][3] == 'undefined' || model[index][3] == null || model[index][3] == "") {
                                 code = addendum.otherValue[0];
                                 index =  commonUtils.getIndexModelFromCode(code,model);
@@ -61,6 +60,10 @@ define(["jquery", "specialFormulaConf/formulaUtils/FormulaConfigurator", "specia
                                 else{
                                     notRealizeable = true;
                                     break label1;
+                                }
+                            }else{
+                                if (typeof model[index][3] != 'undefined' && model[index][3] != null ) {
+                                    addendums.push(model[index][3])
                                 }
                             }
                         }else{

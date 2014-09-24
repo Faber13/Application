@@ -52,8 +52,7 @@ define(["jquery"], function($){
         switch (numberOfFormUsed){
             case 1:
                 var typeOfForm = config.formulaPlugins[numberOfFormUsed-1];
-                if(type == "totalValues"){
-                    var updateFormulas = typeOfForm.totalValues.valuesDisabled;
+                    var updateFormulas = typeOfForm[type].valuesDisabled;
                     if  (dependentElement == "production") {
                         result = updateFormulas[0].production;
 
@@ -62,9 +61,6 @@ define(["jquery"], function($){
                     }else if( dependentElement == 'yield'){
                         result = updateFormulas[2].yield;
                     }
-                }else if(type == "singleCrops"){
-                    result = typeOfForm.singleCrops.init[0]
-                }
                 break;
 
             case 2:

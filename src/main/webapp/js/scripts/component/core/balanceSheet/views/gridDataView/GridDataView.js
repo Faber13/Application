@@ -128,8 +128,6 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel", "jquery.sidebar"
             },
             width: "100%",
             height: '100%'
-
-
         });
 
         var rows;
@@ -141,12 +139,12 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel", "jquery.sidebar"
             toappend.remove()
         }
 
-        var f = document.getElementById('labelEditingMode');
+        var f = document.getElementById('optionsPivotGrid');
         if(typeof f != 'undefined' && f != null){
             f.remove();
         }
 
-        $('#options').append('<div class="btn-group-vertical">' +
+        $('#options').append('<div class="btn-group-vertical" id="optionsPivotGrid">' +
                 '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">' +
                 '<span class="caret"></span><span>Options</span></button>' +
                 '<ul class="dropdown-menu" role="menu"><li><span>Edit flag and notes</span><div id="editingChoice"/></li></ul></div>') ;

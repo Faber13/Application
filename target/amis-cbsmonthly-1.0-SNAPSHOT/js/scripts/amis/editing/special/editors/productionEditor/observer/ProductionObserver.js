@@ -3,12 +3,18 @@
  */
 define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
 
-    var editorProduction, formulaToApplyTot, formulaToApplySingle;
+    var editorProduction, formulaToApplyTot, formulaToApplySingle, controllerProduction;
 
     function ProductionObserver() {
     }
 
-    ProductionObserver.prototype.applyListeners = function (EditorProduction) {
+    // ------------ Support method ------------------//
+        var checkAll = function(object){
+            return typeof object!=='undefined' && object != null && object != '';}
+    // ---------------------------------------------//
+
+    ProductionObserver.prototype.applyListeners = function (EditorProduction, EditorController) {
+        controllerProduction = EditorController;
         formulaToApplyTot = 'init';
         formulaToApplySingle = 'init';
         editorProduction = EditorProduction;
@@ -18,6 +24,7 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
         this.listenToRecalculateButtonSingleCrops();
         this.listenToTabs();
         this.listenToEditCellTotGrid()
+        this.listenToEditCellSingleCropsGrid()
     }
 
     ProductionObserver.prototype.listenToCheckboxesTotal = function () {
@@ -200,19 +207,20 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
             counter += $("#secondCheckBoxTotVal").val()? 1:0;
             counter += $("#thirdCheckBoxTotVal").val()? 1:0;
             if(counter == 2){ //OK
-                editorProduction.updateTotalValueGridWithFormula(formulaToApplyTot);
+                controllerProduction.updateTotGridOnFormulaChanges(formulaToApplyTot);
             }else{
                 var alert = '<div class="alert alert-danger alert-dismissible" role="alert">'+
                     '<button type="button" class="close" data-dismiss="alert">'+
                     '<span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>'+
                     '<strong>Attention!</strong> You have to select <strong>2 elements</strong></div>';
-                $('#alert').append(alert)
+                $('#alertTotal').append(alert)
             }
         })
     }
 
     ProductionObserver.prototype.listenToRecalculateButtonSingleCrops = function(){
-        $('#applyRulesFormulaTot').on('click', function(evt){
+        $('#applyRulesFormulaSingle').on('click', function(evt){
+            console.log('click')
             // third is disabled on default
             evt.preventDefault();
             evt.stopImmediatePropagation();
@@ -220,14 +228,15 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
             counter += $("#firstCheckBoxSingleCrops").val()? 1:0;
             counter += $("#secondCheckBoxSingleCrops").val()? 1:0;
             counter += $("#thirdCheckBoxSingleCrops").val()? 1:0;
+            console.log(counter)
             if(counter == 2){ //OK
-                editorProduction.updateTotalValueGridWithFormula(formulaToApplyTot);
+                controllerProduction.updateSingleCropsGridOnFormulaChanges(formulaToApplySingle);
             }else{
                 var alert = '<div class="alert alert-danger alert-dismissible" role="alert">'+
                     '<button type="button" class="close" data-dismiss="alert">'+
                     '<span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>'+
                     '<strong>Attention!</strong> You have to select <strong>2 elements</strong></div>';
-                $('#alert').append(alert)
+                $('#alertSingle').append(alert)
             }
         })
     }
@@ -240,12 +249,9 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
     }
 
     ProductionObserver.prototype.listenToEditCellTotGrid = function(){
-        var checkAll = function(object){
-            return typeof object!=='undefined' && object != null && object != '';
-        }
+
         $("#gridTotalValues").on('cellendedit', function (event){
             event.preventDefault();
-            event.stopPropagation()
             event.stopImmediatePropagation();
             var dataField = event.args.datafield;
             var oldvalue = event.args.oldvalue;
@@ -258,11 +264,34 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
             }
             if(dataField == 3 && (oldvalue !=value)){
                 var numberOfRow = event.args.rowindex;
-                editorProduction.updateTotGridOnEditing(numberOfRow, value,formulaToApplyTot)
+                controllerProduction.updateTotGridOnEditing(numberOfRow, value, formulaToApplyTot)
             }
+
         })
 
     }
 
+    ProductionObserver.prototype.listenToEditCellSingleCropsGrid = function(){
+        $("#gridSingleCrops").on('cellendedit', function (event){
+            event.preventDefault();
+            event.stopImmediatePropagation();
+
+            var dataField = event.args.datafield;
+            var oldvalue = event.args.oldvalue;
+            var value = event.args.value;
+            if(checkAll(oldvalue)){
+                oldvalue = parseFloat(oldvalue)
+                if(checkAll(value)){
+                    value = parseFloat(value)
+                }
+            }
+            if(dataField == 3 && (oldvalue !=value)){
+                var numberOfRow = event.args.rowindex;
+                controllerProduction.updateSingleCropsGridOnEditing(numberOfRow, value, formulaToApplySingle)
+            }
+        })
+    }
+
     return ProductionObserver;
+
 })

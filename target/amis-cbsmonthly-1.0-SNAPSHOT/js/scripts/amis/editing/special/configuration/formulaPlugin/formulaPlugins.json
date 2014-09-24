@@ -109,7 +109,7 @@
                                     "condition" : "",
                                     "dataType":"code",
                                     "value":[
-                                        4
+                                        5
                                     ],
                                     "otherValue" : "",
                                     "otherColumn":false,
@@ -117,7 +117,7 @@
                                 },
                                 {
                                     "dataType":"operation",
-                                    "value":"*",
+                                    "value":"/",
                                     "otherColumn":false,
                                     "columnNumber":""
                                 },
@@ -126,7 +126,7 @@
                                     "condition" : "",
                                     "dataType":"code",
                                     "value":[
-                                        5
+                                        4
                                     ],
                                     "otherValue" : "",
                                     "otherColumn":false,
@@ -229,7 +229,7 @@
                 ],
                 "valuesDisabled":[
                     {
-                        "Production": [
+                        "production": [
                             {
                                 "variable": {
                                     "formulaId": 3,
@@ -274,7 +274,7 @@
                         ]
                     },
                     {
-                        "Area Harvested":{
+                        "areaHarvested":{
                             "variable":{
                                 "formulaId":3,
                                 "dataType":"code",
@@ -314,6 +314,51 @@
                                 }
                             ]
                         }
+                    },
+                    {
+                        "yield":{
+                            "variable":{
+                                "formulaId":3,
+                                "dataType":"code",
+                                "value":[
+                                    4
+                                ],
+                                "otherColumn":false,
+                                "columnNumber":""
+                            },
+                            "addendums":[
+                                {
+                                    "hasCondition" : false,
+                                    "condition" : "",
+                                    "dataType":"code",
+                                    "value":[
+                                        5
+                                    ],
+                                    "otherValue" : "",
+                                    "otherColumn":false,
+                                    "columnNumber":""
+                                },
+                                {
+                                    "dataType":"operation",
+                                    "value":"/",
+                                    "otherColumn":false,
+                                    "columnNumber":""
+                                },
+                                {
+                                    "hasCondition" : true,
+                                    "condition" : "exists",
+                                    "dataType":"code",
+                                    "value":[
+                                        2
+                                    ],
+                                    "otherValue" : [37],
+                                    "otherColumn":false,
+                                    "columnNumber":""
+                                }
+                            ]
+                        }
+
+
                     }
                 ]
             }

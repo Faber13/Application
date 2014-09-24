@@ -4,7 +4,7 @@
 define(["jquery"], function($){
 
 // models
-   var originalData, totalCropsData, originalTotalCropsModel;
+   var originalData, totalCropsData, originalTotalCropsModel, originalSingleCropsModel;
 
 // variables
     var numberOfCrops;
@@ -30,7 +30,6 @@ define(["jquery"], function($){
         supportUtility = Utility;
         var modelData = $.extend([], true, involvedItems)
         result = this.convertOriginalToModelDataTotal('total', modelData);
-        originalTotalCropsModel = $.extend([], false, result);
 
         return result;
     }
@@ -45,13 +44,16 @@ define(["jquery"], function($){
         var cropsNumber = this.getCropsNumber();
         var modelDataSingCrops = $.extend([], true, involvedItemsSingleCrops)
         result =this.convertOriginalToSingleCrops(modelDataSingCrops, cropsNumber);
-        console.log('RESLUT SING CROPS ODEL')
-        console.log(result)
         return result;
     }
 
     ProductionModel.prototype.getOriginalTotalCropsModel = function(){
         return originalTotalCropsModel;
+    }
+
+    ProductionModel.prototype.getOriginalSingleCropsModel = function(){
+        return originalSingleCropsModel;
+
     }
 
     ProductionModel.prototype.getOriginalData = function(){
@@ -77,6 +79,7 @@ define(["jquery"], function($){
             var code = dataModel[i][0]
             result[i].push(copyMap[code])
         }
+        originalTotalCropsModel = $.extend(true,[], result);
         return result;
     }
 
@@ -85,17 +88,29 @@ define(["jquery"], function($){
         var result = [];
         var dataModel = $.extend([],true,modelData);
         var copyMap = $.extend([], true, map);
-        debugger;
         for(var j =0; j< cropsNumber ; j++) {
             for (var i = 0; i < dataModel.length; i++) {
-                var index = (i==0)? j*1: j*i+i;
-                dataModel[index][3] = "";
-                result[index] = dataModel[i]
-                var code = dataModel[i][0]
-                result[index].push(copyMap[code])
-                result[index].push(j+1)
+                var index =  j*dataModel[i].length+i;
+                result[index] = []
+                for(var x =0; x< dataModel[i].length +2; x++) {
+                    switch (x) {
+                        case 3:
+                            result[index][x] = null;
+                            break;
+                        case dataModel[i].length:
+                            result[index][x] = copyMap[dataModel[i][0]];
+                            break;
+                        case dataModel[i].length + 1 :
+                            result[index][x] = j + 1;
+                            break;
+                        default:
+                            result[index][x] = dataModel[i][x];
+                            break;
+                    }
+                }
             }
         }
+        originalSingleCropsModel = $.extend(true,[], result);
         return result;
     }
 
@@ -128,6 +143,34 @@ define(["jquery"], function($){
         }
         return numberOfCrops;
 
+    }
+
+    ProductionModel.prototype.filterModelSingleFromCrops = function(numberCrops, allData){
+        debugger;
+        var result = [];
+        for( var i=0; i<allData.length; i++){
+            if(allData[i][7] ==numberCrops ){
+                result.push(allData[i]);
+            }
+        }
+        return result;
+    }
+
+    ProductionModel.prototype.setOriginalCropsData = function(newValue, rowNumber){
+        originalSingleCropsModel[rowNumber][3] = newValue;
+    }
+
+    ProductionModel.prototype.fuseAndGetDataTogether = function(calculatedDataFromCrops,allData, crop){
+        var everyData = $.extend(true,[],allData)
+        var dataCropsSelected = $.extend(true,[],calculatedDataFromCrops);
+        for(var i =0; i<dataCropsSelected.length; i++) {
+            for (var j = 0; j < everyData.length; j++) {
+                if (dataCropsSelected[i][0] == everyData[j][0] && dataCropsSelected[j][6] == crop) {
+                    everyData[j] = dataCropsSelected[i]
+                }
+            }
+        }
+        return everyData
     }
 
     return ProductionModel;

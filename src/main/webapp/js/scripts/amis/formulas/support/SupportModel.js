@@ -43,7 +43,7 @@ define(["jquery" ], function ($) {
         var startIndex = startIndexData;
         var numberOfRows = numberOfRowsData;
         for (var i = startIndex; !found && i < startIndex + numberOfRows; i++) {
-            if (model[i][0] == code) {
+            if (typeof model[i] !=='undefined' && model[i][0] == code) {
                 found = true
                 result = i;
             }
