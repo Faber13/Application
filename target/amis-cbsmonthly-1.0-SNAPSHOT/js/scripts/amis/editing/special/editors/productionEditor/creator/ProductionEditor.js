@@ -131,8 +131,8 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
                 '<div class="row"><div class="col-lg-10 col-lg-offset-1">' +
                 '<div id="gridTotalValues"></div></div></div>' +
                 '<div class="modal-footer">' +
-                '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>' +
-                '<button type="button" class="btn btn-primary">Save changes</button>' +
+                '<button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>' +
+                '<button type="button" class="btn btn-primary" id="saveTotalValues">Save changes</button>' +
                 '</div>' +
                 '</div>' +
 

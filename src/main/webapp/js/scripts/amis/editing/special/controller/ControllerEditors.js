@@ -24,7 +24,7 @@ define(["jquery", "editingSpecial/utils/DataHandler", "productionEditor/creator/
         var condition =parseInt(takenCell[0])
         switch (condition) {
             case 5 :
-                productionEditor.init(takenCell,dataInvolved,codes, dsdConfigurator, supportUtiliy)
+                productionEditor.init(takenCell,dataInvolved,codes, dsdConfigurator, supportUtiliy, this)
                 break;
 
             case 15:
@@ -33,6 +33,10 @@ define(["jquery", "editingSpecial/utils/DataHandler", "productionEditor/creator/
             case 998:
                 break;
         }
+
+    }
+
+    ControllerEditors.prototype.saveDataFromForm = function(originalData, calculatedData){
 
     }
 

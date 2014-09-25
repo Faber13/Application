@@ -2,10 +2,10 @@
  * Created by fabrizio on 7/24/14.
  */
 define(["jquery", "models/tableDataModel/TableDataModel",
-    "models/gridDataModel/GridDataModel", "models/creator/HandlerCreationModels"], function ($, TableDataModel, GridDataModel, ModelCreator) {
+    "models/gridDataModel/GridDataModel", "models/creator/HandlerCreationModels", "moment"], function ($, TableDataModel, GridDataModel, ModelCreator) {
 
     var TableModel, GridModel, indexes, instanceGridDataModel, instanceTableDataModel, fullTableModel, newValues, dataTable, CreatorModels,
-        modelForCreation;
+        modelForCreation, Configurator;
 
     function ModelsController() {
         TableModel = new TableDataModel;
@@ -15,6 +15,7 @@ define(["jquery", "models/tableDataModel/TableDataModel",
 
     ModelsController.prototype.init = function (tableData, configurator) {
 
+        Configurator = configurator;
         dataTable = tableData
         newValues = []; // New values will be put into this variable
         indexes = configurator.getAllColumnModels();
@@ -88,6 +89,32 @@ define(["jquery", "models/tableDataModel/TableDataModel",
 
     ModelsController.prototype.getDataToSave = function(){
         return TableModel.getDataToSave()
+    }
+
+    ModelsController.prototype.createNewForecast = function(){
+        var muArray = ["Thousand tonnes", "Thousand tonnes","Thousand tonnes","Thousand tonnes","Thousand tonnes",
+            "Thousand tonnes","Thousand tonnes","Thousand tonnes","Thousand tonnes","Thousand tonnes",
+            "Thousand tonnes","Thousand tonnes","Thousand tonnes","Thousand tonnes","Thousand tonnes","Thousand tonnes",
+            "Thousand Ha","Thousand Ha","Tonnes/Ha","1000s","%","Kg/Yr"]
+        var codes = Configurator.getLeftKeyColumn().leftColumns[0].domain.codes;
+        var result = []
+        var dateOfForecast = new Date();
+        var dateDsdFormat = moment(dateOfForecast).format("YYYYMMDD");
+        for( var i=0; i< codes.length; i++){
+            result[i] = [];
+            result[i][0] = codes[i].code.code;
+            result[i][1] = muArray[i]
+            result[i][2] = dateDsdFormat;
+            result[i][3] = null;
+            result[i][4] = null;
+            result[i][5] = null;
+        }
+        debugger;
+        var d = TableModel.addNewForecast(result);
+        debugger;
+        return d;
+
+
     }
 
     return ModelsController;

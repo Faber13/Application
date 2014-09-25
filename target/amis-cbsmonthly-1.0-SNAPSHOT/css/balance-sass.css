@@ -13,7 +13,8 @@ h1 {
   border-radius: 5px;
   border: 1px solid #dddddd;
   border-bottom: 3px solid #dddddd;
-  position: relative; }
+  position: relative;
+  visibility: hidden; }
 
 thead .ui-widget-header {
   background-color: #EFF3F5;

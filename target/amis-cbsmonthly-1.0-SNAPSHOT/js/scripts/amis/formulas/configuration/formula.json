@@ -319,6 +319,15 @@
                 "columnNumber":"",
                 "conditions":"",
                 "formulasBinded":[1,6]
+            },
+            {
+                "updateFormulaID" : 5,
+                "key":[5],
+                "otherColumns":false,
+                "columnNumber":"",
+                "conditions":"",
+                "formulasBinded":[1,2,4,5,6,7]
+
             }
 
         ]

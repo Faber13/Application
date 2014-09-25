@@ -27,6 +27,8 @@ define(['jquery'], function($){
         var modelTotalCrops = $.extend(true, [], dataUpdated)
 
         var calculatedModel = formulaHandler.createFormula(modelTotalCrops, formulaToUpdate)
+        var modelCalculated =  $.extend(true, [], calculatedModel);
+        modelProduction.setCalculatedTotalModel(modelCalculated)
         editorProduction.updateTotGrid(calculatedModel);
 
     }
@@ -38,6 +40,8 @@ define(['jquery'], function($){
         var modelTotalCrops = $.extend(true, [], dataUpdated)
 
         var calculatedModel = formulaHandler.createFormula(modelTotalCrops, formulaToUpdate)
+        var modelCalculated =  $.extend(true, [], calculatedModel);
+        modelProduction.setCalculatedTotalModel(modelCalculated)
         editorProduction.updateTotGrid(calculatedModel);
 
     }
@@ -48,6 +52,8 @@ define(['jquery'], function($){
 
         var modelSingleCrops = $.extend(true, [], dataUpdated);
         var calculatedModel = formulaHandler.createFormula(modelSingleCrops, formulaToUpdate)
+        var modelCalculated =  $.extend(true, [], calculatedModel);
+        modelProduction.setCalculatedSingleModel(modelCalculated)
         editorProduction.updateSingleGrid(calculatedModel);
 
     }
@@ -68,11 +74,18 @@ define(['jquery'], function($){
         // filter data through crops number
         var dataForCrops = modelProduction.filterModelSingleFromCrops(belongingCrops, allData);
         // filterData through crops number
-        debugger;
         var calculatedDataFromCrops = formulaHandler.createFormula(dataForCrops, formulaToUpdate);
         // insert batch into model
         var newCalculatedData = modelProduction.fuseAndGetDataTogether(calculatedDataFromCrops,allData, belongingCrops)
+        var modelCalculated =  $.extend(true, [], calculatedModel);
+        modelProduction.setCalculatedSingleModel(modelCalculated)
         editorProduction.updateSingleGrid(newCalculatedData);
+    }
+
+    ProductionController.prototype.saveTotalValues = function(formulaToApply){
+        var dataOriginal = modelProduction.getOriginalData();
+        var dataCalculated = modelProduction.getCalculatedTotalModel();
+
     }
 
     return ProductionController;

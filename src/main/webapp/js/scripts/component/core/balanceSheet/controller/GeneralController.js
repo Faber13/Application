@@ -3,11 +3,11 @@
  */
 define(["jquery", "view/GridDataView", "editorController/FormController",
         "exporter/controller/ExportController", "adapter/AdapterPivot", "formulasAmis/controller/FormulaController",
-        "editingSpecial/controller/ControllerEditors", "jquery.sidebar"],
-    function ($, GridDataView, EditorController, ExportController, Adapter, FormulaController, SpecialEditorController) {
+        "editingSpecial/controller/ControllerEditors", "generalObserver/GeneralObserver", "jquery.sidebar"],
+    function ($, GridDataView, EditorController, ExportController, Adapter, FormulaController, SpecialEditorController, GeneralObserver) {
 
         var ViewGrid, ModelController, FormController, dsd, Configurator, adapterPivot, formulaController, supportUtility,
-            specialControlEditor, editingOnCell;
+            specialControlEditor, editingOnCell, generalObserver;
 
         function GeneralController() {
             ViewGrid = new GridDataView;
@@ -15,12 +15,13 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
             adapterPivot = new Adapter;
             formulaController = new FormulaController;
             specialControlEditor = new SpecialEditorController;
+            generalObserver = new GeneralObserver;
             editingOnCell = true
         };
 
 
         GeneralController.prototype.init = function (gridModel, tableModel, configurator, modelController, utility) {
-
+            generalObserver.init(this)
             ModelController = modelController;
             dsd = configurator.getDSD();
             Configurator = configurator;
@@ -35,8 +36,7 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
             ViewGrid.init(tableModelWithFormula, configurator, supportUtility)
             // append listeners to events
             this.createListeners();
-            this.onChangeModalityEditing()
-
+            this.onChangeModalityEditing();
         }
 
 
@@ -61,6 +61,13 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
                 var cell = ui.cellElement;
                 var oldCell = document.getElementById("clickedCell")
                 if (cell.parentElement != oldCell) {
+                    if (typeof oldCell !== 'undefined' && oldCell != null) {
+                        if (oldCell.firstElementChild != null) {
+                            $("#" + oldCell.id).igTextEditor('destroy');
+                        }
+                        oldCell.removeAttribute("id")
+                        oldCell.removeAttribute("class")
+                    }
                     if (isEditable == 1) {
                         if (editingOnCell) {
                             var functionChanges = function (evt, ui) {
@@ -125,6 +132,11 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
                 var table = ModelController.getTableDataModel();
                 ExportControl.init(table, Configurator)
             })
+
+
+            $('#newForecast').on("click", function(){
+               that.updateWithNewForecast()
+            })
         }
 
         GeneralController.prototype.startFullEditing = function (resultedClicked) {
@@ -177,9 +189,19 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
             }
         }
 
+        GeneralController.prototype.updateWithNewForecast = function(){
+            var tableModel = ModelController.createNewForecast();
+            var tableModelWithFormula = $.extend(true,[], tableModel);
+            formulaController.init(tableModelWithFormula, Configurator)
+            ViewGrid.init(tableModelWithFormula, Configurator, supportUtility)
+            this.onChangeModalityEditing()
+        }
+
 
         GeneralController.prototype.onChangeModalityEditing = function() {
             $("#editingChoice").bind('change', function (event) {
+                event.preventDefault()
+                console.log('click!!')
                 editingOnCell = !event.args.checked;
             })
         }

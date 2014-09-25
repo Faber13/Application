@@ -4,7 +4,7 @@
 define(["jquery"], function($){
 
 // models
-   var originalData, totalCropsData, originalTotalCropsModel, originalSingleCropsModel;
+   var originalData, totalCropsData, originalTotalCropsModel, originalSingleCropsModel, calculatedTotalModel, calculatedSingleModel;
 
 // variables
     var numberOfCrops;
@@ -171,6 +171,25 @@ define(["jquery"], function($){
             }
         }
         return everyData
+    }
+
+    ProductionModel.prototype.setCalculatedTotalModel = function(calculatedModel){
+        calculatedTotalModel = calculatedModel
+    }
+
+    ProductionModel.prototype.getCalculatedTotalModel = function(){
+        var result = $.extend(true, [], calculatedTotalModel);
+        return result;
+    }
+
+    ProductionModel.prototype.setCalculatedSingleModel = function(calculatedModel){
+        calculatedSingleModel = calculatedModel;
+    }
+
+    ProductionModel.prototype.getCalculatedSingleModel = function(){
+        var result = $.extend(true, [], calculatedSingleModel);
+        return result;
+
     }
 
     return ProductionModel;

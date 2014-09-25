@@ -2,11 +2,11 @@
  * Created by fabrizio on 6/26/14.
  */
 
-define(["jquery" ], function ($) {
+define(["jquery", "formulasAmis/support/SupportModel" ], function ($, SupportModel) {
 
     var instanceData, Configurator, instanceFullTableData, counterEmptySpaces,
         fullRows, fullColumns, indexesDoubleColumnLeft, originalData, leftIndexes, upIndexes,
-        visualizedData, newData, updatedData;
+        visualizedData, newData, updatedData, supportModel;
 
     // -------------------- SET OPERATIONS --------------------------------------
 
@@ -35,6 +35,8 @@ define(["jquery" ], function ($) {
         instanceData = data;
         originalData = $.extend(true, [], data)
         Configurator = configurator;
+        supportModel = new SupportModel;
+        supportModel.init(Configurator)
     }
 
 
@@ -291,6 +293,54 @@ define(["jquery" ], function ($) {
             "newData" : newData
         }
         return result;
+    }
+
+    TableDataModel.prototype.addNewForecast= function(dataArray){
+        var mapCodes =supportModel.getMapCodes()
+        var data = this.getTableData();
+        debugger;
+        for(var i =0;i<dataArray.length; i++){
+            visualizedData.push(dataArray[i])
+            originalData.push(dataArray[i])
+            newData.push(dataArray[i])
+        }
+        visualizedData.sort(function (a,b) {
+            if (mapCodes[a["0"]] < mapCodes[b["0"]]) {
+                if (a["2"] < b["2"])
+                    return -2;
+                return -1;
+            }
+            if (mapCodes[a["0"]]> mapCodes[b["0"]]){
+                if (a["2"]> b["2"])
+                    return 2;
+                return 1;
+            }else{
+                if (a["2"] < b["2"])
+                    return -1;
+                if (a["2"]> b["2"])
+                    return 1;
+                return 0;
+            }
+        });
+        originalData.sort(function (a,b) {
+            if (mapCodes[a["0"]] < mapCodes[b["0"]]) {
+                if (a["2"] < b["2"])
+                    return -2;
+                return -1;
+            }
+            if (mapCodes[a["0"]]> mapCodes[b["0"]]){
+                if (a["2"]> b["2"])
+                    return 2;
+                return 1;
+            }else{
+                if (a["2"] < b["2"])
+                    return -1;
+                if (a["2"]> b["2"])
+                    return 1;
+                return 0;
+            }
+        });
+        return this.getTableData()
     }
 
 

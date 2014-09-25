@@ -27,7 +27,7 @@ requirejs.config({
         paddyEditor       :  "../amis/editing/special/editors/paddyEditor",
         flagTranslator    :  "../component/plugins/Amis/InputTool/utils/flagFormatter",
         specialFormulaConf:  "../amis/editing/special/configuration",
-        generalObserver   :  "../component/core/balanceSheet"
+        generalObserver   :  "../component/core/balanceSheet/observer"
     },
     "shim": {
         "bootstrap": {

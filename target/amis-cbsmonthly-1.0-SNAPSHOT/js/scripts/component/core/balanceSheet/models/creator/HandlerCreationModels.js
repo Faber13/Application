@@ -53,7 +53,6 @@ define(["jquery"], function ($) {
         return model;
     }
 
-
     HandlerCreationModels.prototype.chooseAndCreateByDataRepresentationType = function (versus) {
 
         var matrix, dataRepresentation, keyColumns;
@@ -185,7 +184,6 @@ define(["jquery"], function ($) {
 
     }
 
-
     HandlerCreationModels.prototype.createMatrixDomainToDistinct = function (versus, masterColumn, slaveColumn) {
 
         if (typeof slaveColumn !== 'undefined') {
@@ -214,7 +212,6 @@ define(["jquery"], function ($) {
         }
     }
 
-
     HandlerCreationModels.prototype.createMatrixDomainToHybrid = function (versus, masterColumn, slaveColumn) {
 
         if (typeof slaveColumn !== 'undefined') {
@@ -225,8 +222,6 @@ define(["jquery"], function ($) {
         } else {
             return this.createMatrixDistinctToDistinct(versus, masterColumn, slaveColumn)
         }
-
-
     }
 
     /*The data representation of the master column is "distinct"  */
@@ -256,7 +251,6 @@ define(["jquery"], function ($) {
             }
         }
     }
-
 
     HandlerCreationModels.prototype.createMatrixDistinctToDistinct = function (versus, masterColumn, slaveColumn) {
 
@@ -297,7 +291,6 @@ define(["jquery"], function ($) {
         return matrix
     };
 
-
     HandlerCreationModels.prototype.createMatrixDistinctToHybrid = function (versus, masterColumn, slaveColumn) {
 
         if (slaveColumn.values.length == 0 || typeof slaveColumn.values === 'undefined') {
@@ -317,7 +310,6 @@ define(["jquery"], function ($) {
 
     }
 
-
     HandlerCreationModels.prototype.createMatrixHybridToDistinct = function (versus, masterColumn, slaveColumn) {
 
         if (masterColumn.values.length == 0 || typeof masterColumn.values === 'undefined') {
@@ -327,7 +319,6 @@ define(["jquery"], function ($) {
         }
 
     }
-
 
     HandlerCreationModels.prototype.createMatrixHybridToHybrid = function (versus, masterColumn, slaveColumn) {
 
@@ -493,7 +484,6 @@ define(["jquery"], function ($) {
         return array;
     }
 
-
     HandlerCreationModels.prototype.createBigMatrix = function (matrixLeft, matrixUp) {
 
         var matrix = [
@@ -512,11 +502,9 @@ define(["jquery"], function ($) {
         return matrix
     }
 
-
     HandlerCreationModels.prototype.getCodesMap = function () {
         return mapCodesIndex;
     }
-
 
     return HandlerCreationModels;
 })

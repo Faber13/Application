@@ -3,7 +3,8 @@
  */
 define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
 
-    var editorProduction, formulaToApplyTot, formulaToApplySingle, controllerProduction;
+    var editorProduction, formulaToApplyTot, formulaToApplySingle, controllerProduction,
+        totalValuesModified;
 
     function ProductionObserver() {
     }
@@ -18,6 +19,7 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
         formulaToApplyTot = 'init';
         formulaToApplySingle = 'init';
         editorProduction = EditorProduction;
+        totalValuesModified = false;
         this.listenToCheckboxesTotal();
         this.listenToCheckboxesSingleCrops()
         this.listenToRecalculateButtonTotalValues();
@@ -253,6 +255,7 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
         $("#gridTotalValues").on('cellendedit', function (event){
             event.preventDefault();
             event.stopImmediatePropagation();
+            totalValuesModified = true;
             var dataField = event.args.datafield;
             var oldvalue = event.args.oldvalue;
             var value = event.args.value;
@@ -289,6 +292,18 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
                 var numberOfRow = event.args.rowindex;
                 controllerProduction.updateSingleCropsGridOnEditing(numberOfRow, value, formulaToApplySingle)
             }
+        })
+    }
+
+    ProductionObserver.prototype.listenToSaveTotalValuesButton = function(){
+        $('#saveTotalValues').on('click', function(event){
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            if(totalValuesModified){
+                controllerProduction.saveTotalValues(formulaToApplyTot)
+            }
+
+
         })
     }
 

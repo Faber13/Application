@@ -136,7 +136,7 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
             expression = expression.replace(conditionRegExpression, "")
             firstCondition = firstCondition.slice(0, -1);
             if (firstCondition.substring(1) == "value") {
-                if (typeof item[indexValue] !== 'undefined') {
+                if (typeof item[indexValue] !== 'undefined' ) {
                     var secondCondition = expression.match(valuesRegExpression)[0];
                     expression = expression.replace(valuesRegExpression, "")
                     secondCondition = secondCondition.slice(0, -1);
@@ -152,7 +152,7 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
                 }
             }
             else {
-                if (typeof item[accessorMap[firstCondition.substring(1)]] !== 'undefined') {
+                if (typeof item[accessorMap[firstCondition.substring(1)]] !== 'undefined' && item[accessorMap[firstCondition.substring(1)]] !==null) {
                     var secondCondition = expression.match(valuesRegExpression)[0];
                     expression = expression.replace(valuesRegExpression, "")
                     secondCondition = secondCondition.slice(0, -1);

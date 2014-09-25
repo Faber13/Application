@@ -115,8 +115,12 @@
 [title = "Opening Stocks (Thousand tonnes)"], [title="Opening Stocks (Thousand tonnes)"]~ td,
 [title = "Total Utilization (Thousand tonnes)"], [title="Total Utilization (Thousand tonnes)"]~ td,
 [title = "Domestic Utilization (Thousand tonnes)"], [title="Domestic Utilization (Thousand tonnes)"]~ td,
-[title = "Population (1000s)"], [title="Population (1000s)"]~ td{
-    color : #005C7A;
+[title = "Population (1000s)"], [title="Population (1000s)"]~ td,
+[title = "Per capita food use (Kg/Yr)"],[title = "Per capita food use (Kg/Yr)"]~ td,
+[title = "Extraction Rate (%)"],[title = "Extraction Rate (%)"]~ td
+
+{
+    color : #0082AD;
 }
 
 

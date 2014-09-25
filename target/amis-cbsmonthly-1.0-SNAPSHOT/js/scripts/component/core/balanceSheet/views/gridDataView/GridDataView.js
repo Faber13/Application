@@ -131,7 +131,7 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel", "jquery.sidebar"
         });
 
         var rows;
-
+        document.getElementById('box').style.visibility = "visible";
         var options =  document.getElementById('options')
         options.style.visibility = "visible" ;
         var toappend = document.getElementById('toAppend');
@@ -144,10 +144,17 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel", "jquery.sidebar"
             f.remove();
         }
 
-        $('#options').append('<div class="btn-group-vertical" id="optionsPivotGrid">' +
+        var f = document.getElementById('newForecast');
+        if(typeof f != 'undefined' && f != null){
+            f.remove();
+        }
+
+        $('#options').append('<div class="btn-group"><button class="btn btn-primary" id="newForecast">Create a new forecast for season '+filterData.season+'</button></div><div class="btn-group-vertical" id="optionsPivotGrid">' +
                 '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">' +
                 '<span class="caret"></span><span>Options</span></button>' +
-                '<ul class="dropdown-menu" role="menu"><li><span>Edit flag and notes</span><div id="editingChoice"/></li></ul></div>') ;
+                '<ul class="dropdown-menu" role="menu"><li>' +
+            '<div class="row"><div class="col-lg-1"><div id="editingChoice"/></div>' +
+            '<div class="col-lg-9"><span>Edit flag and notes</span></div></div><hr></li></ul></div>') ;
        $('#editingChoice').jqxCheckBox({width: 30, height: 25});
 
     }
