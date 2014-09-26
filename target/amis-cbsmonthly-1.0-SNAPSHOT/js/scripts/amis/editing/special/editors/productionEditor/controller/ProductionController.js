@@ -85,6 +85,8 @@ define(['jquery'], function($){
     ProductionController.prototype.saveTotalValues = function(formulaToApply){
         var dataOriginal = modelProduction.getOriginalData();
         var dataCalculated = modelProduction.getCalculatedTotalModel();
+        editorProduction.saveDataTotGrid(dataCalculated,dataOriginal);
+
 
     }
 

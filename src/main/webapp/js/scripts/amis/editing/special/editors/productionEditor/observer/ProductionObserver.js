@@ -27,6 +27,7 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
         this.listenToTabs();
         this.listenToEditCellTotGrid()
         this.listenToEditCellSingleCropsGrid()
+        this.listenToSaveTotalValuesButton()
     }
 
     ProductionObserver.prototype.listenToCheckboxesTotal = function () {

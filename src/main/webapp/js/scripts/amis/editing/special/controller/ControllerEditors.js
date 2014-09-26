@@ -3,18 +3,26 @@
  */
 define(["jquery", "editingSpecial/utils/DataHandler", "productionEditor/creator/ProductionEditor"], function($, DataHandler, ProductionEditor){
 
-    var specialFormulaController, dataHandler, productionEditor, dsdConfigurator, supportUtiliy;
+    var specialFormulaController, dataHandler, productionEditor, dsdConfigurator, supportUtiliy,
+        clickedCellInfo, generalController;
 
     function ControllerEditors(){
         dataHandler = new DataHandler;
         productionEditor = new ProductionEditor;
     }
 
-    ControllerEditors.prototype.init = function(allData,modelDataTable,resultedClicked, formulaController, DsdConfigurator, Utility){
+    ControllerEditors.prototype.init = function(allData,modelDataTable,resultedClicked, formulaController, DsdConfigurator, Utility,GeneralController){
+
+
+        generalController = GeneralController;
         dsdConfigurator = DsdConfigurator;
         var everyData = allData;
         var tableData = modelDataTable;
         supportUtiliy = Utility;
+
+        clickedCellInfo = resultedClicked
+
+        debugger;
 
         var takenCell =resultedClicked.clickedCell
         specialFormulaController = formulaController;
@@ -36,7 +44,11 @@ define(["jquery", "editingSpecial/utils/DataHandler", "productionEditor/creator/
 
     }
 
-    ControllerEditors.prototype.saveDataFromForm = function(originalData, calculatedData){
+    ControllerEditors.prototype.saveFormProduction = function( calculatedData, originalData){
+        alert('controllerEditors-saveFormProduction')
+        debugger;
+        generalController.saveDataFromProductionForm(calculatedData,originalData,clickedCellInfo)
+
 
     }
 

@@ -109,12 +109,16 @@ define(["jquery", "models/tableDataModel/TableDataModel",
             result[i][4] = null;
             result[i][5] = null;
         }
-        debugger;
         var d = TableModel.addNewForecast(result);
-        debugger;
         return d;
+    }
 
-
+    ModelsController.prototype.saveDataFromProduction = function(newData, indTable, rowGridIndex, columnGridIndex){
+       var indexesTableData = TableModel.updateDataFromProductionForm(newData, indTable)
+       alert('modecontroller')
+        debugger;
+        // TODO: save also grid data
+       return indexesTableData;
     }
 
     return ModelsController;

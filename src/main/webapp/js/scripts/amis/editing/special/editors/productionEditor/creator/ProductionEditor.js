@@ -5,8 +5,7 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
         "productionEditor/model/ProductionModel", "specialFormulaConf/formulaHandler/FormulaHandler", "productionEditor/controller/ProductionController"],
     function ($, Formatter, Observer, ModelProduction, FormulaHandler, Controller) {
 
-        var observer, modelProduction, supportUtility, formulaHandler, originalTotCropsModel, productionController;
-
+        var observer, modelProduction, supportUtility, formulaHandler, originalTotCropsModel, productionController, controllerEditors, clickedCell;
 
         // ---------------------- SUPPORT FUNCTIONS -------------------------------------------
 
@@ -23,7 +22,6 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
         }
         // ------------------------------------------------------------------------------------
 
-
         function ProductionEditor() {
             observer = new Observer;
             modelProduction = new ModelProduction;
@@ -31,7 +29,8 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
             productionController = new Controller;
         }
 
-        ProductionEditor.prototype.init = function (clickedItem, itemsInvolved, codesInvolved, configurator, Utility) {
+        ProductionEditor.prototype.init = function (clickedItem, itemsInvolved, codesInvolved, configurator, Utility, ControllerEditors) {
+            controllerEditors = ControllerEditors;
 
             var involvedItems = $.extend(true, [], itemsInvolved);
             supportUtility = Utility;
@@ -47,8 +46,6 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
 
             var singleCropsModel = modelProduction.getSingleCropsModel(involvedItems, supportUtility);
             var copyOriginalModelSingle = $.extend(true, [], singleCropsModel);
-
-            console.log(copyOriginalModelSingle)
 
             var valueCodeItem = parseInt(clickedItem[0])
 
@@ -290,6 +287,10 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
                 ]
             });
 
+        }
+
+        ProductionEditor.prototype.saveDataTotGrid = function(dataCalculated, originalData){
+            controllerEditors.saveFormProduction(dataCalculated,originalData);
         }
 
         return ProductionEditor;

@@ -19,7 +19,6 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
             editingOnCell = true
         };
 
-
         GeneralController.prototype.init = function (gridModel, tableModel, configurator, modelController, utility) {
             generalObserver.init(this)
             ModelController = modelController;
@@ -38,7 +37,6 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
             this.createListeners();
             this.onChangeModalityEditing();
         }
-
 
         GeneralController.prototype.createListeners = function () {
             console.log('listeners')
@@ -79,25 +77,22 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
                                     that.updateGrid(clickedCell, indTable, rowGridIndex, columnGridIndex);
                                 }
                             }
-
-                                if (typeof oldCell !== 'undefined' && oldCell != null) {
-                                    if (oldCell.firstElementChild != null) {
-                                        $("#" + oldCell.id).igTextEditor('destroy');
-                                    }
-                                    oldCell.removeAttribute("id")
-                                    oldCell.removeAttribute("class")
-                                }
-                                cell.setAttribute("id", "clickedCell");
-                                $("#clickedCell").igTextEditor({
-                                    textMode: "text",
-                                    value: clickedCell[3],
-                                    focusOnSpin: false,
-                                    selectionOnFocus: 0,
-                                    valueChanged: functionChanges
-                                });
-
-
+                            if (typeof oldCell !== 'undefined' && oldCell != null) {
+                               if (oldCell.firstElementChild != null) {
+                                  $("#" + oldCell.id).igTextEditor('destroy');
+                               }
+                               oldCell.removeAttribute("id")
+                               oldCell.removeAttribute("class")
                             }
+                            cell.setAttribute("id", "clickedCell");
+                            $("#clickedCell").igTextEditor({
+                               textMode: "text",
+                               value: clickedCell[3],
+                               focusOnSpin: false,
+                               selectionOnFocus: 0,
+                               valueChanged: functionChanges
+                            });
+                        }
                         else { // editing total
                             var cell = ui.cellElement;
                             var oldCell = document.getElementById("clickedCell")
@@ -115,15 +110,13 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
                         if (resultedClicked.clickedCell[0] == 5 || resultedClicked.clickedCell[0] == 2 || resultedClicked.clickedCell[0] == 4) {
                             var allData = $.extend(true, {}, ModelController.getData());
                             var tableData = $.extend(true, {}, ModelController.getTableDataModel());
-                            specialControlEditor.init(allData, tableData, resultedClicked, formulaController, Configurator, supportUtility);
+                            specialControlEditor.init(allData, tableData, resultedClicked, formulaController, Configurator, supportUtility, that);
                         } else {
                             var allData = ModelController.getTableDataModel();
-                            specialControlEditor.init(allData, resultedClicked, formulaController, Configurator, supportUtility);
+                            specialControlEditor.init(allData, tableData, resultedClicked, formulaController, Configurator, supportUtility, that);
                         }// other form
                     }
                 }
-
-
             })
 
 
@@ -149,7 +142,6 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
             this.onSaveButton(indTable, clickedCell, rowGridIndex, columnGridIndex);
         }
 
-
         GeneralController.prototype.onSaveButton = function (indTable, cell, rowIndex, columnIndex) {
 
             var that = this;
@@ -162,7 +154,6 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
                 }
             });
         }
-
 
         GeneralController.prototype.updateGrid = function (newCell, indTable, rowIndex, columnIndex) {
             var bindedKeys = formulaController.getBindedKeys();
@@ -180,13 +171,42 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
                 formulaController.sortByDateAtStart(modelWithFormulas);
 
                 var rowsChanged = formulaController.applyUpdateFormulas(modelWithFormulas, formulas, columnIndex, rowIndex);
+                console.log('before Row changed')
+                console.log(rowsChanged)
                 rowsChanged.push({'index': indTable, 'row': newCell})
+                console.log('rowChanged')
+                console.log(rowsChanged)
                 // at the end, order like initially
                 formulaController.sortInitialValue(modelWithFormulas);
                 ViewGrid.updateBatchGridView(modelWithFormulas, rowsChanged);
             } else {
                 ViewGrid.updateGridView(newCell, indTable);
             }
+        }
+
+        GeneralController.prototype.saveDataFromProductionForm = function(newCalculatedData,newOriginalData, cellClickedInfo){
+            console.log('generalController: saveDataFromProductionForm, init')
+            var indexes = ModelController.saveDataFromProduction(newOriginalData, cellClickedInfo.indTable, cellClickedInfo.rowGridIndex, cellClickedInfo.columnGridIndex)
+            var tableModel = ModelController.getTableDataModel();
+            console.log('generalController: saveDataFromProductionForm, afet getTableData')
+
+            var modelWithFormulas = $.extend(true, [], tableModel);
+            console.log('generalController: saveDataFromProductionForm, afet formula.init')
+
+            formulaController.init(modelWithFormulas, Configurator)
+            var rowsChanged= []
+            alert('sadsad')
+            debugger;
+            for(var i =0; i<newCalculatedData.length; i++){
+                for(var j =0; j<indexes.length; j++) {
+                    if (newCalculatedData[i][0] == indexes[j]['key']) {
+                        rowsChanged.push({'index': indexes[j]['index'], 'row': newCalculatedData[i]})
+                    }
+                }
+            }
+            console.log('generalController: saveDataFromProductionForm, before updateBatchGridView')
+            debugger;
+            ViewGrid.updateBatchGridView(modelWithFormulas, rowsChanged);
         }
 
         GeneralController.prototype.updateWithNewForecast = function(){
@@ -197,7 +217,6 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
             this.onChangeModalityEditing()
         }
 
-
         GeneralController.prototype.onChangeModalityEditing = function() {
             $("#editingChoice").bind('change', function (event) {
                 event.preventDefault()
@@ -205,7 +224,6 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
                 editingOnCell = !event.args.checked;
             })
         }
-
 
         return GeneralController;
 

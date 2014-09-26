@@ -94,7 +94,6 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel", "jquery.sidebar"
             measures: "[Measures].[value]"
         });
 
-        var grid, gridI;
         $("#" + idOlapGrid).igPivotGrid({
             allowSorting: true,
             allowHeaderRowsSorting: true,
@@ -130,7 +129,7 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel", "jquery.sidebar"
             height: '100%'
         });
 
-        var rows;
+
         document.getElementById('box').style.visibility = "visible";
         var options =  document.getElementById('options')
         options.style.visibility = "visible" ;
@@ -203,6 +202,8 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel", "jquery.sidebar"
             alert('qui')
         }
 
+        alert('viewGrid')
+        debugger;
         for(var i =0; i<cells.length; i++){
             modelView[cells[i]["index"]] = viewModel.updateItem(cells[i]["row"])
         }

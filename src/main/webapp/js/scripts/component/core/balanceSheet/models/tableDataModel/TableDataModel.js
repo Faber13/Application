@@ -232,7 +232,6 @@ define(["jquery", "formulasAmis/support/SupportModel" ], function ($, SupportMod
         }
 
         visualizedData = result;
-
         return result;
     }
 
@@ -271,7 +270,6 @@ define(["jquery", "formulasAmis/support/SupportModel" ], function ($, SupportMod
                         }
                     }
                 }
-
             }
         }
         return indexRow;
@@ -298,7 +296,6 @@ define(["jquery", "formulasAmis/support/SupportModel" ], function ($, SupportMod
     TableDataModel.prototype.addNewForecast= function(dataArray){
         var mapCodes =supportModel.getMapCodes()
         var data = this.getTableData();
-        debugger;
         for(var i =0;i<dataArray.length; i++){
             visualizedData.push(dataArray[i])
             originalData.push(dataArray[i])
@@ -342,6 +339,52 @@ define(["jquery", "formulasAmis/support/SupportModel" ], function ($, SupportMod
         });
         return this.getTableData()
     }
+
+    TableDataModel.prototype.updateDataFromProductionForm = function(productionData, indTable){
+        var dateInvolved = productionData[0][2];
+        var indexes = (productionData.length>3)? {"4": true, "2":true, "5":true, "37":true} : {"4":true, "5":true, "2":true};
+        // if there's Area planted
+        var tableData = this.getTableData();
+        var allData = this.getAllData();
+
+        // take the indexes from the table data and the all data
+        var indexesTableData = this.getAllIndexesRequested(tableData, indexes, dateInvolved);
+        var indexesAllData = this.getAllIndexesRequested(allData, indexes, dateInvolved);
+
+        // save the data
+        this.saveDataFromIndexes(tableData,indexesTableData,productionData);
+        this.saveDataFromIndexes(allData,indexesTableData,productionData);
+
+        return indexesTableData;
+    }
+
+    TableDataModel.prototype.getAllIndexesRequested = function(data,indexes,key){
+        var result= []
+        var copyIndexes = $.extend(true,[], indexes)
+        var foundAll = false;
+        for(var i =0; i< data.length && !foundAll; i++){
+            if(data[i][2] == key  && indexes[data[i][0]]){
+                result.push({"key": data[i][0], "index":i})
+                if(Object.keys(indexes).length >1 ){
+                    delete indexes[data[i][0]]
+                }else{
+                    foundAll = true;
+                }
+            }
+        }
+        return result;
+    }
+
+
+    TableDataModel.prototype.saveDataFromIndexes = function(model, indexes, productionData){
+        debugger;
+        for (var i=0; i<indexes.length; i++){
+            model[indexes[i]['index']] = productionData[i]
+            newData.push(productionData[i])
+        }
+    }
+
+
 
 
     return TableDataModel;

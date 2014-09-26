@@ -179,6 +179,10 @@ define(["jquery"], function($){
 
     ProductionModel.prototype.getCalculatedTotalModel = function(){
         var result = $.extend(true, [], calculatedTotalModel);
+        // remove description of element
+        for( var i=0; i<result.length; i++){
+            result[i].splice(6,1)
+        }
         return result;
     }
 
@@ -188,6 +192,11 @@ define(["jquery"], function($){
 
     ProductionModel.prototype.getCalculatedSingleModel = function(){
         var result = $.extend(true, [], calculatedSingleModel);
+        // remove description of element and number of crop
+        for( var i=0; i<result.length; i++){
+            result[i].splice(7,1)
+            result[i].splice(6,1)
+        }
         return result;
 
     }
