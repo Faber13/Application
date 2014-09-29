@@ -34,9 +34,20 @@ define(["jquery"], function($){
         return result;
     }
 
-    ProductionModel.prototype.setOriginalData = function(rowNumber, value){
-        originalTotalCropsModel[rowNumber][3] = value;
+    ProductionModel.prototype.getOriginalTotalCropsModelOriginalConverted  =function(){
+        var model = $.extend(true,[],this.getOriginalTotalCropsModel())
+        for(var i=0;i<model.length; i++){
+            model[i].splice(6,1)
+        }
+        return model;
+    }
 
+    ProductionModel.prototype.setOriginalData = function(rowNumber, value, columnNumber){
+        if(columnNumber == 3){
+            originalTotalCropsModel[rowNumber][columnNumber] = parseFloat(value);
+        }else {
+            originalTotalCropsModel[rowNumber][columnNumber] = value;
+        }
     }
 
     ProductionModel.prototype.getSingleCropsModel = function(involvedItemsSingleCrops, Utility){
@@ -66,12 +77,19 @@ define(["jquery"], function($){
 
     ProductionModel.prototype.convertOriginalToModelDataTotal = function(modality, modelData){
         var result = [];
+        alert()
+        debugger;
         var dataModel = $.extend([],true,modelData);
         var copyMap = $.extend([], true, map);
         if(modality == 'total') {
             // delete Area Planted from object
             delete copyMap[37]
-            dataModel.splice(2,1)
+            for(var i =0; i< dataModel.length; i++){
+                if(dataModel[i][0] == 37){
+                    dataModel.splice(i,1)
+                }
+            }
+
         }
 
         for(var i =0; i< dataModel.length; i++){
@@ -89,8 +107,12 @@ define(["jquery"], function($){
         var dataModel = $.extend([],true,modelData);
         var copyMap = $.extend([], true, map);
         for(var j =0; j< cropsNumber ; j++) {
+            console.log('converting!!')
             for (var i = 0; i < dataModel.length; i++) {
-                var index =  j*dataModel[i].length+i;
+                var index =  (j*dataModel.length )+i;
+                console.log('index!!')
+                console.log(index);
+                console.log(j +", " +i+ "+, +"+index+ " length DM: "+dataModel.length)
                 result[index] = []
                 for(var x =0; x< dataModel[i].length +2; x++) {
                     switch (x) {
@@ -110,6 +132,8 @@ define(["jquery"], function($){
                 }
             }
         }
+        console.log('Lunghezza')
+        console.log(result.length)
         originalSingleCropsModel = $.extend(true,[], result);
         return result;
     }
@@ -125,28 +149,30 @@ define(["jquery"], function($){
 
     ProductionModel.prototype.getCropsNumber = function(){
 
-        if(typeof numberOfCrops ==='undefined') {
             var filterData = supportUtility.getFilterData()
-            var filterCrops = { "regionCode": filterData.countryCode, "productCode": filterData.productCode}
-            // first call
-            $.ajax({
-                async: false,
-                url: cropsUrl,
-                type: 'POST',
-                contentType: "application/json",
-                dataType: 'json',
-                data: JSON.stringify(filterCrops)
+            // if it is a new instance
+            if(typeof filterCrops == 'undefined' || (filterCrops.regionCode !=filterData.countryCode || filterCrops.productCode != filterData.productCode )){
+                var filterCrops = { "regionCode": filterData.countryCode, "productCode": filterData.productCode}
 
-            }).done(function (result) {
-                numberOfCrops = result;
-            })
-        }
+                // first call
+                $.ajax({
+                    async: false,
+                    url: cropsUrl,
+                    type: 'POST',
+                    contentType: "application/json",
+                    dataType: 'json',
+                    data: JSON.stringify(filterCrops)
+
+                }).done(function (result) {
+                    numberOfCrops = result;
+                })
+            }
+
         return numberOfCrops;
 
     }
 
     ProductionModel.prototype.filterModelSingleFromCrops = function(numberCrops, allData){
-        debugger;
         var result = [];
         for( var i=0; i<allData.length; i++){
             if(allData[i][7] ==numberCrops ){
@@ -156,16 +182,18 @@ define(["jquery"], function($){
         return result;
     }
 
-    ProductionModel.prototype.setOriginalCropsData = function(newValue, rowNumber){
-        originalSingleCropsModel[rowNumber][3] = newValue;
+    ProductionModel.prototype.setOriginalCropsData = function(newValue, rowNumber, columnValue){
+        originalSingleCropsModel[rowNumber][columnValue] = newValue;
     }
 
     ProductionModel.prototype.fuseAndGetDataTogether = function(calculatedDataFromCrops,allData, crop){
         var everyData = $.extend(true,[],allData)
         var dataCropsSelected = $.extend(true,[],calculatedDataFromCrops);
+        console.log('dataCtopsSelectd')
+        console.log(dataCropsSelected)
         for(var i =0; i<dataCropsSelected.length; i++) {
             for (var j = 0; j < everyData.length; j++) {
-                if (dataCropsSelected[i][0] == everyData[j][0] && dataCropsSelected[j][6] == crop) {
+                if (dataCropsSelected[i][0] == everyData[j][0] && dataCropsSelected[i][6] == crop) {
                     everyData[j] = dataCropsSelected[i]
                 }
             }
@@ -199,6 +227,39 @@ define(["jquery"], function($){
         }
         return result;
 
+    }
+
+    ProductionModel.prototype.unifySingleCropsData = function(singleCropsData){
+        var result = [];
+        var listChecked = {}
+        // check if total values need to be changed
+        if(this.checkIfCompletedSingleCrops(singleCropsData)) {
+            // case number of crops ==1
+             var elementPosition = 0
+             for (var i = 0; i < singleCropsData.length; i++) {
+                 var code = singleCropsData[i][0]
+                 if(code != 'undefined' && code != null && code != "" && typeof listChecked[singleCropsData[i][0]] == 'undefined') {
+                    listChecked[singleCropsData[i][0]] = elementPosition;
+                    var row = [ singleCropsData[i][0],singleCropsData[i][1], singleCropsData[i][2], singleCropsData[i][3],null, null ,singleCropsData[i][6] ]
+                    result.push(row)
+                    elementPosition++;
+                 }else{
+                     var indexList = listChecked[singleCropsData[i][0]]
+                     result[indexList][3] += singleCropsData[i][3]
+                 }
+             }
+        }
+        return result;
+    }
+
+    ProductionModel.prototype.checkIfCompletedSingleCrops = function(singleCropsData){
+        var result = false;
+        for( var i =0; i< singleCropsData.length && !result ; i++){
+            var flag = singleCropsData[i][4]
+            if(typeof flag != "undefined" && flag != null && flag != "" )
+                result = true;
+        }
+        return result;
     }
 
     return ProductionModel;

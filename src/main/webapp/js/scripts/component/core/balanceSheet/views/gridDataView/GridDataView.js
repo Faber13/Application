@@ -129,6 +129,11 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel", "jquery.sidebar"
             height: '100%'
         });
 
+        $('#productionForm').modal('hide')
+        var f = document.getElementById('productionForm');
+        if(typeof f != 'undefined' && f != null){
+            f.remove();
+        }
 
         document.getElementById('box').style.visibility = "visible";
         var options =  document.getElementById('options')
@@ -238,7 +243,14 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel", "jquery.sidebar"
 
         });
 
+        // Remove prodcu
+        if(document.getElementById('productionForm')) {
+            $('#productionForm').modal('hide');
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
+        }
         $("#pivotGrid").igPivotGrid("option", "dataSource", dataSource2)
+
 /*
         var options =  document.getElementById('loading')
         options.style.visibility = 'visible';*/

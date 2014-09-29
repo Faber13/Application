@@ -45,6 +45,11 @@ define(["jquery", "formulasAmis/support/SupportModel" ], function ($, SupportMod
         return result;
     }
 
+    TableDataModel.prototype.setTableDataModel = function(index, row){
+        var model = this.getTableData();
+        model[index] = row;
+    }
+
 
     TableDataModel.prototype.setTableData = function (newData) {
         // TODO
@@ -352,8 +357,8 @@ define(["jquery", "formulasAmis/support/SupportModel" ], function ($, SupportMod
         var indexesAllData = this.getAllIndexesRequested(allData, indexes, dateInvolved);
 
         // save the data
-        this.saveDataFromIndexes(tableData,indexesTableData,productionData);
-        this.saveDataFromIndexes(allData,indexesTableData,productionData);
+        this.saveDataFromIndexes('table',indexesTableData,productionData);
+        this.saveDataFromIndexes('original',indexesTableData,productionData);
 
         return indexesTableData;
     }
@@ -377,15 +382,16 @@ define(["jquery", "formulasAmis/support/SupportModel" ], function ($, SupportMod
 
 
     TableDataModel.prototype.saveDataFromIndexes = function(model, indexes, productionData){
-        debugger;
-        for (var i=0; i<indexes.length; i++){
-            model[indexes[i]['index']] = productionData[i]
-            newData.push(productionData[i])
+        var modelData;
+        modelData = (model == 'table')? this.getTableData() : this.getAllData();
+        for (var i=0; i<indexes.length; i++) {
+            for (var j = 0; j < productionData.length; j++) {
+                if( modelData[indexes[i]['index']][0] == productionData[j][0]) {
+                    this.setTableDataModel(indexes[i]['index'], productionData[j])
+                }
+            }
         }
     }
-
-
-
 
     return TableDataModel;
 })

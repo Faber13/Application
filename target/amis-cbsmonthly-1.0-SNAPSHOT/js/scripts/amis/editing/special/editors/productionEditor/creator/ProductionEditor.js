@@ -37,6 +37,7 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
 
             // take data and calculate initial formulas
             originalTotCropsModel = modelProduction.getTotalCropsModel(involvedItems, supportUtility);
+            debugger;
             productionController.init(this, formulaHandler, modelProduction)
 
             var copyOriginalModelTot = $.extend(true, [], originalTotCropsModel);
@@ -96,7 +97,7 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
                 '<div class="modal-dialog">' +
                 '<div class="modal-content">' +
                 '<div class="modal-header">' +
-                '<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>' +
+                '<button type="button" class="close" data-dismiss="modal" id="closeModal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>' +
                 '<h4 class="modal-title" id="myModalLabel">Production Form</h4>' +
                 '</div>' +
                 '<div class="modal-body" id ="toappendData">' +
@@ -129,7 +130,7 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
                 '<div id="gridTotalValues"></div></div></div>' +
                 '<div class="modal-footer">' +
                 '<button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>' +
-                '<button type="button" class="btn btn-primary" id="saveTotalValues">Save changes</button>' +
+                '<button type="button" class="btn btn-primary" data-dismiss="modal" id="saveTotalValues">Save changes</button>' +
                 '</div>' +
                 '</div>' +
 
@@ -158,7 +159,7 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
 
                 '<div class="modal-footer">' +
                 '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>' +
-                '<button type="button" class="btn btn-primary">Save changes</button>' +
+                '<button type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>' +
                 '</div>' +
                 '</div>' +
                 '</div>' +

@@ -146,8 +146,8 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
 
             var that = this;
             $("#saveButton").on('click', function (e) {
+                e.preventDefault()
                 e.stopImmediatePropagation();
-                $('#saveButton').off();
                 var newCell = FormController.getValue(cell)
                 if (newCell.length > 0) {
                     that.updateGrid(newCell, indTable, rowIndex, columnIndex)
@@ -186,6 +186,7 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
 
         GeneralController.prototype.saveDataFromProductionForm = function(newCalculatedData,newOriginalData, cellClickedInfo){
             console.log('generalController: saveDataFromProductionForm, init')
+           debugger;
             var indexes = ModelController.saveDataFromProduction(newOriginalData, cellClickedInfo.indTable, cellClickedInfo.rowGridIndex, cellClickedInfo.columnGridIndex)
             var tableModel = ModelController.getTableDataModel();
             console.log('generalController: saveDataFromProductionForm, afet getTableData')
@@ -195,8 +196,6 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
 
             formulaController.init(modelWithFormulas, Configurator)
             var rowsChanged= []
-            alert('sadsad')
-            debugger;
             for(var i =0; i<newCalculatedData.length; i++){
                 for(var j =0; j<indexes.length; j++) {
                     if (newCalculatedData[i][0] == indexes[j]['key']) {
@@ -205,7 +204,6 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
                 }
             }
             console.log('generalController: saveDataFromProductionForm, before updateBatchGridView')
-            debugger;
             ViewGrid.updateBatchGridView(modelWithFormulas, rowsChanged);
         }
 

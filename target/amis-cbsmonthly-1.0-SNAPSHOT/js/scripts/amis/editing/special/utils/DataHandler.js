@@ -62,23 +62,31 @@ define(['jquery'], function($){
         var result = [];
         var copyCodes = $.extend([], true, codes);
         var date = cell[2];
-        for(var j = 0; j< copyCodes.length; j++){
-             for(var i =0; i< data.length; i++){
-                if(data[i][0] == copyCodes[j] && data[i][2] == date ){
-                    copyCodes.splice(j,1)
-                    result.push(data[i])
+        var eliminatedValues = []
+        for(var j = 0; j< copyCodes.length && eliminatedValues.length<copyCodes.length; j++){
+            for(var i =0; i< tableData.length && eliminatedValues.length<copyCodes.length; i++){
+                if(tableData[i][0] == copyCodes[j] && tableData[i][2] == date ){
+                    eliminatedValues.push({'key' : i})
+                    result.push(tableData[i])
                 }
             }
-        }if(copyCodes.length !=0){
-            for(var j = 0; j< copyCodes.length; j++){
-                for(var i =0; i< tableData.length; i++){
-                    if(tableData[i][0] == copyCodes[j] && tableData[i][2] == date ){
-                        copyCodes.splice(j,1)
-                        result.push(tableData[i])
+            for(var i =0; i< eliminatedValues.length; i++){
+                copyCodes.splice(eliminatedValues[i].key,1)
+            }
+            // the remaining list
+
+        }if(copyCodes.length != 0){
+            for(var j = 0; j< copyCodes.length && eliminatedValues.length<copyCodes.length; j++){
+                for(var i =0; i< data.length && eliminatedValues.length<copyCodes.length; i++){
+                    if(data[i][0] == copyCodes[j] && data[i][2] == date ){
+                        eliminatedValues.push({'key' : i})
+                        result.push(data[i])
                     }
                 }
             }
         }
+        debugger;
+
         return result;
     }
 

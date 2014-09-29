@@ -229,7 +229,7 @@
                 ],
                 "valuesDisabled":[
                     {
-                        "production": [
+                        "production":
                             {
                                 "variable": {
                                     "formulaId": 3,
@@ -271,7 +271,7 @@
                                     }
                                 ]
                             }
-                        ]
+
                     },
                     {
                         "areaHarvested":{

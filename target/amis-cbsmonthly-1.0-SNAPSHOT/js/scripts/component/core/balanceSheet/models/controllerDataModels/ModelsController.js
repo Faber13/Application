@@ -115,8 +115,6 @@ define(["jquery", "models/tableDataModel/TableDataModel",
 
     ModelsController.prototype.saveDataFromProduction = function(newData, indTable, rowGridIndex, columnGridIndex){
        var indexesTableData = TableModel.updateDataFromProductionForm(newData, indTable)
-       alert('modecontroller')
-        debugger;
         // TODO: save also grid data
        return indexesTableData;
     }

@@ -4,7 +4,7 @@
 define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
 
     var editorProduction, formulaToApplyTot, formulaToApplySingle, controllerProduction,
-        totalValuesModified;
+        totalValuesModified, singleCropsValuesModified;
 
     function ProductionObserver() {
     }
@@ -20,6 +20,7 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
         formulaToApplySingle = 'init';
         editorProduction = EditorProduction;
         totalValuesModified = false;
+        singleCropsValuesModified = false;
         this.listenToCheckboxesTotal();
         this.listenToCheckboxesSingleCrops()
         this.listenToRecalculateButtonTotalValues();
@@ -209,6 +210,7 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
             counter += $("#firstCheckBoxTotVal").val()? 1:0;
             counter += $("#secondCheckBoxTotVal").val()? 1:0;
             counter += $("#thirdCheckBoxTotVal").val()? 1:0;
+            totalValuesModified = true;
             if(counter == 2){ //OK
                 controllerProduction.updateTotGridOnFormulaChanges(formulaToApplyTot);
             }else{
@@ -231,6 +233,7 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
             counter += $("#firstCheckBoxSingleCrops").val()? 1:0;
             counter += $("#secondCheckBoxSingleCrops").val()? 1:0;
             counter += $("#thirdCheckBoxSingleCrops").val()? 1:0;
+            singleCropsValuesModified = true;
             console.log(counter)
             if(counter == 2){ //OK
                 controllerProduction.updateSingleCropsGridOnFormulaChanges(formulaToApplySingle);
@@ -247,7 +250,12 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
     ProductionObserver.prototype.listenToTabs = function(){
         $('#productionTabs').on('tabclick', function (event) {
             event.preventDefault()
+            debugger;
             var clickedItem = event.args.item;
+            if(clickedItem == 0 && singleCropsValuesModified){ // from single crops to total values
+                controllerProduction.onSwitchingCropsValues(formulaToApplySingle)
+
+            }
         });
     }
 
@@ -257,7 +265,7 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
             event.preventDefault();
             event.stopImmediatePropagation();
             totalValuesModified = true;
-            var dataField = event.args.datafield;
+            var columnValue = event.args.datafield;
             var oldvalue = event.args.oldvalue;
             var value = event.args.value;
             if(checkAll(oldvalue)){
@@ -266,9 +274,12 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
                     value = parseFloat(value)
                 }
             }
-            if(dataField == 3 && (oldvalue !=value)){
+            if(columnValue == 3 && (oldvalue !=value)){
                 var numberOfRow = event.args.rowindex;
-                controllerProduction.updateTotGridOnEditing(numberOfRow, value, formulaToApplyTot)
+                var value2 = parseFloat(value)
+                controllerProduction.updateTotGridOnEditing(numberOfRow, value2, formulaToApplyTot, columnValue)
+            }else if(columnValue != 3 && (oldvalue != value)){
+
             }
 
         })
@@ -279,8 +290,8 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
         $("#gridSingleCrops").on('cellendedit', function (event){
             event.preventDefault();
             event.stopImmediatePropagation();
-
-            var dataField = event.args.datafield;
+            singleCropsValuesModified = true;
+            var columnValue = event.args.datafield;
             var oldvalue = event.args.oldvalue;
             var value = event.args.value;
             if(checkAll(oldvalue)){
@@ -289,9 +300,10 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
                     value = parseFloat(value)
                 }
             }
-            if(dataField == 3 && (oldvalue !=value)){
+            if((oldvalue !=value)){
+                var value2 = parseFloat(value)
                 var numberOfRow = event.args.rowindex;
-                controllerProduction.updateSingleCropsGridOnEditing(numberOfRow, value, formulaToApplySingle)
+                controllerProduction.updateSingleCropsGridOnEditing(numberOfRow, value2, formulaToApplySingle, columnValue)
             }
         })
     }

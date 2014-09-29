@@ -28,6 +28,7 @@ define(["jquery", "specialFormulaConf/formulaUtils/FormulaConfigurator", "specia
     }
 
     FormulaHandler.prototype.createFormula = function (modelData, formulaData) {
+        debugger;
         console.log("createFormula")
         var model = modelData;
         var formula =  formulaData;
@@ -50,7 +51,6 @@ define(["jquery", "specialFormulaConf/formulaUtils/FormulaConfigurator", "specia
                         var hasCondition = addendum.hasCondition
                         var existCondition = addendum.condition == "exists"
                         if (hasCondition&& existCondition){
-                            debugger;
                             if (typeof model[index][3] == 'undefined' || model[index][3] == null || model[index][3] == "") {
                                 code = addendum.otherValue[0];
                                 index =  commonUtils.getIndexModelFromCode(code,model);

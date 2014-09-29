@@ -53,7 +53,7 @@ define(["jquery", "formatter/DatatypesFormatter","flagTranslator/controller/Flag
         // Only the FIRST ROW column indexes start from 2, it needs to be checked!
         $("#pivotGrid").append($newdiv1)
 
-        var form = ("<form id ='form' role='form' class='col-lg-10' type='hidden'><fieldset>");
+        var form = ("<form id ='form' role='form' class='col-lg-12' type='hidden'><fieldset>");
         $('#dialogForm').append(form);
         // leftKeyColumns
         for (var i = 0; i < leftKeyColumnsIndexes.length; i++) {
@@ -98,7 +98,12 @@ define(["jquery", "formatter/DatatypesFormatter","flagTranslator/controller/Flag
             this.appendRigthInputFormat(title, value, columnDSD, columnCONF, container);
 
         }
-        $('#form').append(("</fieldset></form>"))
+
+        $('#spaceForButtons').append("<br><br><div class='row'><div class='col-lg-6 '>" +
+            "<button class='btn btn-lg btn-danger' id='saveButton'>Save</button></div>" +
+            "<div class='col-lg-1 col-lg-offset-4'><button class='btn btn-primary' id='resetButton'>Reset</button></div></div></div>")
+
+
 
         var that = this;
 
@@ -118,10 +123,6 @@ define(["jquery", "formatter/DatatypesFormatter","flagTranslator/controller/Flag
             }
         });
 
-
-        $('#dialogForm').append("<br><br><div class='row'><div class='col-lg-5 col-lg-offset-1'>" +
-            "<button class='btn btn-lg btn-danger' id='saveButton'>Save</button></div>" +
-            "<div class='col-lg-2 col-lg-offset-3'><button class='btn btn-primary' id='resetButton'>Reset</button></div></div></div>")
 
         var that = this;
         $('#resetButton').on('click', function () {
@@ -579,13 +580,13 @@ define(["jquery", "formatter/DatatypesFormatter","flagTranslator/controller/Flag
                         $('#form').append("<div class ='row'>" +
                             "<div class='col-lg-6'><label for='" + container + "'>" + title
                             + "</label></div>" +
-                            "<div class='col-lg-6'><textarea type='text' class='input-group-lg form-control' name='name'  rows='3' id='" + container + "'>"+value+"</textarea></div>" +
-                            "</div><br>")
+                            "<div class='col-lg-6'><textarea placeholder ='Type some notes' type='text' class='input-group-lg form-control' name='name'  rows='3' id='" + container + "'>"+value+"</textarea></div>" +
+                            "</div><br><div class ='ui-dialog-buttonpane ui-widget-content ui-helper-clearfix' id='spaceForButtons'></div>")
                     }
                     // Case Multiple flag
                     else if (title =="Flags") {
                         $('#form').append(this.getMultipleFlagToAppend(value, container, title))
-                        $('#'+container).select2()
+                        $('#'+container).select2({placeholder: "Click to select the flags"})
                     }
 
                     else {
@@ -626,7 +627,6 @@ define(["jquery", "formatter/DatatypesFormatter","flagTranslator/controller/Flag
                 $input.push($inputs[i])
             }
         }
-        debugger;
 
         for (var i = 0; i < $input.length; i++) {
             // VALUE column
