@@ -54,7 +54,7 @@
                                 "version": "",
                                 "code": "19",
                                 "title": {
-                                    "EN": "Total Supply (Thousand Tonnes)",
+                                    "EN": "Total Supply (Thousand tonnes)",
                                     "FR": ""
                                 }
                             }
@@ -130,7 +130,7 @@
                                 "version": "",
                                 "code": "7",
                                 "title": {
-                                    "EN": "Imports- NMY (Thousand tonnes)",
+                                    "EN": "Imports - NMY (Thousand tonnes)",
                                     "FR": ""
                                 }
                             }
@@ -169,25 +169,6 @@
                                 "code": "20",
                                 "title": {
                                     "EN": "Domestic Utilization (Thousand tonnes)",
-                                    "FR": ""
-                                }
-                            }
-                        },
-                        {
-                            "codeList": {
-                                "codeList": "",
-                                "version": "1",
-                                "title": {
-                                    "EN": "",
-                                    "FR": ""
-                                }
-                            },
-                            "code": {
-                                "codeList": "",
-                                "version": "",
-                                "code": "36",
-                                "title": {
-                                    "EN": "Crush (Thousand tonnes)",
                                     "FR": ""
                                 }
                             }
@@ -263,7 +244,7 @@
                                 "version": "",
                                 "code": "10",
                                 "title": {
-                                    "EN": "Exports-NMY (Thousand tonnes)",
+                                    "EN": "Exports - NMY (Thousand tonnes)",
                                     "FR": ""
                                 }
                             }
@@ -358,7 +339,7 @@
                                 "version": "",
                                 "code": "998",
                                 "title": {
-                                    "EN": "Paddy Production (Thousand tonnes)",
+                                    "EN": "Production Paddy (Thousand Tonnes)",
                                     "FR": ""
                                 }
                             }
@@ -477,6 +458,8 @@
                                 }
                             }
                         }
+
+
                     ],
                     "customCodes": [
                         {
@@ -696,7 +679,7 @@
                         "FR": ""
                     },
                     "supplemental": {
-                        "EN": "Seasons",
+                        "EN": "",
                         "FR": ""
                     }
                 }
@@ -717,7 +700,7 @@
 
                 ],
                 "domain": {
-                    "codes":[],
+                    "codes": [],
                     "customCodes": [
                         {
                             "code": "",
@@ -804,7 +787,7 @@
                     "virtual": true,
                     "id": 6,
                     "title": {
-                        "EN": "note",
+                        "EN": "Note",
                         "FR": ""
                     },
                     "supplemental": {

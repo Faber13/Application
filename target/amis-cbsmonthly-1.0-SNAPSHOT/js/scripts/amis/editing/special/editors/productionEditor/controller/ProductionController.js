@@ -99,11 +99,15 @@ define(['jquery'], function($){
         for(var i =0; i<dataUnified.length; i++) {
             for(var j=0; j<totalValueModel.length; j++) {
                 if (totalValueModel[j][0] == dataUnified[i][0]) {
-                    debugger;
                     modelProduction.setOriginalData(j, dataUnified[i][3], 3)
                 }
             }
         }
+        console.log('formulaSingleToApply')
+        if(formulaSingleToApply == 'init'){
+            formulaSingleToApply = 'yield'
+        }
+        editorProduction.setTotalValuesOnModified()
         this.updateTotGridOnFormulaChanges(formulaSingleToApply)
     }
 

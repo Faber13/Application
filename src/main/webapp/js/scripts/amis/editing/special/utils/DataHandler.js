@@ -63,29 +63,25 @@ define(['jquery'], function($){
         var copyCodes = $.extend([], true, codes);
         var date = cell[2];
         var eliminatedValues = []
-        for(var j = 0; j< copyCodes.length && eliminatedValues.length<copyCodes.length; j++){
-            for(var i =0; i< tableData.length && eliminatedValues.length<copyCodes.length; i++){
-                if(tableData[i][0] == copyCodes[j] && tableData[i][2] == date ){
-                    eliminatedValues.push({'key' : i})
+        for(var j = 0; j< copyCodes.length && eliminatedValues.length<copyCodes.length; j++) {
+            for (var i = 0; i < tableData.length && eliminatedValues.length < copyCodes.length; i++) {
+                if (tableData[i][0] == copyCodes[j] && tableData[i][2] == date) {
+                    eliminatedValues.push(tableData[i][0])
                     result.push(tableData[i])
                 }
             }
-            for(var i =0; i< eliminatedValues.length; i++){
-                copyCodes.splice(eliminatedValues[i].key,1)
-            }
-            // the remaining list
-
-        }if(copyCodes.length != 0){
+        }
+        // the remaining list
+        if(eliminatedValues.length < copyCodes.length){
             for(var j = 0; j< copyCodes.length && eliminatedValues.length<copyCodes.length; j++){
                 for(var i =0; i< data.length && eliminatedValues.length<copyCodes.length; i++){
-                    if(data[i][0] == copyCodes[j] && data[i][2] == date ){
-                        eliminatedValues.push({'key' : i})
+                    if(data[i][0] == copyCodes[j] && data[i][2] == date && eliminatedValues.indexOf(data[i][0])){
+                        eliminatedValues.push(data[i][0])
                         result.push(data[i])
                     }
                 }
             }
         }
-        debugger;
 
         return result;
     }

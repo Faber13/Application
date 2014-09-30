@@ -3,11 +3,11 @@
  */
 define(["jquery", "view/GridDataView", "editorController/FormController",
         "exporter/controller/ExportController", "adapter/AdapterPivot", "formulasAmis/controller/FormulaController",
-        "editingSpecial/controller/ControllerEditors", "generalObserver/GeneralObserver", "jquery.sidebar"],
+        "editingSpecial/controller/ControllerEditors", "generalObserver/GeneralObserver" ,"jquery.sidebar"],
     function ($, GridDataView, EditorController, ExportController, Adapter, FormulaController, SpecialEditorController, GeneralObserver) {
 
         var ViewGrid, ModelController, FormController, dsd, Configurator, adapterPivot, formulaController, supportUtility,
-            specialControlEditor, editingOnCell, generalObserver;
+            specialControlEditor, editingOnCell, generalObserver, filterData;
 
         function GeneralController() {
             ViewGrid = new GridDataView;
@@ -28,8 +28,10 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
             // create a copy
             var tableModelWithFormula = $.extend(true,[], tableModel);
 
+            filterData = supportUtility.getFilterData()
+
             // formula
-            formulaController.init(tableModelWithFormula, Configurator)
+            formulaController.init(tableModelWithFormula, Configurator, filterData)
 
             // visualization model
             ViewGrid.init(tableModelWithFormula, configurator, supportUtility)
@@ -47,6 +49,7 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
             var that = this;
 
             $(document.body).delegate("#" + grid.id(), "iggridcellclick", function (evt, ui) {
+                debugger;
                 evt.preventDefault();
                 evt.stopImmediatePropagation();
                 var cellTableModel2 = ModelController.getTableDataModel();
@@ -110,10 +113,11 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
                         if (resultedClicked.clickedCell[0] == 5 || resultedClicked.clickedCell[0] == 2 || resultedClicked.clickedCell[0] == 4) {
                             var allData = $.extend(true, {}, ModelController.getData());
                             var tableData = $.extend(true, {}, ModelController.getTableDataModel());
-                            specialControlEditor.init(allData, tableData, resultedClicked, formulaController, Configurator, supportUtility, that);
+                            specialControlEditor.init(allData, tableData, resultedClicked, formulaController, Configurator, supportUtility, that, filterData.productCode);
                         } else {
                             var allData = ModelController.getTableDataModel();
-                            specialControlEditor.init(allData, tableData, resultedClicked, formulaController, Configurator, supportUtility, that);
+                            var tableData = $.extend(true, {}, ModelController.getTableDataModel());
+                            specialControlEditor.init(allData, tableData, resultedClicked, formulaController, Configurator, supportUtility, that,filterData.productCode);
                         }// other form
                     }
                 }

@@ -23,6 +23,7 @@ requirejs.config({
         dataLoader        :  "../amis/loading/logic",
         editingSpecial    :  "../amis/editing/special",
         productionEditor  :  "../amis/editing/special/editors/productionEditor",
+        paddyEditor       :  "../amis/editing/special/editors/paddyEditor",
         otherUsesEditor   :  "../amis/editing/special/editors/otherUsesEditor",
         paddyEditor       :  "../amis/editing/special/editors/paddyEditor",
         flagTranslator    :  "../component/plugins/Amis/InputTool/utils/flagFormatter",

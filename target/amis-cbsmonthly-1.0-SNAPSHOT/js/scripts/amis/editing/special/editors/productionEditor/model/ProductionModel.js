@@ -77,8 +77,6 @@ define(["jquery"], function($){
 
     ProductionModel.prototype.convertOriginalToModelDataTotal = function(modality, modelData){
         var result = [];
-        alert()
-        debugger;
         var dataModel = $.extend([],true,modelData);
         var copyMap = $.extend([], true, map);
         if(modality == 'total') {
@@ -89,7 +87,6 @@ define(["jquery"], function($){
                     dataModel.splice(i,1)
                 }
             }
-
         }
 
         for(var i =0; i< dataModel.length; i++){
@@ -132,8 +129,6 @@ define(["jquery"], function($){
                 }
             }
         }
-        console.log('Lunghezza')
-        console.log(result.length)
         originalSingleCropsModel = $.extend(true,[], result);
         return result;
     }

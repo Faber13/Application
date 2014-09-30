@@ -48,6 +48,10 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel", "jquery.sidebar"
 
     }
 
+    GridDataView.prototype.setOtherVisualizationFormatView = function(){
+
+    }
+
 
     GridDataView.prototype.renderGrid = function (model) {
 
@@ -203,12 +207,7 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel", "jquery.sidebar"
     }
 
     GridDataView.prototype.updateBatchGridView = function (tableModel, cells) {
-        var allerta = function(){
-            alert('qui')
-        }
 
-        alert('viewGrid')
-        debugger;
         for(var i =0; i<cells.length; i++){
             modelView[cells[i]["index"]] = viewModel.updateItem(cells[i]["row"])
         }
@@ -251,9 +250,7 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel", "jquery.sidebar"
         }
         $("#pivotGrid").igPivotGrid("option", "dataSource", dataSource2)
 
-/*
-        var options =  document.getElementById('loading')
-        options.style.visibility = 'visible';*/
+
 
     }
 

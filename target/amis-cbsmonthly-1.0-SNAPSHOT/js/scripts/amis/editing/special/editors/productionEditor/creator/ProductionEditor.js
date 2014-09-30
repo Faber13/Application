@@ -37,7 +37,6 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
 
             // take data and calculate initial formulas
             originalTotCropsModel = modelProduction.getTotalCropsModel(involvedItems, supportUtility);
-            debugger;
             productionController.init(this, formulaHandler, modelProduction)
 
             var copyOriginalModelTot = $.extend(true, [], originalTotCropsModel);
@@ -221,7 +220,6 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
 
         ProductionEditor.prototype.updateTotGrid = function (calculatedModel) {
 
-
             var source = {
                 datatype: "array",
                 datafields: [
@@ -292,6 +290,10 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
 
         ProductionEditor.prototype.saveDataTotGrid = function(dataCalculated, originalData){
             controllerEditors.saveFormProduction(dataCalculated,originalData);
+        }
+
+        ProductionEditor.prototype.setTotalValuesOnModified = function(){
+            observer.setTotalValuesModified();
         }
 
         return ProductionEditor;

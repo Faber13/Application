@@ -320,6 +320,10 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
         })
     }
 
+    ProductionObserver.prototype.setTotalValuesModified = function(){
+        totalValuesModified = true;
+    }
+
     return ProductionObserver;
 
 })

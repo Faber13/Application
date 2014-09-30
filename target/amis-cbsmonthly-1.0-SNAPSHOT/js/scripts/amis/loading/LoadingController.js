@@ -28,7 +28,7 @@ define(["jquery", "balanceSheet/BalanceSheet", "dataLoader/DataLoader"],
             notPreviousYear = true;
         }
 
-        // prepare all filters to amke queries
+        // prepare all filters to make queries
         var region = parseInt(preloadingData.post.regionCode);
         var product = parseInt(preloadingData.post.productCode)
 
@@ -48,8 +48,6 @@ define(["jquery", "balanceSheet/BalanceSheet", "dataLoader/DataLoader"],
         if(!notPreviousYear) { // if exist a previous year
 
             var prevYearForecast = dataLoader.getPreviousYearForecast(mostRecentDateFilter, filterPreviousYear, filterPrevPopulation)
-
-
              prevYearForecast = dataLoader.setFakeForecastDate(prevYearForecast)
 
             var totalForecast = prevYearForecast.concat(actualForecast)
@@ -62,7 +60,7 @@ define(["jquery", "balanceSheet/BalanceSheet", "dataLoader/DataLoader"],
         if(!firstIstance) {
             firstIstance = true
             // Choice of DSD dependent on the product (if rice has been chosen)
-             url = (product == 4)?  urlDSDRice: urlDSD;
+            url = (product == 4)?  urlDSDRice: urlDSD;
             balanceSheet.init(totalForecast, url, dataFiltered)
         }else {
             if(product !=4) {

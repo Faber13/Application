@@ -16,16 +16,13 @@ define(["jquery" ], function ($) {
 
     SupportModel.prototype.getMapCodes = function () {
         var result;
-        if (typeof mapCodes === 'undefined') {
             var result = {}
             var allDSDCodes = configuratorDSD.getLeftKeyColumn().leftColumns[0].domain.codes;
             for (var i = 0; i < allDSDCodes.length; i++)
                 result[allDSDCodes[i].code.code] = i;
             mapCodes = result;
 
-        } else {
-            result = this.getMapCodesInstance()
-        }
+
         return result;
     }
 

@@ -10,11 +10,12 @@ define(["jquery", "formulasAmis/support/FormulaConfigurator", "formulasAmis/supp
         supportModel = new SupportModel;
     }
 
-    FormulaController.prototype.init = function(model, dsdConfigurator){
+    FormulaController.prototype.init = function(model, dsdConfigurator, filterData){
 
         // initialization of configurator
         supportModel.init(dsdConfigurator)
         mapCodes = supportModel.getMapCodes();
+
 
         configurator.init();
         indexValue = dsdConfigurator.getValueIndex();
@@ -22,7 +23,11 @@ define(["jquery", "formulasAmis/support/FormulaConfigurator", "formulasAmis/supp
 
         this.applyFormulas(model)
 
-        this.sortInitialValue(model)
+        if(filterData.productCode !=4) {
+            this.sortInitialValue(model)
+        }else{
+            this.sortInitialValueRice(model);
+        }
     }
 
     FormulaController.prototype.applyFormulas = function(model){
@@ -215,6 +220,30 @@ define(["jquery", "formulasAmis/support/FormulaConfigurator", "formulasAmis/supp
             }
         });
     }
+
+    FormulaController.prototype.sortInitialValueRice = function(model){
+        model.sort(function (a,b) {
+            if (mapCodes[a["0"]] < mapCodes[b["0"]]) {
+                if (a["2"] < b["2"])
+                    return -2;
+                return -1;
+            }
+            if (mapCodes[a["0"]]> mapCodes[b["0"]]){
+                if (a["2"]> b["2"])
+                    return 2;
+                return 1;
+            }else{
+                if (a["2"] < b["2"])
+                    return -1;
+                if (a["2"]> b["2"])
+                    return 1;
+                return 0;
+            }
+        });
+        debugger;
+
+    }
+
     // it returns:
     // 0, if the cell is not editable;
     // 1 if the cell is directly editable;
