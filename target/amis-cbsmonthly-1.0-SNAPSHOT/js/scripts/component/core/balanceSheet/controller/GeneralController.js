@@ -168,7 +168,7 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
 
                 var tableModel = ModelController.getTableDataModel();
                 var modelWithFormulas = $.extend(true, [], tableModel);
-                formulaController.init(modelWithFormulas, Configurator)
+                formulaController.init(modelWithFormulas, Configurator, filterData)
 
                 var formulas = formulaController.getFormulasBindedFromKey(codeNewCell)
                 // Initially, order by date
@@ -198,7 +198,7 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
             var modelWithFormulas = $.extend(true, [], tableModel);
             console.log('generalController: saveDataFromProductionForm, afet formula.init')
 
-            formulaController.init(modelWithFormulas, Configurator)
+            formulaController.init(modelWithFormulas, Configurator, filterData)
             var rowsChanged= []
             for(var i =0; i<newCalculatedData.length; i++){
                 for(var j =0; j<indexes.length; j++) {
@@ -214,7 +214,7 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
         GeneralController.prototype.updateWithNewForecast = function(){
             var tableModel = ModelController.createNewForecast();
             var tableModelWithFormula = $.extend(true,[], tableModel);
-            formulaController.init(tableModelWithFormula, Configurator)
+            formulaController.init(tableModelWithFormula, Configurator, filterData)
             ViewGrid.init(tableModelWithFormula, Configurator, supportUtility)
             this.onChangeModalityEditing()
         }

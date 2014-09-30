@@ -36,17 +36,17 @@
       <file leaf-file-name="ControllerEditors.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/webapp/js/scripts/amis/editing/special/controller/ControllerEditors.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="334" max-vertical-offset="1188">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1188">
               <caret line="31" column="17" selection-start-line="31" selection-start-column="17" selection-end-line="31" selection-end-column="17" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="formula.json" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="formula.json" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/webapp/js/scripts/amis/formulas/configuration/formula.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7389558" vertical-offset="6000" max-vertical-offset="6822">
+            <state vertical-scroll-proportion="-20.444445" vertical-offset="6000" max-vertical-offset="6822">
               <caret line="364" column="33" selection-start-line="364" selection-start-column="33" selection-end-line="364" selection-end-column="33" />
               <folding />
             </state>
@@ -63,11 +63,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GeneralController.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="GeneralController.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/webapp/js/scripts/component/core/balanceSheet/controller/GeneralController.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="324" max-vertical-offset="4266">
-              <caret line="30" column="11" selection-start-line="30" selection-start-column="11" selection-end-line="30" selection-end-column="11" />
+            <state vertical-scroll-proportion="0.48290014" vertical-offset="3481" max-vertical-offset="4266">
+              <caret line="213" column="71" selection-start-line="213" selection-start-column="71" selection-end-line="213" selection-end-column="71" />
               <folding />
             </state>
           </provider>
@@ -191,9 +191,9 @@
         <option value="$PROJECT_DIR$/src/main/webapp/js/scripts/amis/loading/LoadingController.js" />
         <option value="$PROJECT_DIR$/src/main/webapp/js/scripts/amis/formulas/support/SupportModel.js" />
         <option value="$PROJECT_DIR$/src/main/webapp/js/scripts/amis/formulas/controller/FormulaController.js" />
-        <option value="$PROJECT_DIR$/src/main/webapp/js/scripts/component/core/balanceSheet/controller/GeneralController.js" />
         <option value="$PROJECT_DIR$/src/main/webapp/js/scripts/amis/editing/special/controller/ControllerEditors.js" />
         <option value="$PROJECT_DIR$/src/main/webapp/js/scripts/amis/formulas/configuration/formula.json" />
+        <option value="$PROJECT_DIR$/src/main/webapp/js/scripts/component/core/balanceSheet/controller/GeneralController.js" />
       </list>
     </option>
   </component>
@@ -1433,12 +1433,12 @@
       <workItem from="1411629698987" duration="23144000" />
       <workItem from="1411716475599" duration="16596000" />
       <workItem from="1411973702348" duration="36557000" />
-      <workItem from="1412062074764" duration="19744000" />
+      <workItem from="1412062074764" duration="20209000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1056817000" />
+    <option name="totallyTimeSpent" value="1057282000" />
   </component>
   <component name="TodoView" selected-index="2">
     <todo-panel id="selected-file">
@@ -1965,10 +1965,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/scripts/component/core/balanceSheet/controller/GeneralController.js">
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/scripts/amis/formulas/configuration/formula.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="324" max-vertical-offset="4266">
-          <caret line="30" column="11" selection-start-line="30" selection-start-column="11" selection-end-line="30" selection-end-column="11" />
+        <state vertical-scroll-proportion="-20.444445" vertical-offset="6000" max-vertical-offset="6822">
+          <caret line="364" column="33" selection-start-line="364" selection-start-column="33" selection-end-line="364" selection-end-column="33" />
           <folding />
         </state>
       </provider>
@@ -1981,10 +1981,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/scripts/amis/formulas/configuration/formula.json">
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/scripts/component/core/balanceSheet/controller/GeneralController.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7389558" vertical-offset="6000" max-vertical-offset="6822">
-          <caret line="364" column="33" selection-start-line="364" selection-start-column="33" selection-end-line="364" selection-end-column="33" />
+        <state vertical-scroll-proportion="0.48290014" vertical-offset="3481" max-vertical-offset="4266">
+          <caret line="213" column="71" selection-start-line="213" selection-start-column="71" selection-end-line="213" selection-end-column="71" />
           <folding />
         </state>
       </provider>
