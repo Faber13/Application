@@ -5,9 +5,9 @@ define(["jquery","formatter/DatatypesFormatter", "jqwidgets"], function($, Forma
 
     var observer ;
 
-    function PaddyCreator(){}
+    function OtherCreator(){}
 
-    PaddyCreator.prototype.init = function(totalValuesModel, singleCropsModel, Observer){
+    OtherCreator.prototype.init = function(totalValuesModel, singleCropsModel, Observer){
 
         var map = {
             2: "Area Harvested",
@@ -197,7 +197,7 @@ define(["jquery","formatter/DatatypesFormatter", "jqwidgets"], function($, Forma
         observer.applyListeners()
     }
 
-    PaddyCreator.prototype.updateTotGrid = function (calculatedModel) {
+    OtherCreator.prototype.updateTotGrid = function (calculatedModel) {
 
 
 
@@ -233,7 +233,7 @@ define(["jquery","formatter/DatatypesFormatter", "jqwidgets"], function($, Forma
         });
     }
 
-    PaddyCreator.prototype.updateSingleGrid = function (calculatedModel) {
+    OtherCreator.prototype.updateSingleGrid = function (calculatedModel) {
 
         var source = {
             datatype: "array",
@@ -269,5 +269,5 @@ define(["jquery","formatter/DatatypesFormatter", "jqwidgets"], function($, Forma
 
     }
 
-    return PaddyCreator;
+    return OtherCreator;
 })

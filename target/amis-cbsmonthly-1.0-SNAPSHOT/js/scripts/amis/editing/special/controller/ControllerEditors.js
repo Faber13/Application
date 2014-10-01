@@ -27,8 +27,9 @@ define(["jquery", "editingSpecial/utils/DataHandler", "productionEditor/creator/
         var takenCell =resultedClicked.clickedCell
         specialFormulaController = formulaController;
         // first take all the involvedCodes
-        var codes = specialFormulaController.getInvolvedItems(takenCell);
-        var dataInvolved = dataHandler.getInvolvedData(codes, everyData,tableData, takenCell);
+        var codes = specialFormulaController.getInvolvedItems(takenCell, filterProductCode);
+        var dataInvolved = dataHandler.getInvolvedData(codes, everyData, tableData, takenCell);
+
         debugger;
         var condition =parseInt(takenCell[0])
 
@@ -54,6 +55,11 @@ define(["jquery", "editingSpecial/utils/DataHandler", "productionEditor/creator/
 
     ControllerEditors.prototype.saveFormProduction = function( calculatedData, originalData){
         generalController.saveDataFromProductionForm(calculatedData,originalData,clickedCellInfo)
+    }
+
+    ControllerEditors.prototype.saveFormRiceProduction = function(calculatedData, originalData){
+        console.log('saveFormRice Production: Controller Editors')
+        generalController.saveDataFromProductionRiceForm(calculatedData,originalData,clickedCellInfo)
     }
 
     return ControllerEditors;

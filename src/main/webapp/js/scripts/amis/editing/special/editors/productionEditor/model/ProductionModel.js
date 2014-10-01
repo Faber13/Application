@@ -35,6 +35,7 @@ define(["jquery"], function($){
     }
 
     ProductionModel.prototype.getOriginalTotalCropsModelOriginalConverted  =function(){
+        console.log('getOrinalTotalCro')
         var model = $.extend(true,[],this.getOriginalTotalCropsModel())
         for(var i=0;i<model.length; i++){
             model[i].splice(6,1)

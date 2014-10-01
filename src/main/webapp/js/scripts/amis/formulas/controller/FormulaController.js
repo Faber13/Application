@@ -269,11 +269,17 @@ define(["jquery", "formulasAmis/support/FormulaConfigurator", "formulasAmis/supp
     }
 
     // get codes of the cells involved in special editing
-    FormulaController.prototype.getInvolvedItems = function( cell){
+    FormulaController.prototype.getInvolvedItems = function( cell, filterProductCode){
         var $newdiv1 = $("<div id='dialogForm' type='hidden'></div>");
         $("#pivotGrid").append($newdiv1);
         var map = configurator.getOrCreateMapInvolvedCells();
-        return map[cell[0]]
+
+        if( filterProductCode != 4) {
+            return map[cell[0]]
+        }
+        else{
+            return map[998]
+        }
     }
 
     return FormulaController;

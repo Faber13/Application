@@ -10,9 +10,9 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function($, Form
         return typeof object!=='undefined' && object != null && object != '';}
     // ---------------------------------------------//
 
-    function PaddyObserver(){}
+    function OtherObserver(){}
 
-    PaddyObserver.prototype.init = function(Controller){
+    OtherObserver.prototype.init = function(Controller){
         controllerPaddy = Controller;
         formulaToApplyTot = 'init';
         formulaToApplySingle = 'init';
@@ -20,15 +20,15 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function($, Form
         singleCropsValuesModified =false;
     }
 
-    PaddyObserver.prototype.applyListeners = function(){
+    OtherObserver.prototype.applyListeners = function(){
 
         this.listenToCheckboxesTotal();
         this.listenToEditCellTotGrid();
         this.listenToSaveTotalValuesButton()
-       //his.listenToCheckboxesSingleCrops()
+        //his.listenToCheckboxesSingleCrops()
     }
 
-    PaddyObserver.prototype.listenToCheckboxesTotal = function(){
+    OtherObserver.prototype.listenToCheckboxesTotal = function(){
         var that = this;
         $("#firstCheckBoxTotVal").on('change', function (event) {
             event.preventDefault();
@@ -44,7 +44,7 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function($, Form
 
     }
 
-    PaddyObserver.prototype.onCheckBoxTotal = function(number) {
+    OtherObserver.prototype.onCheckBoxTotal = function(number) {
         switch (number) {
             case 1:
                 if ($("#secondCheckBoxTotVal").attr("aria-checked") == 'true') {
@@ -60,7 +60,7 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function($, Form
         }
     }
 
-    PaddyObserver.prototype.listenToEditCellTotGrid = function() {
+    OtherObserver.prototype.listenToEditCellTotGrid = function() {
 
         $("#gridTotalValues").on('cellendedit', function (event) {
             event.preventDefault();
@@ -73,9 +73,9 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function($, Form
             if (checkAll(oldvalue) && columnValue == 3) {
                 oldvalue = parseFloat(oldvalue)
             }
-                if (checkAll(value) && columnValue == 3) {
+            if (checkAll(value) && columnValue == 3) {
                 value = parseFloat(value)
-             }
+            }
 
             if (columnValue == 3 && (oldvalue != value)) {
                 var numberOfRow = event.args.rowindex;
@@ -89,7 +89,7 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function($, Form
     }
 
 
-    PaddyObserver.prototype.listenToSaveTotalValuesButton = function () {
+    OtherObserver.prototype.listenToSaveTotalValuesButton = function () {
         $('#saveTotalValues').on('click', function (event) {
             console.log('listenToSaveTotal values')
             event.preventDefault();
@@ -100,7 +100,7 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function($, Form
         })
     }
 
-    PaddyObserver.prototype.closeEventsBindedToTotGrid = function(){
+    OtherObserver.prototype.closeEventsBindedToTotGrid = function(){
         $("#gridTotalValues").off();
         $("#firstCheckBoxTotVal").off();
         $("#secondCheckBoxTotVal").off();
@@ -111,5 +111,5 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function($, Form
 
 
 
-    return PaddyObserver;
+    return OtherObserver;
 })

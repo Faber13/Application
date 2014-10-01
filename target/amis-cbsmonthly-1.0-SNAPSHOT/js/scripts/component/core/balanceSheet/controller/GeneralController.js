@@ -188,6 +188,29 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
             }
         }
 
+        GeneralController.prototype.saveDataFromProductionRiceForm = function(newCalculatedData, newOriginalData, cellClickedInfo){
+            console.log('saveDataFromProductionRiceForm: General Controller')
+            var indexes = ModelController.saveDataFromRiceProduction(newOriginalData, cellClickedInfo.indTable, cellClickedInfo.rowGridIndex, cellClickedInfo.columnGridIndex)
+            var tableModel = ModelController.getTableDataModel();
+            console.log('generalController: saveDataFromProductionForm, afet getTableData')
+
+            var modelWithFormulas = $.extend(true, [], tableModel);
+            console.log('generalController: saveDataFromProductionForm, afet formula.init')
+
+            formulaController.init(modelWithFormulas, Configurator, filterData)
+            var rowsChanged= []
+            for(var i =0; i<newCalculatedData.length; i++){
+                for(var j =0; j<indexes.length; j++) {
+                    if (newCalculatedData[i][0] == indexes[j]['key']) {
+                        rowsChanged.push({'index': indexes[j]['index'], 'row': newCalculatedData[i]})
+                    }
+                }
+            }
+            console.log('generalController: saveDataFromProductionForm, before updateBatchGridView')
+            ViewGrid.updateBatchGridView(modelWithFormulas, rowsChanged);
+
+        }
+
         GeneralController.prototype.saveDataFromProductionForm = function(newCalculatedData,newOriginalData, cellClickedInfo){
             console.log('generalController: saveDataFromProductionForm, init')
            debugger;

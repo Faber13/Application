@@ -86,13 +86,13 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
             var dataAdapter = new $.jqx.dataAdapter(source);
             var dataAdapter2 = new $.jqx.dataAdapter(source2);
 
-            var f = document.getElementById("productionForm");
+            var f = document.getElementById("specialForm");
 
             if (f !== null) {
                 f.remove()
             }
 
-            var modal = '<div class="modal fade" id="productionForm"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">' +
+            var modal = '<div class="modal fade" id="specialForm"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">' +
                 '<div class="modal-dialog">' +
                 '<div class="modal-content">' +
                 '<div class="modal-header">' +
@@ -209,16 +209,18 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
                 ]
             });
 
-            $('#productionForm').on('shown.bs.modal', function (e) {
+            $('#specialForm').on('shown.bs.modal', function (e) {
                 $('#productionTabs').jqxTabs();
             })
-            $("#productionForm").modal({ backdrop: 'static',
+            $("#specialForm").modal({ backdrop: 'static',
                 keyboard: false});
 
             observer.applyListeners(this, productionController)
         }
 
         ProductionEditor.prototype.updateTotGrid = function (calculatedModel) {
+
+            observer.unbindEventsFromTotalValues()
 
             var source = {
                 datatype: "array",
@@ -249,6 +251,9 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
                     { text: 'Notes',   datafield: 5 }
                 ]
             });
+
+            observer.reBindEventsFromTotalValues()
+
 
         }
 
@@ -289,6 +294,8 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
         }
 
         ProductionEditor.prototype.saveDataTotGrid = function(dataCalculated, originalData){
+            console.log(dataCalculated)
+            console.log(originalData)
             controllerEditors.saveFormProduction(dataCalculated,originalData);
         }
 

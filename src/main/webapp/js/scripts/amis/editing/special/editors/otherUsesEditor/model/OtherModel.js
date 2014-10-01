@@ -17,11 +17,11 @@ define(['jquery'], function($){
         3 : "Extraction Rate"
     }
 
-    function PaddyModel(){}
+    function OtherModel(){}
 
-    PaddyModel.prototype.init = function(){}
+    OtherModel.prototype.init = function(){}
 
-    PaddyModel.prototype.createTotalValuesModel = function(itemsInvolved, utilitySupport){
+    OtherModel.prototype.createTotalValuesModel = function(itemsInvolved, utilitySupport){
         var copyMap = $.extend([], true, map);
         var result = []
         supportUtility = utilitySupport;
@@ -39,12 +39,12 @@ define(['jquery'], function($){
         originalTotalCropsModel = $.extend(true,[], result);
     }
 
-    PaddyModel.prototype.getTotalValuesModel = function(){
+    OtherModel.prototype.getTotalValuesModel = function(){
         var result = originalTotalCropsModel;
         return result;
     }
 
-    PaddyModel.prototype.setOriginalTotalData = function(rowNumber, value, columnNumber){
+    OtherModel.prototype.setOriginalTotalData = function(rowNumber, value, columnNumber){
         debugger;
         if(columnNumber == 3){
             originalTotalCropsModel[rowNumber][columnNumber] = parseFloat(value);
@@ -54,7 +54,7 @@ define(['jquery'], function($){
 
     }
 
-    PaddyModel.prototype.createSingleCropsModel = function(itemsInvolved, utilitySupport){
+    OtherModel.prototype.createSingleCropsModel = function(itemsInvolved, utilitySupport){
         var result = [];
         var copyMap = $.extend([], true, map);
         supportUtility = utilitySupport;
@@ -92,7 +92,7 @@ define(['jquery'], function($){
         return result;
     }
 
-    PaddyModel.prototype.initializePaddyProduction = function(row){
+    OtherModel.prototype.initializePaddyProduction = function(row){
         var result = []
         for(var i =0; i<6; i++) {
             if (i == 0 || i == 2) {
@@ -104,12 +104,12 @@ define(['jquery'], function($){
         return result;
     }
 
-    PaddyModel.prototype.getSingleCropsModel = function(){
-       var result = originalSingleCropsModel;
-       return result;
+    OtherModel.prototype.getSingleCropsModel = function(){
+        var result = originalSingleCropsModel;
+        return result;
     }
 
-    PaddyModel.prototype.getCropsNumber = function(){
+    OtherModel.prototype.getCropsNumber = function(){
         var result;
         var filterData = supportUtility.getFilterData()
         // if it is a new instance
@@ -134,7 +134,7 @@ define(['jquery'], function($){
         return result;
     }
 
-    PaddyModel.prototype.getAndConvertOriginalTotValues = function(){
+    OtherModel.prototype.getAndConvertOriginalTotValues = function(){
         console.log('getAnd convert originalTot Values')
         var model = $.extend(true,[],this.getTotalValuesModel())
         for(var i=0;i<model.length; i++){
@@ -143,5 +143,5 @@ define(['jquery'], function($){
         return model;
     }
 
-    return PaddyModel;
+    return OtherModel;
 })

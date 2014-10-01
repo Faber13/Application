@@ -362,6 +362,19 @@
                     }
                 ]
             }
+        },
+        {
+            "id" : 2,
+            "form": "PaddyProduction",
+            "hasNestedForms" : true,
+            "totalValues":{
+                "init":[],
+                "valuesDisabled":[]
+            },
+            "singleCrops":{
+                "init":[],
+                "valuesDisabled":[]
+            }
         }
     ]
 }

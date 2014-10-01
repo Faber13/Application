@@ -133,8 +133,8 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel", "jquery.sidebar"
             height: '100%'
         });
 
-        $('#productionForm').modal('hide')
-        var f = document.getElementById('productionForm');
+        $('#specialForm').modal('hide')
+        var f = document.getElementById('specialForm');
         if(typeof f != 'undefined' && f != null){
             f.remove();
         }
@@ -243,8 +243,8 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel", "jquery.sidebar"
         });
 
         // Remove prodcu
-        if(document.getElementById('productionForm')) {
-            $('#productionForm').modal('hide');
+        if(document.getElementById('specialForm')) {
+            $('#specialForm').modal('hide');
             $('body').removeClass('modal-open');
             $('.modal-backdrop').remove();
         }

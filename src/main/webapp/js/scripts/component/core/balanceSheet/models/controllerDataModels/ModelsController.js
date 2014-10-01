@@ -119,5 +119,11 @@ define(["jquery", "models/tableDataModel/TableDataModel",
        return indexesTableData;
     }
 
+    ModelsController.prototype.saveDataFromRiceProduction = function(newData, indTable, rowGridIndex, columnGridIndex){
+        var indexesTableData = TableModel.updateDataFromRiceProductionForm(newData, indTable)
+        // TODO: save also grid data
+        return indexesTableData;
+    }
+
     return ModelsController;
 })

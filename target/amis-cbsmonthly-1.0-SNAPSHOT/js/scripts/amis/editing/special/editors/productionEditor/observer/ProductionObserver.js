@@ -10,8 +10,9 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
     }
 
     // ------------ Support method ------------------//
-        var checkAll = function(object){
-            return typeof object!=='undefined' && object != null && object != '';}
+    var checkAll = function (object) {
+        return typeof object !== 'undefined' && object != null && object != '';
+    }
     // ---------------------------------------------//
 
     ProductionObserver.prototype.applyListeners = function (EditorProduction, EditorController) {
@@ -84,7 +85,7 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
                     formulaToApplyTot = 'yield';
 
                 }
-                else if($("#thirdCheckBoxTotVal").attr("aria-checked") == 'true'){
+                else if ($("#thirdCheckBoxTotVal").attr("aria-checked") == 'true') {
                     $("#secondCheckBoxTotVal").jqxCheckBox('disable');
                     formulaToApplyTot = 'areaHarvested';
                 }
@@ -95,7 +96,7 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
                     $("#thirdCheckBoxTotVal").jqxCheckBox('disable');
                     formulaToApplyTot = 'yield';
 
-                }else if($("#thirdCheckBoxTotVal").attr("aria-checked") == 'true'){
+                } else if ($("#thirdCheckBoxTotVal").attr("aria-checked") == 'true') {
                     $("#firstCheckBoxTotVal").jqxCheckBox('disable');
                     formulaToApplyTot = 'production'
                 }
@@ -125,7 +126,7 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
                     formulaToApplySingle = 'yield';
 
                 }
-                else if($("#thirdCheckBoxSingleCrops").attr("aria-checked") == 'true'){
+                else if ($("#thirdCheckBoxSingleCrops").attr("aria-checked") == 'true') {
                     $("#secondCheckBoxSingleCrops").jqxCheckBox('disable');
                     formulaToApplySingle = 'areaHarvested';
                 }
@@ -136,7 +137,7 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
                     $("#thirdCheckBoxSingleCrops").jqxCheckBox('disable');
                     formulaToApplySingle = 'yield';
 
-                }else if($("#thirdCheckBoxSingleCrops").attr("aria-checked") == 'true'){
+                } else if ($("#thirdCheckBoxSingleCrops").attr("aria-checked") == 'true') {
                     $("#firstCheckBoxSingleCrops").jqxCheckBox('disable');
                     formulaToApplySingle = 'production'
                 }
@@ -201,106 +202,107 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
         }
     }
 
-    ProductionObserver.prototype.listenToRecalculateButtonTotalValues = function(){
-        $('#applyRulesFormulaTot').on('click', function(evt){
+    ProductionObserver.prototype.listenToRecalculateButtonTotalValues = function () {
+        $('#applyRulesFormulaTot').on('click', function (evt) {
             // third is disabled on default
             evt.preventDefault();
             evt.stopImmediatePropagation();
             var counter = 0;
-            counter += $("#firstCheckBoxTotVal").val()? 1:0;
-            counter += $("#secondCheckBoxTotVal").val()? 1:0;
-            counter += $("#thirdCheckBoxTotVal").val()? 1:0;
+            counter += $("#firstCheckBoxTotVal").val() ? 1 : 0;
+            counter += $("#secondCheckBoxTotVal").val() ? 1 : 0;
+            counter += $("#thirdCheckBoxTotVal").val() ? 1 : 0;
             totalValuesModified = true;
-            if(counter == 2){ //OK
+            if (counter == 2) { //OK
                 controllerProduction.updateTotGridOnFormulaChanges(formulaToApplyTot);
-            }else{
-                var alert = '<div class="alert alert-danger alert-dismissible" role="alert">'+
-                    '<button type="button" class="close" data-dismiss="alert">'+
-                    '<span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>'+
+            } else {
+                var alert = '<div class="alert alert-danger alert-dismissible" role="alert">' +
+                    '<button type="button" class="close" data-dismiss="alert">' +
+                    '<span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>' +
                     '<strong>Attention!</strong> You have to select <strong>2 elements</strong></div>';
                 $('#alertTotal').append(alert)
             }
         })
     }
 
-    ProductionObserver.prototype.listenToRecalculateButtonSingleCrops = function(){
-        $('#applyRulesFormulaSingle').on('click', function(evt){
+    ProductionObserver.prototype.listenToRecalculateButtonSingleCrops = function () {
+        $('#applyRulesFormulaSingle').on('click', function (evt) {
             console.log('click')
             // third is disabled on default
             evt.preventDefault();
             evt.stopImmediatePropagation();
             var counter = 0;
-            counter += $("#firstCheckBoxSingleCrops").val()? 1:0;
-            counter += $("#secondCheckBoxSingleCrops").val()? 1:0;
-            counter += $("#thirdCheckBoxSingleCrops").val()? 1:0;
+            counter += $("#firstCheckBoxSingleCrops").val() ? 1 : 0;
+            counter += $("#secondCheckBoxSingleCrops").val() ? 1 : 0;
+            counter += $("#thirdCheckBoxSingleCrops").val() ? 1 : 0;
             singleCropsValuesModified = true;
             console.log(counter)
-            if(counter == 2){ //OK
+            if (counter == 2) { //OK
                 controllerProduction.updateSingleCropsGridOnFormulaChanges(formulaToApplySingle);
-            }else{
-                var alert = '<div class="alert alert-danger alert-dismissible" role="alert">'+
-                    '<button type="button" class="close" data-dismiss="alert">'+
-                    '<span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>'+
+            } else {
+                var alert = '<div class="alert alert-danger alert-dismissible" role="alert">' +
+                    '<button type="button" class="close" data-dismiss="alert">' +
+                    '<span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>' +
                     '<strong>Attention!</strong> You have to select <strong>2 elements</strong></div>';
                 $('#alertSingle').append(alert)
             }
         })
     }
 
-    ProductionObserver.prototype.listenToTabs = function(){
+    ProductionObserver.prototype.listenToTabs = function () {
         $('#productionTabs').on('tabclick', function (event) {
             event.preventDefault()
             debugger;
             var clickedItem = event.args.item;
-            if(clickedItem == 0 && singleCropsValuesModified){ // from single crops to total values
+            if (clickedItem == 0 && singleCropsValuesModified) { // from single crops to total values
                 controllerProduction.onSwitchingCropsValues(formulaToApplySingle)
 
             }
         });
     }
 
-    ProductionObserver.prototype.listenToEditCellTotGrid = function(){
+    ProductionObserver.prototype.listenToEditCellTotGrid = function () {
 
-        $("#gridTotalValues").on('cellendedit', function (event){
+        $("#gridTotalValues").on('cellendedit', function (event) {
             event.preventDefault();
             event.stopImmediatePropagation();
             totalValuesModified = true;
             var columnValue = event.args.datafield;
             var oldvalue = event.args.oldvalue;
             var value = event.args.value;
-            if(checkAll(oldvalue)){
+            if (checkAll(oldvalue)&& columnValue == 3) {
                 oldvalue = parseFloat(oldvalue)
-                if(checkAll(value)){
-                    value = parseFloat(value)
-                }
             }
-            if(columnValue == 3 && (oldvalue !=value)){
+            if (checkAll(value)&& columnValue == 3) {
+                value = parseFloat(value)
+            }
+
+            if (columnValue == 3 && (oldvalue != value)) {
                 var numberOfRow = event.args.rowindex;
                 var value2 = parseFloat(value)
                 controllerProduction.updateTotGridOnEditing(numberOfRow, value2, formulaToApplyTot, columnValue)
-            }else if(columnValue != 3 && (oldvalue != value)){
-
+            } else if (columnValue != 3 && (oldvalue != value)) { // if modified only flag/notes
+                var numberOfRow = event.args.rowindex;
+                controllerProduction.updateTotGridOnEditing(numberOfRow, value, formulaToApplyTot, columnValue)
             }
-
         })
 
     }
 
-    ProductionObserver.prototype.listenToEditCellSingleCropsGrid = function(){
-        $("#gridSingleCrops").on('cellendedit', function (event){
+    ProductionObserver.prototype.listenToEditCellSingleCropsGrid = function () {
+        $("#gridSingleCrops").on('cellendedit', function (event) {
             event.preventDefault();
             event.stopImmediatePropagation();
             singleCropsValuesModified = true;
             var columnValue = event.args.datafield;
             var oldvalue = event.args.oldvalue;
             var value = event.args.value;
-            if(checkAll(oldvalue)){
+            if (checkAll(oldvalue)) {
                 oldvalue = parseFloat(oldvalue)
-                if(checkAll(value)){
+                if (checkAll(value)) {
                     value = parseFloat(value)
                 }
             }
-            if((oldvalue !=value)){
+            if ((oldvalue != value)) {
                 var value2 = parseFloat(value)
                 var numberOfRow = event.args.rowindex;
                 controllerProduction.updateSingleCropsGridOnEditing(numberOfRow, value2, formulaToApplySingle, columnValue)
@@ -308,20 +310,33 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
         })
     }
 
-    ProductionObserver.prototype.listenToSaveTotalValuesButton = function(){
-        $('#saveTotalValues').on('click', function(event){
+    ProductionObserver.prototype.listenToSaveTotalValuesButton = function () {
+        $('#saveTotalValues').on('click', function (event) {
             event.preventDefault();
             event.stopImmediatePropagation();
-            if(totalValuesModified){
+            if (totalValuesModified) {
                 controllerProduction.saveTotalValues(formulaToApplyTot)
             }
-
-
         })
     }
 
-    ProductionObserver.prototype.setTotalValuesModified = function(){
+    ProductionObserver.prototype.setTotalValuesModified = function () {
         totalValuesModified = true;
+    }
+
+    ProductionObserver.prototype.unbindEventsFromTotalValues = function(){
+        $("#firstCheckBoxSingleCrops").off();
+        $("#secondCheckBoxSingleCrops").off();
+        $("#thirdCheckBoxSingleCrops").off();
+        $('#saveTotalValues').off()
+        $('#gridTotalValues').off()
+    }
+
+    ProductionObserver.prototype.reBindEventsFromTotalValues = function(){
+        this.listenToEditCellTotGrid(); //edit
+        this.listenToCheckboxesTotal(); //checkboxes
+        this.listenToRecalculateButtonTotalValues(); //formulas
+        this.listenToSaveTotalValuesButton(); // saving
     }
 
     return ProductionObserver;
