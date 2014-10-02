@@ -347,7 +347,7 @@ define(["jquery", "formulasAmis/support/SupportModel" ], function ($, SupportMod
 
     TableDataModel.prototype.updateDataFromRiceProductionForm = function(productionData){
         var dateInvolved = productionData[0][2];
-        var indexes = (productionData.length>3)? {"4": true, "2":true, "5":true, "37":true, "998":true} : {"4":true, "5":true, "2":true};
+        var indexes = (productionData.length>3)? {"4": true, "2":true, "5":true, "37":true, "998":true,"3":true} : {"4":true, "5":true, "2":true};
 
         // if there's Area planted
         var tableData = this.getTableData();

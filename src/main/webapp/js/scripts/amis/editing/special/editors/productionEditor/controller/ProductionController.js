@@ -27,36 +27,10 @@ define(['jquery'], function($){
         var dataUpdated = modelProduction.getOriginalTotalCropsModel()
         var modelTotalCrops = $.extend(true, [], dataUpdated)
 
-
         var calculatedModel = formulaHandler.createFormula(modelTotalCrops, formulaToUpdate)
         var modelCalculated =  $.extend(true, [], calculatedModel);
         modelProduction.setCalculatedTotalModel(modelCalculated)
         editorProduction.updateTotGrid(calculatedModel);
-
-    }
-
-    ProductionController.prototype.updateTotGridOnFormulaChanges = function(formulaToApply){
-        var formulaToUpdate = formulaHandler.getUpdateFormula(1, 'totalValues', formulaToApply)
-        var dataUpdated = modelProduction.getOriginalTotalCropsModel()
-
-        var modelTotalCrops = $.extend(true, [], dataUpdated)
-
-        var calculatedModel = formulaHandler.createFormula(modelTotalCrops, formulaToUpdate)
-        var modelCalculated =  $.extend(true, [], calculatedModel);
-        modelProduction.setCalculatedTotalModel(modelCalculated)
-        editorProduction.updateTotGrid(calculatedModel);
-
-    }
-
-    ProductionController.prototype.updateSingleCropsGridOnFormulaChanges = function(formulaToApply){
-        var formulaToUpdate = formulaHandler.getUpdateFormula(1, 'singleCrops', formulaToApply)
-        var dataUpdated = modelProduction.getOriginalSingleCropsModel();
-
-        var modelSingleCrops = $.extend(true, [], dataUpdated);
-        var calculatedModel = formulaHandler.createFormula(modelSingleCrops, formulaToUpdate)
-        var modelCalculated =  $.extend(true, [], calculatedModel);
-        modelProduction.setCalculatedSingleModel(modelCalculated)
-        editorProduction.updateSingleGrid(calculatedModel);
 
     }
 
@@ -73,15 +47,54 @@ define(['jquery'], function($){
         modelProduction.setOriginalCropsData(newValue, rowNumber,columnValue )
         // get all the model
         var allData = modelProduction.getOriginalSingleCropsModel();
-        // filter data through crops number
-        var dataForCrops = modelProduction.filterModelSingleFromCrops(belongingCrops, allData);
+
+        var modelSingleCrops = $.extend(true, [], allData)
+
+        // create an array of array of data, divided by the crops number
+        var dataForCrops = modelProduction.filterModelSingleFromCrops( modelSingleCrops);
         // filterData through crops number
-        var calculatedDataFromCrops = formulaHandler.createFormula(dataForCrops, formulaToUpdate);
+        var calculatedDataDividedCrops = []
+        var numberOfCrops  =modelProduction.getCropsNumber();
+        var startIndex=  0;
+        for( var i =0; i< numberOfCrops; i++){
+            var endIndex = dataForCrops.length/numberOfCrops +startIndex ;
+            var copyDataForCrops = $.extend(true,[],dataForCrops)
+            calculatedDataDividedCrops.push(formulaHandler.createFormula(copyDataForCrops.splice(startIndex, endIndex), formulaToUpdate));
+            startIndex = parseInt(endIndex)
+        }
+
+        debugger;
         // insert batch into model
-        var newCalculatedData = modelProduction.fuseAndGetDataTogether(calculatedDataFromCrops,allData, belongingCrops)
+        var newCalculatedData = modelProduction.createSingleCalculatedModel(calculatedDataDividedCrops)
         var modelCalculated =  $.extend(true, [], newCalculatedData);
         modelProduction.setCalculatedSingleModel(modelCalculated)
-        editorProduction.updateSingleGrid(newCalculatedData);
+        editorProduction.updateSingleGrid(modelCalculated);
+    }
+
+    ProductionController.prototype.updateTotGridOnFormulaChanges = function(formulaToApply){
+        var formulaToUpdate = formulaHandler.getUpdateFormula(1, 'totalValues', formulaToApply)
+        var dataUpdated = modelProduction.getOriginalTotalCropsModel()
+
+        var modelTotalCrops = $.extend(true, [], dataUpdated)
+        var calculatedModel = formulaHandler.createFormula(modelTotalCrops, formulaToUpdate)
+
+        var modelCalculated =  $.extend(true, [], calculatedModel);
+        modelProduction.setCalculatedTotalModel(modelCalculated)
+        editorProduction.updateTotGrid(calculatedModel);
+
+    }
+
+    ProductionController.prototype.updateSingleCropsGridOnFormulaChanges = function(formulaToApply){
+        var formulaToUpdate = formulaHandler.getUpdateFormula(1, 'singleCrops', formulaToApply)
+        var dataUpdated = modelProduction.getOriginalSingleCropsModel();
+
+        var modelSingleCrops = $.extend(true, [], dataUpdated);
+        var calculatedModel = formulaHandler.createFormula(modelSingleCrops, formulaToUpdate)
+
+        var modelCalculated =  $.extend(true, [], calculatedModel);
+        modelProduction.setCalculatedSingleModel(modelCalculated)
+        editorProduction.updateSingleGrid(calculatedModel);
+
     }
 
     ProductionController.prototype.saveTotalValues = function(formulaToApply){
@@ -96,6 +109,8 @@ define(['jquery'], function($){
         var dataUnified = modelProduction.unifySingleCropsData(dataSingleCrops);
         var totalValueModel = $.extend(true, [],modelProduction.getOriginalTotalCropsModel());
         var rowIndexes = [];
+        alert()
+        debugger;
         for(var i =0; i<dataUnified.length; i++) {
             for(var j=0; j<totalValueModel.length; j++) {
                 if (totalValueModel[j][0] == dataUnified[i][0]) {

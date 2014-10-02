@@ -190,6 +190,8 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
 
         GeneralController.prototype.saveDataFromProductionRiceForm = function(newCalculatedData, newOriginalData, cellClickedInfo){
             console.log('saveDataFromProductionRiceForm: General Controller')
+            alert()
+            debugger;
             var indexes = ModelController.saveDataFromRiceProduction(newOriginalData, cellClickedInfo.indTable, cellClickedInfo.rowGridIndex, cellClickedInfo.columnGridIndex)
             var tableModel = ModelController.getTableDataModel();
             console.log('generalController: saveDataFromProductionForm, afet getTableData')

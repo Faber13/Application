@@ -3,7 +3,7 @@
  */
 define(['jquery'], function($){
 
-    var supportUtility, originalTotalCropsModel, numberOfCrops, originalSingleCropsModel;
+    var supportUtility, originalTotalCropsModel, numberOfCrops, originalSingleCropsModel, calculatedSingleModel, calculatedTotalModel;
 
     // URL
     var cropsUrl = "http://168.202.28.178:8080/dataset/crops"
@@ -65,6 +65,7 @@ define(['jquery'], function($){
             for (var i = 0; i < dataModel.length; i++) {
                 var index =  (j*dataModel.length )+i;
 
+
                 if( dataModel[i].length == 3 || dataModel[i] == 2){
                     dataModel[i] = this.initializePaddyProduction(dataModel[i])
                 }
@@ -88,8 +89,20 @@ define(['jquery'], function($){
             }
         }
 
+        result = this.cleanSingleModel(result)
         originalSingleCropsModel = $.extend(true,[], result);
         return result;
+    }
+
+    PaddyModel.prototype.cleanSingleModel = function(model){
+        var result = []
+        for( var i=0; i< model.length; i++){
+            if(model[i][0] != 3 && model[i][0] != 998){
+                result.push(model[i])
+            }
+        }
+        return result;
+
     }
 
     PaddyModel.prototype.initializePaddyProduction = function(row){
@@ -107,6 +120,10 @@ define(['jquery'], function($){
     PaddyModel.prototype.getSingleCropsModel = function(){
        var result = originalSingleCropsModel;
        return result;
+    }
+
+    PaddyModel.prototype.setOriginalCropsData = function(newValue, rowNumber,columnValue){
+        originalSingleCropsModel[rowNumber][columnValue] = newValue;
     }
 
     PaddyModel.prototype.getCropsNumber = function(){
@@ -134,6 +151,43 @@ define(['jquery'], function($){
         return result;
     }
 
+    PaddyModel.prototype.setCalculatedTotalModel = function(calculatedModel){
+        calculatedTotalModel = calculatedModel
+    }
+
+    PaddyModel.prototype.setCalculatedSingleModel = function(calculatedModel){
+        console.log('setCalucaletd model')
+        calculatedSingleModel = calculatedModel;
+    }
+
+
+    PaddyModel.prototype.fuseAndGetDataTogether = function(calculatedDataFromCrops,allData, crop){
+        console.log('fuseandGet DatTogheter!')
+        var everyData = $.extend(true,[],allData)
+        var dataCropsSelected = $.extend(true,[],calculatedDataFromCrops);
+        console.log('dataCtopsSelectd')
+        console.log(dataCropsSelected)
+        for(var i =0; i<dataCropsSelected.length; i++) {
+            for (var j = 0; j < everyData.length; j++) {
+                if (dataCropsSelected[i][0] == everyData[j][0] && dataCropsSelected[i][6] == crop) {
+                    everyData[j] = dataCropsSelected[i]
+                }
+            }
+        }
+        return everyData
+    }
+
+    PaddyModel.prototype.filterModelSingleFromCrops = function(numberCrops, allData){
+        console.log('filterModelSingleFromCrops')
+        var result = [];
+        for( var i=0; i<allData.length; i++){
+            if(allData[i][7] ==numberCrops ){
+                result.push(allData[i]);
+            }
+        }
+        return result;
+    }
+
     PaddyModel.prototype.getAndConvertOriginalTotValues = function(){
         console.log('getAnd convert originalTot Values')
         var model = $.extend(true,[],this.getTotalValuesModel())
@@ -141,6 +195,39 @@ define(['jquery'], function($){
             model[i].splice(6,1)
         }
         return model;
+    }
+
+    PaddyModel.prototype.unifySingleCropsData = function(singleCropsData){
+        var result = [];
+        var listChecked = {}
+        // check if total values need to be changed
+        if(this.checkIfCompletedSingleCrops(singleCropsData)) {
+            // case number of crops ==1
+            var elementPosition = 0
+            for (var i = 0; i < singleCropsData.length; i++) {
+                var code = singleCropsData[i][0]
+                if(code != 'undefined' && code != null && code != "" && typeof listChecked[singleCropsData[i][0]] == 'undefined') {
+                    listChecked[singleCropsData[i][0]] = elementPosition;
+                    var row = [ singleCropsData[i][0],singleCropsData[i][1], singleCropsData[i][2], singleCropsData[i][3],null, null ,singleCropsData[i][6] ]
+                    result.push(row)
+                    elementPosition++;
+                }else{
+                    var indexList = listChecked[singleCropsData[i][0]]
+                    result[indexList][3] += singleCropsData[i][3]
+                }
+            }
+        }
+        return result;
+    }
+
+     PaddyModel.prototype.checkIfCompletedSingleCrops = function(singleCropsData){
+        var result = false;
+        for( var i =0; i< singleCropsData.length && !result ; i++){
+            var flag = singleCropsData[i][4]
+            if(typeof flag != "undefined" && flag != null && flag != "" )
+                result = true;
+        }
+        return result;
     }
 
     return PaddyModel;

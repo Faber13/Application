@@ -89,7 +89,6 @@ define(["jquery"], function($){
                 }
             }
         }
-
         for(var i =0; i< dataModel.length; i++){
             result[i] = $.extend([],true,dataModel[i])
             var code = dataModel[i][0]
@@ -168,11 +167,13 @@ define(["jquery"], function($){
 
     }
 
-    ProductionModel.prototype.filterModelSingleFromCrops = function(numberCrops, allData){
+    ProductionModel.prototype.filterModelSingleFromCrops = function( allData){
         var result = [];
-        for( var i=0; i<allData.length; i++){
-            if(allData[i][7] ==numberCrops ){
-                result.push(allData[i]);
+        for(var n=0; n< numberOfCrops; n++) {
+            for (var i = 0; i < allData.length; i++) {
+                if (allData[i][7] == n+1) {
+                    result.push(allData[i]);
+                }
             }
         }
         return result;
@@ -182,19 +183,16 @@ define(["jquery"], function($){
         originalSingleCropsModel[rowNumber][columnValue] = newValue;
     }
 
-    ProductionModel.prototype.fuseAndGetDataTogether = function(calculatedDataFromCrops,allData, crop){
-        var everyData = $.extend(true,[],allData)
-        var dataCropsSelected = $.extend(true,[],calculatedDataFromCrops);
-        console.log('dataCtopsSelectd')
-        console.log(dataCropsSelected)
-        for(var i =0; i<dataCropsSelected.length; i++) {
-            for (var j = 0; j < everyData.length; j++) {
-                if (dataCropsSelected[i][0] == everyData[j][0] && dataCropsSelected[i][6] == crop) {
-                    everyData[j] = dataCropsSelected[i]
-                }
+    ProductionModel.prototype.createSingleCalculatedModel = function(calculatedDataFromCrops){
+       var result = [];
+        for( var i =0; i< calculatedDataFromCrops.length; i++){
+            if(i==0){
+                result = calculatedDataFromCrops[i]
+            }else{
+                result  = result.concat(calculatedDataFromCrops[i])
             }
         }
-        return everyData
+        return result
     }
 
     ProductionModel.prototype.setCalculatedTotalModel = function(calculatedModel){
@@ -215,21 +213,17 @@ define(["jquery"], function($){
     }
 
     ProductionModel.prototype.getCalculatedSingleModel = function(){
-        var result = $.extend(true, [], calculatedSingleModel);
-        // remove description of element and number of crop
-        for( var i=0; i<result.length; i++){
-            result[i].splice(7,1)
-            result[i].splice(6,1)
-        }
+        var result = calculatedSingleModel;
         return result;
-
     }
+
 
     ProductionModel.prototype.unifySingleCropsData = function(singleCropsData){
         var result = [];
         var listChecked = {}
         // check if total values need to be changed
-        if(this.checkIfCompletedSingleCrops(singleCropsData)) {
+        var calculatedSingleModel = this.getCalculatedSingleModel()
+        if(this.checkIfCompletedSingleCrops(calculatedSingleModel)) {
             // case number of crops ==1
              var elementPosition = 0
              for (var i = 0; i < singleCropsData.length; i++) {

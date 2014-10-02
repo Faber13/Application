@@ -240,8 +240,6 @@ define(["jquery", "formulasAmis/support/FormulaConfigurator", "formulasAmis/supp
                 return 0;
             }
         });
-        debugger;
-
     }
 
     // it returns:

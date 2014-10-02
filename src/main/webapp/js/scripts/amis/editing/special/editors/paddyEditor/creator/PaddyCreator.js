@@ -59,7 +59,7 @@ define(["jquery","formatter/DatatypesFormatter", "jqwidgets"], function($, Forma
             '<div class="modal-content">' +
             '<div class="modal-header">' +
             '<button type="button" class="close" data-dismiss="modal" id="closeModal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>' +
-            '<h4 class="modal-title" id="myModalLabel">Production Form</h4>' +
+            '<h4 class="modal-title" id="myModalLabel">Production Rice Form</h4>' +
             '</div>' +
             '<div class="modal-body" id ="toappendData">' +
             '<div id="productionTabs">' +
@@ -105,23 +105,16 @@ define(["jquery","formatter/DatatypesFormatter", "jqwidgets"], function($, Forma
             // Single Crops ------------------------------------
             '<div id="singleCropValues"><br>' +
             '<div class="row"><br>' +
-            '<div class="col-lg-5 col-lg-offset-1">' +
-            '<div class ="totalValuesBoxes" id="firstCheckBoxSingleCrops">Rice Paddy</div>' +
+            '<div class="col-lg-3 col-lg-offset-1">' +
+            '<div class ="singleCropsBoxes" id="firstCheckBoxSingleCrops">' + map[5] + '</div>' +
             '</div>' +
 
-            '<div class="col-lg-6">' +
-            '<div class ="totalValuesBoxes" id="secondCheckBoxSingleCrops">Area Harvested</div>' +
+            '<div class="col-lg-3">' +
+            '<div class ="singleCropsBoxes" id="secondCheckBoxSingleCrops">' + map[2] + '</div>' +
             '</div>' +
-            '<br><br>' +
-            '<div class="row"><br>' +
-            '<div class="col-lg-5 col-lg-offset-1">' +
-            '<div class ="totalValuesBoxes" id="thirdCheckBoxSingleCrops">Rice Milled</div>' +
-            '</div>' +
-
-            '<div class="col-lg-6">' +
-            '<div class ="totalValuesBoxes" id="fourthCheckBoxSingleCrops">Yield</div>' +
-            '</div></div>' +
-            '<br><br>' +
+            '<div class="col-lg-3">' +
+            '<div class ="singleCropsBoxes" id="thirdCheckBoxSingleCrops">' + map[4] + '</div>' +
+            '</div><br><br>' +
             '<div class="row">' +
             '<div class="col-lg-3 col-lg-offset-4">' +
             '<button type="button" class="btn btn-primary" id="applyRulesFormulaSingle">Recalculate Data</button>' +
@@ -153,7 +146,6 @@ define(["jquery","formatter/DatatypesFormatter", "jqwidgets"], function($, Forma
         $('#firstCheckBoxSingleCrops').jqxCheckBox({ width: 120, height: 25, checked: true});
         $('#secondCheckBoxSingleCrops').jqxCheckBox({ width: 120, height: 25, checked: true});
         $('#thirdCheckBoxSingleCrops').jqxCheckBox({ width: 120, height: 25, disabled: true });
-        $('#fourthCheckBoxSingleCrops').jqxCheckBox({ width: 120, height: 25, disabled: true });
 
 
         $('#gridTotalValues').jqxGrid({
@@ -234,6 +226,7 @@ define(["jquery","formatter/DatatypesFormatter", "jqwidgets"], function($, Forma
     }
 
     PaddyCreator.prototype.updateSingleGrid = function (calculatedModel) {
+        console.log('updateSingelGRid')
 
         var source = {
             datatype: "array",

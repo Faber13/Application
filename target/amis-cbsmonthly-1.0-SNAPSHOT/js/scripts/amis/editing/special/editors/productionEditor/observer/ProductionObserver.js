@@ -207,6 +207,7 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
             // third is disabled on default
             evt.preventDefault();
             evt.stopImmediatePropagation();
+            console.log('recalucalteButtonTotalValues')
             var counter = 0;
             counter += $("#firstCheckBoxTotVal").val() ? 1 : 0;
             counter += $("#secondCheckBoxTotVal").val() ? 1 : 0;
@@ -251,6 +252,7 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
     ProductionObserver.prototype.listenToTabs = function () {
         $('#productionTabs').on('tabclick', function (event) {
             event.preventDefault()
+            event.stopImmediatePropagation();
             debugger;
             var clickedItem = event.args.item;
             if (clickedItem == 0 && singleCropsValuesModified) { // from single crops to total values
@@ -296,16 +298,22 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
             var columnValue = event.args.datafield;
             var oldvalue = event.args.oldvalue;
             var value = event.args.value;
-            if (checkAll(oldvalue)) {
+            console.log('VALUE')
+            console.log(value)
+            if (checkAll(oldvalue)&& columnValue == 3) {
                 oldvalue = parseFloat(oldvalue)
-                if (checkAll(value)) {
-                    value = parseFloat(value)
-                }
             }
-            if ((oldvalue != value)) {
-                var value2 = parseFloat(value)
+            if (checkAll(value)&& columnValue == 3) {
+                value = parseFloat(value)
+            }
+
+            if (columnValue == 3 && (oldvalue != value)) {
                 var numberOfRow = event.args.rowindex;
-                controllerProduction.updateSingleCropsGridOnEditing(numberOfRow, value2, formulaToApplySingle, columnValue)
+                var value2 = parseFloat(value)
+                controllerProduction.updateSingleCropsGridOnEditing(numberOfRow, value2, formulaToApplyTot, columnValue)
+            } else if (columnValue != 3 && (oldvalue != value)) { // if modified only flag/notes
+                var numberOfRow = event.args.rowindex;
+                controllerProduction.updateSingleCropsGridOnEditing(numberOfRow, value, formulaToApplyTot, columnValue)
             }
         })
     }
@@ -325,9 +333,7 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
     }
 
     ProductionObserver.prototype.unbindEventsFromTotalValues = function(){
-        $("#firstCheckBoxSingleCrops").off();
-        $("#secondCheckBoxSingleCrops").off();
-        $("#thirdCheckBoxSingleCrops").off();
+
         $('#saveTotalValues').off()
         $('#gridTotalValues').off()
     }

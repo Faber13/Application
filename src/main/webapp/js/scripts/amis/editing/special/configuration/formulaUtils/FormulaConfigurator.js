@@ -36,10 +36,12 @@ define(["jquery"], function($){
                 break;
 
             case 2:
-                //TODO (other uses)
-                break;
-            case 3:
-                //TODO (paddy form)
+                var typeOfForm = config.formulaPlugins[numberOfFormUsed-1];
+                if(type == "totalValues"){
+                    result = typeOfForm.totalValues.init[0]
+                }else if(type == "singleCrops"){
+                    result = typeOfForm.singleCrops.init[0]
+                }
                 break;
         }
         return result;
@@ -64,7 +66,16 @@ define(["jquery"], function($){
                 break;
 
             case 2:
-                //TODO (other uses)
+                var typeOfForm = config.formulaPlugins[numberOfFormUsed-1];
+                var updateFormulas = typeOfForm[type].valuesDisabled;
+                if  (dependentElement == "production") {
+                    result = updateFormulas[0].production;
+
+                }else if(dependentElement == "areaHarvested"){
+                    result = updateFormulas[1].areaHarvested;
+                }else if( dependentElement == 'yield'){
+                    result = updateFormulas[2].yield;
+                }
                 break;
             case 3:
                 //TODO (paddy form)
