@@ -1,11 +1,14 @@
 /**
  * Created by fabrizio on 5/20/14.
  */
-define(["jquery", "jqwidgets"], function($) {
+define(["jquery",  "urlConfigurator","jqwidgets"], function($, ServicesUrl) {
 
-    var  combo, year, yearsSelected, size, previousYear;
+    var  combo, year, yearsSelected, size, previousYear, Services, urlYear;
 
     function YearSelector(){
+        Services = new ServicesUrl;
+        urlYear = Services.getYearUrl()
+
 
         yearsSelected = {
             currentYear: -1,
@@ -25,12 +28,11 @@ define(["jquery", "jqwidgets"], function($) {
 
         var that = this;
         combo = $("#selectionYear")
-        var url = "http://168.202.28.178:8080/dataset/year";
         var sources = [];
 
         $.ajax({
             async:false,
-            url: url,
+            url: urlYear,
             type: 'post',
             contentType: 'application/json',
             dataType: 'json',

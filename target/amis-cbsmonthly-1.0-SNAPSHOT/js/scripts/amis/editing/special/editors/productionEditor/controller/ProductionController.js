@@ -42,7 +42,6 @@ define(['jquery'], function($){
         } else {
             formulaToUpdate = formulaHandler.getUpdateFormula(1, 'singleCrops', formulaToApply)
         }
-        var belongingCrops = parseInt(rowNumber/4)+1;
         // set new value
         modelProduction.setOriginalCropsData(newValue, rowNumber,columnValue )
         // get all the model
@@ -63,7 +62,6 @@ define(['jquery'], function($){
             startIndex = parseInt(endIndex)
         }
 
-        debugger;
         // insert batch into model
         var newCalculatedData = modelProduction.createSingleCalculatedModel(calculatedDataDividedCrops)
         var modelCalculated =  $.extend(true, [], newCalculatedData);
@@ -104,13 +102,12 @@ define(['jquery'], function($){
     }
 
     ProductionController.prototype.onSwitchingCropsValues = function(formulaSingleToApply){
+
         var originalSingleCropsModel = modelProduction.getOriginalSingleCropsModel()
         var dataSingleCrops = $.extend(true, [], originalSingleCropsModel)
         var dataUnified = modelProduction.unifySingleCropsData(dataSingleCrops);
         var totalValueModel = $.extend(true, [],modelProduction.getOriginalTotalCropsModel());
         var rowIndexes = [];
-        alert()
-        debugger;
         for(var i =0; i<dataUnified.length; i++) {
             for(var j=0; j<totalValueModel.length; j++) {
                 if (totalValueModel[j][0] == dataUnified[i][0]) {

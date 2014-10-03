@@ -561,27 +561,26 @@
                                 "condition" : "",
                                 "dataType":"code",
                                 "value":[
-                                    5
+                                    998
                                 ],
                                 "otherValue" : "",
                                 "otherColumn":false,
                                 "columnNumber":""
                             },
                             {
-
                                 "dataType":"operation",
-                                "value":"/",
+                                "value":"*",
                                 "otherColumn":false,
                                 "columnNumber":""
                             },
                             {
-                                "hasCondition" : true,
-                                "condition" : "exists",
+                                "hasCondition" : false,
+                                "condition" : "",
                                 "dataType":"code",
                                 "value":[
-                                    2
+                                    3
                                 ],
-                                "otherValue" : [37],
+                                "otherValue" : "",
                                 "otherColumn":false,
                                 "columnNumber":""
                             }
@@ -590,49 +589,47 @@
                 ],
                 "valuesDisabled":[
                     {
-                        "production":
-                        {
-                            "variable": {
-                                "formulaId": 3,
-                                "dataType": "code",
-                                "value": [
-                                    5
+                        "milled":{
+                            "variable":{
+                                "formulaId":3,
+                                "dataType":"code",
+                                "value":[
+                                    4
                                 ],
-                                "otherColumn": false,
-                                "columnNumber": ""
+                                "otherColumn":false,
+                                "columnNumber":""
                             },
-                            "addendums": [
+                            "addendums":[
                                 {
-                                    "hasCondition" : true,
-                                    "conditions" : "exists" ,
-                                    "dataType": "code",
-                                    "value": [
-                                        4
+                                    "hasCondition" : false,
+                                    "condition" : "",
+                                    "dataType":"code",
+                                    "value":[
+                                        998
                                     ],
-                                    "otherValue" : [37],
-                                    "otherColumn": false,
-                                    "columnNumber": ""
+                                    "otherValue" : "",
+                                    "otherColumn":false,
+                                    "columnNumber":""
                                 },
                                 {
-                                    "dataType": "operation",
-                                    "value": "*",
-                                    "otherColumn": false,
-                                    "columnNumber": ""
+                                    "dataType":"operation",
+                                    "value":"*",
+                                    "otherColumn":false,
+                                    "columnNumber":""
                                 },
                                 {
                                     "hasCondition" : false,
                                     "condition" : "",
-                                    "dataType": "code",
-                                    "value": [
-                                        2
+                                    "dataType":"code",
+                                    "value":[
+                                        3
                                     ],
                                     "otherValue" : "",
-                                    "otherColumn": false,
-                                    "columnNumber": ""
+                                    "otherColumn":false,
+                                    "columnNumber":""
                                 }
                             ]
                         }
-
                     },
                     {
                         "areaHarvested":{
@@ -653,6 +650,7 @@
                                     "value":[
                                         5
                                     ],
+                                    "otherValue" : "",
                                     "otherColumn":false,
                                     "columnNumber":""
                                 },
@@ -663,13 +661,13 @@
                                     "columnNumber":""
                                 },
                                 {
-                                    "hasCondition" : true,
-                                    "condition" : "exists",
+                                    "hasCondition" : false,
+                                    "condition" : "",
                                     "dataType":"code",
                                     "value":[
                                         4
                                     ],
-                                    "otherValue" : [37],
+                                    "otherValue" : "",
                                     "otherColumn":false,
                                     "columnNumber":""
                                 }
@@ -718,8 +716,6 @@
                                 }
                             ]
                         }
-
-
                     }
                 ]
             }

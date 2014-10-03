@@ -1,12 +1,13 @@
 /**
  * Created by fabrizio on 9/30/14.
  */
-define(['jquery'], function($){
+define(['jquery', "urlConfigurator"], function($,ServicesUrl){
 
     var supportUtility, originalTotalCropsModel, numberOfCrops, originalSingleCropsModel, calculatedSingleModel, calculatedTotalModel;
 
+    var Services;
     // URL
-    var cropsUrl = "http://168.202.28.178:8080/dataset/crops"
+    var cropsUrl ;
 
     var map=  {
         2 : "Area Harvested",
@@ -17,7 +18,11 @@ define(['jquery'], function($){
         3 : "Extraction Rate"
     }
 
-    function PaddyModel(){}
+    function PaddyModel(){
+        Services = new ServicesUrl;
+        Services.init()
+        cropsUrl = Services.getCropsNumberUrl()
+    }
 
     PaddyModel.prototype.init = function(){}
 
@@ -45,8 +50,8 @@ define(['jquery'], function($){
     }
 
     PaddyModel.prototype.setOriginalTotalData = function(rowNumber, value, columnNumber){
-        debugger;
-        if(columnNumber == 3){
+
+        if(columnNumber == 3 && (value != "" && value != null)){
             originalTotalCropsModel[rowNumber][columnNumber] = parseFloat(value);
         }else {
             originalTotalCropsModel[rowNumber][columnNumber] = value;
@@ -88,21 +93,8 @@ define(['jquery'], function($){
                 }
             }
         }
-
-        result = this.cleanSingleModel(result)
         originalSingleCropsModel = $.extend(true,[], result);
         return result;
-    }
-
-    PaddyModel.prototype.cleanSingleModel = function(model){
-        var result = []
-        for( var i=0; i< model.length; i++){
-            if(model[i][0] != 3 && model[i][0] != 998){
-                result.push(model[i])
-            }
-        }
-        return result;
-
     }
 
     PaddyModel.prototype.initializePaddyProduction = function(row){
@@ -122,8 +114,12 @@ define(['jquery'], function($){
        return result;
     }
 
-    PaddyModel.prototype.setOriginalCropsData = function(newValue, rowNumber,columnValue){
-        originalSingleCropsModel[rowNumber][columnValue] = newValue;
+    PaddyModel.prototype.setOriginalCropsData = function(value, rowNumber,columnNumber){
+        if(columnNumber == 3 && (value != "" && value != null)){
+            originalSingleCropsModel[rowNumber][columnNumber] = parseFloat(value);
+        }else {
+            originalSingleCropsModel[rowNumber][columnNumber] = value;
+        }
     }
 
     PaddyModel.prototype.getCropsNumber = function(){
@@ -155,34 +151,36 @@ define(['jquery'], function($){
         calculatedTotalModel = calculatedModel
     }
 
+    PaddyModel.prototype.getCalculatedTotalModel = function(){
+        var result = calculatedTotalModel;
+        return result;
+    }
+
     PaddyModel.prototype.setCalculatedSingleModel = function(calculatedModel){
         console.log('setCalucaletd model')
         calculatedSingleModel = calculatedModel;
     }
 
 
-    PaddyModel.prototype.fuseAndGetDataTogether = function(calculatedDataFromCrops,allData, crop){
-        console.log('fuseandGet DatTogheter!')
-        var everyData = $.extend(true,[],allData)
-        var dataCropsSelected = $.extend(true,[],calculatedDataFromCrops);
-        console.log('dataCtopsSelectd')
-        console.log(dataCropsSelected)
-        for(var i =0; i<dataCropsSelected.length; i++) {
-            for (var j = 0; j < everyData.length; j++) {
-                if (dataCropsSelected[i][0] == everyData[j][0] && dataCropsSelected[i][6] == crop) {
-                    everyData[j] = dataCropsSelected[i]
-                }
+    PaddyModel.prototype.createSingleCalculatedModel = function(calculatedDataFromCrops){
+        var result = [];
+        for( var i =0; i< calculatedDataFromCrops.length; i++){
+            if(i==0){
+                result = calculatedDataFromCrops[i]
+            }else{
+                result  = result.concat(calculatedDataFromCrops[i])
             }
         }
-        return everyData
+        return result
     }
 
-    PaddyModel.prototype.filterModelSingleFromCrops = function(numberCrops, allData){
-        console.log('filterModelSingleFromCrops')
+    PaddyModel.prototype.filterModelSingleFromCrops = function( allData){
         var result = [];
-        for( var i=0; i<allData.length; i++){
-            if(allData[i][7] ==numberCrops ){
-                result.push(allData[i]);
+        for(var n=0; n< numberOfCrops; n++) {
+            for (var i = 0; i < allData.length; i++) {
+                if (allData[i][7] == n+1) {
+                    result.push(allData[i]);
+                }
             }
         }
         return result;
@@ -197,11 +195,19 @@ define(['jquery'], function($){
         return model;
     }
 
+    PaddyModel.prototype.getCalculatedSingleModel = function(){
+        var result = calculatedSingleModel;
+        return result;
+    }
+
+
     PaddyModel.prototype.unifySingleCropsData = function(singleCropsData){
+        console.log('unifySingleCropsDAta')
         var result = [];
         var listChecked = {}
         // check if total values need to be changed
-        if(this.checkIfCompletedSingleCrops(singleCropsData)) {
+        var calculatedModelSingle = this.getCalculatedSingleModel()
+        if(this.checkIfCompletedSingleCrops(calculatedModelSingle)) {
             // case number of crops ==1
             var elementPosition = 0
             for (var i = 0; i < singleCropsData.length; i++) {

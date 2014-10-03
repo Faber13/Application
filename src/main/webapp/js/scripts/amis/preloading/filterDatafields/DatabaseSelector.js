@@ -1,14 +1,17 @@
 /**
  * Created by fabrizio on 5/21/14555
  */
-define(["jquery", "jqwidgets"], function($) {
+define(["jquery", "urlConfigurator" ,"jqwidgets"], function($, ServicesConf) {
 
-    var  radioNationDB,radioCBS, selectedDB, source;
+    var  radioNationDB,radioCBS, selectedDB, source, Services, urlDB;
 
     function DatabaseSelector(){
 
         radioNationDB = $("#jqxradiobuttonNationalDB");
         radioCBS =      $("#jqxradiobuttonCBS");
+        Services = new ServicesConf;
+        Services.init();
+        urlDB=  Services.getDataSourceUrl()
         // $("#labelCBS").html("CBS");
 
     }
@@ -18,13 +21,12 @@ define(["jquery", "jqwidgets"], function($) {
 
         var filterRegionCode = {"regionCode" : regionCode}
         //var url = "http://localhost:8081/wds/rest/amis/cbsmonthly/AMISCBS/databases/"+regionCode;
-        var url  = "http://168.202.28.178:8080/dataset/datasource"
         var that = this;
         var data;
 
         $.ajax({
             async: false,
-            url: url,
+            url: urlDB,
             type: 'POST',
             contentType : "application/json",
             dataType : 'json',
@@ -54,12 +56,11 @@ define(["jquery", "jqwidgets"], function($) {
     DatabaseSelector.prototype.init = function(regionCode){
         var filterRegionCode = {"regionCode" : regionCode}
 
-        var url = "http://168.202.28.178:8080/dataset/datasource";
         var that = this;
         $.ajax({
             async: false,
             type: 'post',
-            url: url,
+            url: urlDB,
             contentType : "application/json",
             dataType : 'json',
             data : JSON.stringify( filterRegionCode),

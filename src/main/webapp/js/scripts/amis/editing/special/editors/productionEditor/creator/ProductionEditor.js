@@ -5,6 +5,11 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
         "productionEditor/model/ProductionModel", "specialFormulaConf/formulaHandler/FormulaHandler", "productionEditor/controller/ProductionController"],
     function ($, Formatter, Observer, ModelProduction, FormulaHandler, Controller) {
 
+        var cellclassname = function (row, column, value, data) {
+            if (data[4] == 'C')
+                return "calculatedRowGrid";
+        };
+
         var observer, modelProduction, supportUtility, formulaHandler, originalTotCropsModel, productionController, controllerEditors, clickedCell;
 
         // ---------------------- SUPPORT FUNCTIONS -------------------------------------------
@@ -185,10 +190,10 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
                 pageable: true,
                 autoheight: true,
                 columns: [
-                    { text: 'Element', datafield: 6 },
-                    { text: 'Value', datafield: 3 },
-                    { text: 'Flag', datafield: 4 },
-                    { text: 'Notes', datafield: 5 }
+                    { text: 'Element', datafield: 6,cellclassname:cellclassname  },
+                    { text: 'Value', datafield: 3 ,cellclassname:cellclassname },
+                    { text: 'Flag', datafield: 4 ,cellclassname:cellclassname },
+                    { text: 'Notes', datafield: 5 ,cellclassname:cellclassname }
                 ]
             });
 
@@ -201,11 +206,10 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
                 pageable: true,
                 autoheight: true,
                 columns: [
-                    { text: 'Element', datafield: 6 },
-                    { text: 'Crop',    datafield: 7},
-                    { text: 'Value',   datafield: 3 },
-                    { text: 'Flag',    datafield: 4 },
-                    { text: 'Notes',   datafield: 5 }
+                    { text: 'Element', datafield: 6 ,cellclassname:cellclassname },
+                    { text: 'Crop',    datafield: 7, cellclassname: cellclassname },
+                    { text: 'Value',   datafield: 3, cellclassname: cellclassname  },
+                    { text: 'Flag',    datafield: 4, cellclassname: cellclassname  }
                 ]
             });
 
@@ -245,10 +249,10 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
                 pageable: true,
                 autoheight: true,
                 columns: [
-                    { text: 'Element', datafield: 6 },
-                    { text: 'Value',   datafield: 3 },
-                    { text: 'Flag',    datafield: 4 },
-                    { text: 'Notes',   datafield: 5 }
+                    { text: 'Element', datafield: 6,cellclassname:cellclassname  },
+                    { text: 'Value', datafield: 3 ,cellclassname:cellclassname },
+                    { text: 'Flag', datafield: 4 ,cellclassname:cellclassname },
+                    { text: 'Notes', datafield: 5 ,cellclassname:cellclassname }
                 ]
             });
 
@@ -283,11 +287,10 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
                 pageable: true,
                 autoheight: true,
                 columns: [
-                    { text: 'Element', datafield: 6 },
-                    { text: 'Crop',    datafield: 7 },
-                    { text: 'Value',   datafield: 3 },
-                    { text: 'Flag',    datafield: 4 },
-                    { text: 'Notes',   datafield: 5 }
+                    { text: 'Element', datafield: 6 ,cellclassname:cellclassname },
+                    { text: 'Crop',    datafield: 7, cellclassname: cellclassname },
+                    { text: 'Value',   datafield: 3, cellclassname: cellclassname  },
+                    { text: 'Flag',    datafield: 4, cellclassname: cellclassname  }
                 ]
             });
 

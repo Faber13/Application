@@ -127,8 +127,16 @@
 [title = "Production (Thousand tonnes)"], [title="Production (Thousand tonnes)"]~ td,
 [title = "Other Uses (Thousand tonnes)"], [title="Other Uses (Thousand tonnes)"]~ td,
 [title = "Area Harvested (Thousand Ha)"], [title="Area Harvested (Thousand Ha)"]~ td,
+[title = "Production Paddy (Thousand tonnes)"], [title="Production Paddy (Thousand tonnes)"]~ td,
 [title = "Area Planted (Thousand Ha)"], [title="Area Planted (Thousand Ha)"]~ td,
 [title = "Yield (Tonnes/Ha)"], [title="Yield (Tonnes/Ha)"]~ td{
     color: #047A00;
+}
+
+.calculatedRowGrid{
+    background-color: rgba(191, 201, 238, 0.34);
+}
+.labelRice{
+    color: #0082AD;
 }
 

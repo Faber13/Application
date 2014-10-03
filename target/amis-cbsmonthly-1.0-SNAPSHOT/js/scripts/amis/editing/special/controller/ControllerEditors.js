@@ -30,7 +30,6 @@ define(["jquery", "editingSpecial/utils/DataHandler", "productionEditor/creator/
         var codes = specialFormulaController.getInvolvedItems(takenCell, filterProductCode);
         var dataInvolved = dataHandler.getInvolvedData(codes, everyData, tableData, takenCell);
 
-        debugger;
         var condition =parseInt(takenCell[0])
 
         switch (condition) {

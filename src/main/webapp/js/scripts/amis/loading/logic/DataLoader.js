@@ -1,18 +1,27 @@
 /**
  * Created by fabrizio on 9/11/14.
  */
-define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
+define(["jquery", "formatter/DatatypesFormatter", "urlConfigurator"], function ($, Formatter, ServicesURL) {
 
 
-    var urlActualForecast = "http://168.202.28.178:8080/dataset/national";
-    var urlPopulation = "http://168.202.28.178:8080/dataset/population";
-    var urlMostRecentDate = "http://168.202.28.178:8080/dataset/recentDate";
-    var urlPreviousYear = "http://168.202.28.178:8080/dataset/previousYear";
-
-    var firstForecastDateToInsert, formatter, realPreviousDate;
+    var urlActualForecast , urlPopulation ,  urlMostRecentDate, urlPreviousYear, firstForecastDateToInsert,
+        formatter, realPreviousDate, Services;
 
     function DataLoader() {
         formatter = new Formatter;
+        Services = new ServicesURL;
+        Services.init()
+        urlActualForecast = Services.getAllDataUrl()
+        console.log(urlActualForecast)
+        urlPopulation = Services.getPopulationUrl();
+        console.log(urlPopulation)
+
+        urlMostRecentDate = Services.getMostRecentDateUrl();
+        console.log(urlMostRecentDate)
+
+        urlPreviousYear = Services.getPreviousYearUrl();
+
+
     }
 
     DataLoader.prototype.getActualYearForecast = function (filterActual, filterPopulationActual) {

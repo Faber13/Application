@@ -1,7 +1,7 @@
 /**
  * Created by fabrizio on 9/15/14.
  */
-define(["jquery"], function($){
+define(["jquery",  "urlConfigurator"], function($, ServicesURL){
 
 // models
    var originalData, totalCropsData, originalTotalCropsModel, originalSingleCropsModel, calculatedTotalModel, calculatedSingleModel;
@@ -10,10 +10,10 @@ define(["jquery"], function($){
     var numberOfCrops;
 
 // Modules
-    var supportUtility;
+    var supportUtility, Services;
 
 // URL
-    var cropsUrl = "http://168.202.28.178:8080/dataset/crops"
+    var cropsUrl;
 
     var map=  {
         2 : "Area Harvested",
@@ -22,7 +22,11 @@ define(["jquery"], function($){
         37: "Area Planted"
     }
 
-    function ProductionModel(){}
+    function ProductionModel(){
+        Services = new ServicesURL;
+        Services.init();
+        cropsUrl = Services.getCropsNumberUrl()
+    }
 
     ProductionModel.prototype.getTotalCropsModel = function(involvedItems, Utility){
         originalData = involvedItems;
@@ -222,8 +226,8 @@ define(["jquery"], function($){
         var result = [];
         var listChecked = {}
         // check if total values need to be changed
-        var calculatedSingleModel = this.getCalculatedSingleModel()
-        if(this.checkIfCompletedSingleCrops(calculatedSingleModel)) {
+        var calculatedModelSingle = this.getCalculatedSingleModel()
+        if(this.checkIfCompletedSingleCrops(calculatedModelSingle)) {
             // case number of crops ==1
              var elementPosition = 0
              for (var i = 0; i < singleCropsData.length; i++) {

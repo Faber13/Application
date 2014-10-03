@@ -118,7 +118,7 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
         result[indexValues] = this.expressionLanguage(valueColumn, indexValues, result);
         // Binded to Amis, if there is a note show an image
         if(notesInserted && result[indexValues]!= null && typeof result[indexValues] != 'undefined' && result[indexValues] != "") {
-            result[indexValues] += "&nbsp<img src='../../../../../../../BalanceSheet/css/images/notes/paperclip-icon.png' width='16' height='16'>"
+            result[indexValues] += "&nbsp<img src='../../../../../../../repository/amis-cbs/css/images/notes/paperclip-icon.png' width='16' height='16'>"
         }
         return result;
     }

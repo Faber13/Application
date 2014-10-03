@@ -5,6 +5,12 @@ define(["jquery","formatter/DatatypesFormatter", "jqwidgets"], function($, Forma
 
     var observer ;
 
+
+    var cellclassname = function (row, column, value, data) {
+        if (data[4] == 'C')
+            return "calculatedRowGrid";
+        };
+
     function PaddyCreator(){}
 
     PaddyCreator.prototype.init = function(totalValuesModel, singleCropsModel, Observer){
@@ -71,21 +77,23 @@ define(["jquery","formatter/DatatypesFormatter", "jqwidgets"], function($, Forma
             '<div id="totalValues"><br>' +
             '<div class="row"><br>' +
             '<div class="col-lg-5 col-lg-offset-1">' +
+            '<small class = "labelRice">Select the <strong>ITEM</strong> to enter</small><br><br>'+
             '<div class ="totalValuesBoxes" id="firstCheckBoxTotVal">Rice Paddy</div>' +
             '</div>' +
 
             '<div class="col-lg-6">' +
+            '<small class = "labelRice">Select the <strong>ELEMENT</strong> to enter</small><br><br>'+
             '<div class ="totalValuesBoxes" id="secondCheckBoxTotVal">Area Harvested</div>' +
             '</div>' +
             '<br><br>' +
-            '<div class="row"><br>' +
+            '<br>' +
             '<div class="col-lg-5 col-lg-offset-1">' +
             '<div class ="totalValuesBoxes" id="thirdCheckBoxTotVal">Rice Milled</div>' +
             '</div>' +
 
             '<div class="col-lg-6">' +
             '<div class ="totalValuesBoxes" id="fourthCheckBoxTotVal">Yield</div>' +
-            '</div></div>' +
+            '</div>' +
             '<br><br>' +
             '<div class="row">' +
             '<div class="col-lg-3 col-lg-offset-4">' +
@@ -103,18 +111,27 @@ define(["jquery","formatter/DatatypesFormatter", "jqwidgets"], function($, Forma
             '</div>' +
 
             // Single Crops ------------------------------------
-            '<div id="singleCropValues"><br>' +
+            '<div id="totalValues"><br>' +
             '<div class="row"><br>' +
-            '<div class="col-lg-3 col-lg-offset-1">' +
-            '<div class ="singleCropsBoxes" id="firstCheckBoxSingleCrops">' + map[5] + '</div>' +
+            '<div class="col-lg-5 col-lg-offset-1">' +
+            '<small class = "labelRice">Select the <strong>ITEM</strong> to enter</small><br><br>'+
+            '<div class ="singleCropsBoxes" id="firstCheckBoxSingleCrops">Rice Paddy</div>' +
             '</div>' +
 
-            '<div class="col-lg-3">' +
-            '<div class ="singleCropsBoxes" id="secondCheckBoxSingleCrops">' + map[2] + '</div>' +
+            '<div class="col-lg-6">' +
+            '<small class = "labelRice">Select the <strong>ELEMENT</strong> to enter</small><br><br>'+
+            '<div class ="singleCropsBoxes" id="secondCheckBoxSingleCrops">Area Harvested</div>' +
             '</div>' +
-            '<div class="col-lg-3">' +
-            '<div class ="singleCropsBoxes" id="thirdCheckBoxSingleCrops">' + map[4] + '</div>' +
-            '</div><br><br>' +
+            '<br><br>' +
+            '<br>' +
+            '<div class="col-lg-5 col-lg-offset-1">' +
+            '<div class ="singleCropsBoxes" id="thirdCheckBoxSingleCrops">Rice Milled</div>' +
+            '</div>' +
+
+            '<div class="col-lg-6">' +
+            '<div class ="singleCropsBoxes" id="fourthCheckBoxSingleCrops">Yield</div>' +
+            '</div>' +
+            '<br><br>' +
             '<div class="row">' +
             '<div class="col-lg-3 col-lg-offset-4">' +
             '<button type="button" class="btn btn-primary" id="applyRulesFormulaSingle">Recalculate Data</button>' +
@@ -124,10 +141,9 @@ define(["jquery","formatter/DatatypesFormatter", "jqwidgets"], function($, Forma
             '<br>' +
             '<div class="row"><div class="col-lg-10 col-lg-offset-1">' +
             '<div id="gridSingleCrops"></div></div></div>' +
-
             '<div class="modal-footer">' +
-            '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>' +
-            '<button type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>' +
+            '<button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>' +
+            '<button type="button" class="btn btn-primary" data-dismiss="modal" id="saveTotalValues">Save changes</button>' +
             '</div>' +
             '</div>' +
             '</div>' +
@@ -146,6 +162,9 @@ define(["jquery","formatter/DatatypesFormatter", "jqwidgets"], function($, Forma
         $('#firstCheckBoxSingleCrops').jqxCheckBox({ width: 120, height: 25, checked: true});
         $('#secondCheckBoxSingleCrops').jqxCheckBox({ width: 120, height: 25, checked: true});
         $('#thirdCheckBoxSingleCrops').jqxCheckBox({ width: 120, height: 25, disabled: true });
+        $('#fourthCheckBoxSingleCrops').jqxCheckBox({ width: 120, height: 25, disabled: true });
+
+
 
 
         $('#gridTotalValues').jqxGrid({
@@ -157,10 +176,10 @@ define(["jquery","formatter/DatatypesFormatter", "jqwidgets"], function($, Forma
             pageable: true,
             autoheight: true,
             columns: [
-                { text: 'Element', datafield: 6 },
-                { text: 'Value', datafield: 3 },
-                { text: 'Flag', datafield: 4 },
-                { text: 'Notes', datafield: 5 }
+                { text: 'Element', datafield: 6,cellclassname:cellclassname  },
+                { text: 'Value', datafield: 3 ,cellclassname:cellclassname },
+                { text: 'Flag', datafield: 4 ,cellclassname:cellclassname },
+                { text: 'Notes', datafield: 5 ,cellclassname:cellclassname }
             ]
         });
 
@@ -173,11 +192,10 @@ define(["jquery","formatter/DatatypesFormatter", "jqwidgets"], function($, Forma
             pageable: true,
             autoheight: true,
             columns: [
-                { text: 'Element', datafield: 6 },
-                { text: 'Crop',    datafield: 7},
-                { text: 'Value',   datafield: 3 },
-                { text: 'Flag',    datafield: 4 },
-                { text: 'Notes',   datafield: 5 }
+                { text: 'Element', datafield: 6 ,cellclassname:cellclassname },
+                { text: 'Crop',    datafield: 7, cellclassname: cellclassname },
+                { text: 'Value',   datafield: 3, cellclassname: cellclassname  },
+                { text: 'Flag',    datafield: 4, cellclassname: cellclassname  }
             ]
         });
 
@@ -186,12 +204,13 @@ define(["jquery","formatter/DatatypesFormatter", "jqwidgets"], function($, Forma
         })
         $("#specialForm").modal({ backdrop: 'static',
             keyboard: false});
+
+
         observer.applyListeners()
     }
 
+
     PaddyCreator.prototype.updateTotGrid = function (calculatedModel) {
-
-
 
         console.log('update Tot Grid!!')
         var source = {
@@ -217,10 +236,10 @@ define(["jquery","formatter/DatatypesFormatter", "jqwidgets"], function($, Forma
             pageable: true,
             autoheight: true,
             columns: [
-                { text: 'Element', datafield: 6 },
-                { text: 'Value',   datafield: 3 },
-                { text: 'Flag',    datafield: 4 },
-                { text: 'Notes',   datafield: 5 }
+                { text: 'Element', datafield: 6,cellclassname:cellclassname  },
+                { text: 'Value', datafield: 3 ,cellclassname:cellclassname },
+                { text: 'Flag', datafield: 4 ,cellclassname:cellclassname },
+                { text: 'Notes', datafield: 5 ,cellclassname:cellclassname }
             ]
         });
     }
@@ -252,11 +271,10 @@ define(["jquery","formatter/DatatypesFormatter", "jqwidgets"], function($, Forma
             pageable: true,
             autoheight: true,
             columns: [
-                { text: 'Element', datafield: 6 },
-                { text: 'Crop',    datafield: 7 },
-                { text: 'Value',   datafield: 3 },
-                { text: 'Flag',    datafield: 4 },
-                { text: 'Notes',   datafield: 5 }
+                { text: 'Element', datafield: 6 ,cellclassname:cellclassname },
+                { text: 'Crop',    datafield: 7, cellclassname: cellclassname },
+                { text: 'Value',   datafield: 3, cellclassname: cellclassname  },
+                { text: 'Flag',    datafield: 4, cellclassname: cellclassname  }
             ]
         });
 

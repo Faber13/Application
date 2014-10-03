@@ -26,94 +26,131 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function($, Form
         this.listenToCheckboxesSingleCrops();
         this.listenToEditCellTotGrid();
         this.listenToEditCellSingleGrid();
+        this.listenToTotalEditable()
+        this.listenToSingleCropsEditable();
         this.listenToRecalculateButtonSingleCrops();
         this.listenToRecalculateButtonTotalValues()
         this.listenToSaveTotalValuesButton();
         this.listenToTabs()
-       //his.listenToCheckboxesSingleCrops()
     }
 
     PaddyObserver.prototype.listenToCheckboxesSingleCrops = function () {
 
         var that = this;
-
         $("#firstCheckBoxSingleCrops").on('change', function (event) {
             event.preventDefault();
             event.stopImmediatePropagation();
-            (event.args.checked) ? that.onCheckBoxSingleCrops(1) : that.onUncheckBoxSingleCrops([2, 3]);
+            (event.args.checked) ? that.onCheckBoxSingleCrops(1) :that.onUncheckBoxSingleCrops(1) ;
         })
         $("#secondCheckBoxSingleCrops").on('change', function (event) {
             event.preventDefault();
             event.stopImmediatePropagation();
-            (event.args.checked) ? that.onCheckBoxSingleCrops(2) : that.onUncheckBoxSingleCrops([1, 3]);
+            (event.args.checked) ? that.onCheckBoxSingleCrops(2) :that.onUncheckBoxSingleCrops(2) ;
         })
         $("#thirdCheckBoxSingleCrops").on('change', function (event) {
             event.preventDefault();
             event.stopImmediatePropagation();
-            (event.args.checked) ? that.onCheckBoxSingleCrops(3) : that.onUncheckBoxSingleCrops([1, 2]);
+            (event.args.checked) ? that.onCheckBoxSingleCrops(3) :that.onUncheckBoxSingleCrops(3) ;
+        })
+        $("#fourthCheckBoxSingleCrops").on('change', function (event) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            (event.args.checked) ? that.onCheckBoxSingleCrops(4) :that.onUncheckBoxSingleCrops(4) ;
         })
     }
 
     PaddyObserver.prototype.onCheckBoxSingleCrops = function (clicked) {
-        var result = []
-        switch (clicked) {
+        switch (number) {
             case 1:
-                if ($("#secondCheckBoxSingleCrops").attr("aria-checked") == 'true') {
-                    $("#thirdCheckBoxSingleCrops").jqxCheckBox('disable');
-                    formulaToApplySingle = 'yield';
-
-                }
-                else if ($("#thirdCheckBoxSingleCrops").attr("aria-checked") == 'true') {
-                    $("#secondCheckBoxSingleCrops").jqxCheckBox('disable');
-                    formulaToApplySingle = 'areaHarvested';
-                }
+                $("#secondCheckBoxSingleCrops").jqxCheckBox('check');
+                $("#thirdCheckBoxSingleCrops").jqxCheckBox('disable');
+                $("#fourthCheckBoxSingleCrops").jqxCheckBox('disable');
+                formulaToApplySingle = 'milled';
                 break;
 
             case 2:
-                if ($("#firstCheckBoxSingleCrops").attr("aria-checked") == 'true') {
-                    $("#thirdCheckBoxSingleCrops").jqxCheckBox('disable');
-                    formulaToApplySingle = 'yield';
-
-                } else if ($("#thirdCheckBoxSingleCrops").attr("aria-checked") == 'true') {
-                    $("#firstCheckBoxSingleCrops").jqxCheckBox('disable');
-                    formulaToApplySingle = 'production';
+                // milled
+                if ($("#fourthCheckBoxSingleCrops").attr("aria-checked") == 'true') {
+                    $("#fourthCheckBoxSingleCrops").jqxCheckBox('uncheck');
+                    $("#fourthCheckBoxSingleCrops").jqxCheckBox('disable');
+                    formulaToApplySingle = 'areaHarvested'
+                }else  if ($("#fourthCheckBoxSingleCrops").attr("aria-checked") != 'true') {
+                    $("#fourthCheckBoxSingleCrops").jqxCheckBox('disable');
+                    formulaToApplySingle = 'areaHarvested'
                 }
+                else if($("#firstCheckBoxSingleCrops").attr("aria-checked") == 'true'){
+                    formulaToApplySingle = 'milled'
+                }
+
                 break;
 
             case 3:
-                if ($("#firstCheckBoxSingleCrops").attr("aria-checked") == 'true') {
+                $("#firstCheckBoxSingleCrops").jqxCheckBox('disable');
+                if ($("#fourthCheckBoxSingleCrops").attr("aria-checked") == 'true') {
+                    formulaToApplySingle = 'yield'
+
+                }else if($("#secondCheckBoxSingleCrops").attr("aria-checked") == 'true') {
+                    formulaToApplySingle = 'areaHarvested'
+                }
+                break;
+
+            case 4:
+                if ($("#secondCheckBoxSingleCrops").attr("aria-disabled") != 'true') {
                     $("#secondCheckBoxSingleCrops").jqxCheckBox('disable');
-                    formulaToApplySingle = 'areaHarvested';
-
+                    formulaToApplySingle = 'yield'
                 }
-                else if ($("#secondCheckBoxSingleCrops").attr("aria-checked") == 'true') {
-                    $("#firstCheckBoxSingleCrops").jqxCheckBox('disable');
-                    formulaToApplySingle = 'production';
 
-                }
                 break;
         }
     }
 
-    PaddyObserver.prototype.onUncheckBoxSingleCrops = function (others) {
-        for (var i = 0; i < others.length; i++) {
-            switch (others[i]) {
-                case 1:
-                    if ($("#firstCheckBoxSingleCrops").attr("aria-disabled") == 'true') {
-                        $("#firstCheckBoxSingleCrops").jqxCheckBox('enable');
+    PaddyObserver.prototype.onUncheckBoxSingleCrops = function (number) {
+        switch (number) {
+            case 1:
+                $("#thirdCheckBoxSingleCrops").jqxCheckBox('enable');
+                $("#thirdCheckBoxSingleCrops").jqxCheckBox('check');
+                $("#firstCheckBoxSingleCrops").jqxCheckBox('disable');
+                $("#secondCheckBoxSingleCrops").jqxCheckBox('uncheck');
+                $("#fourthCheckBoxSingleCrops").jqxCheckBox('enable');
+                if ($("#secondCheckBoxSingleCrops").attr("aria-checked") == 'true') {
+                    formulaToApplySingle = 'yield'
+                }else if($("#fourthCheckBoxSingleCrops").attr("aria-checked") == 'true'){
+                    formulaToApplySingle = 'areaHarvested'
+                }
+                break;
+
+            case 2:
+                // milled
+                if ($("#firstCheckBoxSingleCrops").attr("aria-checked") != 'true') {
+                    $("#fourthCheckBoxSingleCrops").jqxCheckBox('enable');
+                }
+                if ($("#secondCheckBoxSingleCrops").attr("aria-checked") == 'true' && $("#fourthCheckBoxSingleCrops").attr("aria-checked") == 'true') {
+                    formulaToApplySingle = 'areaHarvested'
+                }
+                break;
+
+            case 3:
+                $("#firstCheckBoxSingleCrops").jqxCheckBox('enable');
+                $("#firstCheckBoxSingleCrops").jqxCheckBox('check');
+                $("#thirdCheckBoxSingleCrops").jqxCheckBox('disable');
+                if ($("#fourthCheckBoxSingleCrops").attr("aria-disabled") != 'true') {
+                    if($("#fourthCheckBoxSingleCrops").attr("aria-checked") == 'true'){
+                        $('#fourthCheckBoxSingleCrops').jqxCheckBox('uncheck');
                     }
-                    break;
-                case 2:
-                    if ($("#secondCheckBoxSingleCrops").attr("aria-disabled") == 'true') {
-                        $("#secondCheckBoxSingleCrops").jqxCheckBox('enable');
-                    }
-                    break;
-                case 3:
-                    if ($("#thirdCheckBoxSingleCrops").attr("aria-disabled") == 'true') {
-                        $("#thirdCheckBoxSingleCrops").jqxCheckBox('enable');
-                    }
-                    break;
-            }
+                    $("#fourthCheckBoxSingleCrops").jqxCheckBox('disable')
+                }
+                $("#secondCheckBoxSingleCrops").jqxCheckBox('enable');
+                formulaToApplySingle = 'milled'
+                break;
+
+            case 4:
+
+                if ($("#secondCheckBoxSingleCrops").attr("aria-disabled") == 'true') {
+                    $("#secondCheckBoxSingleCrops").jqxCheckBox('enable');
+                    $("#fourthCheckBoxSingleCrops").jqxCheckBox('disable');
+                    formulaToApplySingle = 'milled'
+                }
+                break;
         }
     }
 
@@ -147,24 +184,39 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function($, Form
                 $("#secondCheckBoxTotVal").jqxCheckBox('check');
                 $("#thirdCheckBoxTotVal").jqxCheckBox('disable');
                 $("#fourthCheckBoxTotVal").jqxCheckBox('disable');
+                formulaToApplyTot = 'milled';
                 break;
 
             case 2:
                 // milled
                 if ($("#fourthCheckBoxTotVal").attr("aria-checked") == 'true') {
                     $("#fourthCheckBoxTotVal").jqxCheckBox('uncheck');
+                    $("#fourthCheckBoxTotVal").jqxCheckBox('disable');
+                    formulaToApplyTot = 'areaHarvested'
+                }else  if ($("#fourthCheckBoxTotVal").attr("aria-checked") != 'true') {
+                    $("#fourthCheckBoxTotVal").jqxCheckBox('disable');
+                    formulaToApplyTot = 'areaHarvested'
                 }
-                $("#fourthCheckBoxTotVal").jqxCheckBox('disable');
+                else if($("#firstCheckBoxTotVal").attr("aria-checked") == 'true'){
+                    formulaToApplyTot = 'milled'
+                }
 
                 break;
 
             case 3:
                 $("#firstCheckBoxTotVal").jqxCheckBox('disable');
+                if ($("#fourthCheckBoxTotVal").attr("aria-checked") == 'true') {
+                    formulaToApplyTot = 'yield'
+
+                }else if($("#secondCheckBoxTotVal").attr("aria-checked") == 'true') {
+                    formulaToApplyTot = 'areaHarvested'
+                }
                 break;
 
             case 4:
                 if ($("#secondCheckBoxTotVal").attr("aria-disabled") != 'true') {
                     $("#secondCheckBoxTotVal").jqxCheckBox('disable');
+                    formulaToApplyTot = 'yield'
                 }
 
                 break;
@@ -279,10 +331,6 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function($, Form
 
     PaddyObserver.prototype.listenToRecalculateButtonTotalValues = function () {
         $('#applyRulesFormulaTot').on('click', function (evt) {
-
-            debugger;
-            console.log('')
-
             // third is disabled on default
             evt.preventDefault();
             evt.stopImmediatePropagation();
@@ -293,17 +341,90 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function($, Form
             counter += $("#fourthCheckBoxTotVal").val() ? 1 : 0;
 
             singleCropsValuesModified = true;
-            console.log(counter)
             if (counter == 2) { //OK
-                controllerPaddy.updateSingleCropsGridOnFormulaChanges(formulaToApplySingle);
+                controllerPaddy.updateTotGridOnFormulaChanges(formulaToApplyTot);
             } else {
                 var alert = '<div class="alert alert-danger alert-dismissible" role="alert">' +
                     '<button type="button" class="close" data-dismiss="alert">' +
                     '<span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>' +
                     '<strong>Attention!</strong> You have to select <strong>2 elements</strong></div>';
-                $('#alertSingle').append(alert)
+                $('#alertTotal').append(alert)
             }
         })
+    }
+
+    PaddyObserver.prototype.listenToTotalEditable = function(){
+        $("#gridTotalValues").bind('cellbeginedit', function (event) {
+            event.preventDefault();
+            event.stopImmediatePropagation()
+            var toBlock = false;
+            var row = event.args.rowindex;
+            var column = event.args.datafield
+
+            switch (formulaToApplyTot){
+                case 'milled':
+                   if(row == 0 || row == 4) {
+                       toBlock = true;
+                   }
+                    break;
+                case 'areaHarvested':
+                    if(row == 1) {
+                        toBlock = true;
+                    }
+                    break;
+                case 'yield':
+                    if(row == 1) {
+                        toBlock = true;
+                    }
+                    break;
+                case 'init':
+                    if(row == 0 || row == 4) {
+                        toBlock = true;
+                    }
+                    break
+            }
+            // condition follows
+            if (toBlock) {
+                $("#gridTotalValues").jqxGrid('endcelledit', row, column, true);
+            }
+        });
+    }
+
+    PaddyObserver.prototype.listenToSingleCropsEditable = function(){
+        $("#gridSingleCrops").bind('cellbeginedit', function (event) {
+            event.preventDefault();
+            event.stopImmediatePropagation()
+            var toBlock = false;
+            var row = event.args.rowindex;
+            var column = event.args.datafield
+
+            switch (formulaToApplyTot){
+                case 'milled':
+                    if(row == 0 || row == 4) {
+                        toBlock = true;
+                    }
+                    break;
+                case 'areaHarvested':
+                    if(row == 1) {
+                        toBlock = true;
+                    }
+                    break;
+                case 'yield':
+                    if(row == 1) {
+                        toBlock = true;
+                    }
+                    break;
+                case 'init':
+                    if(row == 0 || row == 4) {
+                        toBlock = true;
+                    }
+                    break
+            }
+            // condition follows
+            if (toBlock) {
+                $("#grid").jqxGrid('endcelledit', row, column, true);
+            }
+        });
     }
 
 
@@ -312,7 +433,7 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function($, Form
         $("#gridSingleCrops").on('cellendedit', function (event) {
             event.preventDefault();
             event.stopImmediatePropagation();
-            totalValuesModified = true;
+            singleCropsValuesModified = true;
             var columnValue = event.args.datafield;
             var oldvalue = event.args.oldvalue;
             var value = event.args.value;
@@ -326,10 +447,10 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function($, Form
             if (columnValue == 3 && (oldvalue != value)) {
                 var numberOfRow = event.args.rowindex;
                 var value2 = parseFloat(value)
-                controllerPaddy.updateSingleCropsGridOnEditing(numberOfRow, value2, formulaToApplyTot, columnValue)
+                controllerPaddy.updateSingleCropsGridOnEditing(numberOfRow, value2, formulaToApplySingle, columnValue)
             } else if (columnValue != 3 && (oldvalue != value)) { // if modified only flag/notes
                 var numberOfRow = event.args.rowindex;
-                controllerPaddy.updateSingleCropsGridOnEditing(numberOfRow, value, formulaToApplyTot, columnValue)
+                controllerPaddy.updateSingleCropsGridOnEditing(numberOfRow, value, formulaToApplySingle, columnValue)
             }
         })
 
@@ -358,13 +479,19 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function($, Form
     PaddyObserver.prototype.listenToTabs = function () {
         $('#productionTabs').on('tabclick', function (event) {
             event.preventDefault()
-            debugger;
+            event.stopImmediatePropagation()   ;
+            console.log('listenToTabs')
             var clickedItem = event.args.item;
             if (clickedItem == 0 && singleCropsValuesModified) { // from single crops to total values
                 controllerPaddy.onSwitchingCropsValues(formulaToApplySingle)
 
             }
         });
+    }
+
+    PaddyObserver.prototype.getFormulaTotalValues = function(){
+       var result =  formulaToApplyTot;
+        return result;
     }
 
     PaddyObserver.prototype.setTotalValuesOnModified = function(){
