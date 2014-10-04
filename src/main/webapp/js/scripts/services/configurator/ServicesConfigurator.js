@@ -3,7 +3,7 @@
  */
 define(['jquery'], function($){
 
-    var urlConfiguration  =   './js/scripts/services/configuration/services.json'
+    var urlConfiguration  =   './js/scripts/services/configuration/servicesTestLocal.json'
 
     function ServicesConfigurator(){}
 
@@ -36,6 +36,20 @@ define(['jquery'], function($){
         }
         return configuration.services[0].filters[1].yearUrl;
 
+    }
+
+    ServicesConfigurator.prototype.getCountryListUrl = function(){
+        if(!configuration){
+            this.init()
+        }
+        return configuration.services[0].filters[2].countryUrl;
+    }
+
+    ServicesConfigurator.prototype.getCommodityUrl = function(){
+        if(!configuration){
+            this.init()
+        }
+        return configuration.services[0].filters[3].commodityUrl;
     }
 
     ServicesConfigurator.prototype.getAllDataUrl = function(){

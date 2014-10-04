@@ -1,18 +1,21 @@
 /**
  * Created by fabrizio on 5/20/14.
  */
-define(["jquery", "jqwidgets"], function($) {
+define(["jquery", "urlConfigurator","jqwidgets"], function($, ServicesUrl) {
 
-    var  combo, productCode;
+    var  combo, productCode, Services;
 
-    function CommoditySelector(){ }
+    function CommoditySelector(){
+        Services = new ServicesUrl;
+        Services.init()
+    }
 
 
     CommoditySelector.prototype.init = function(){
 
         var that = this;
         combo = $("#selectionCommodity")
-        var url = "http://hqlprfenixapp2.hq.un.fao.org:7777/msd/cl/system/AMIS_PRODUCTS/1.0";
+        var url = Services.getCommodityUrl();
         var sources = [];
 
         $.ajax({

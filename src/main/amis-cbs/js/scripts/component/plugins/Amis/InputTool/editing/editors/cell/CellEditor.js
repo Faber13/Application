@@ -641,6 +641,8 @@ define(["jquery", "formatter/DatatypesFormatter","flagTranslator/controller/Flag
 
 
     CellEditor.prototype.chooseAndGetElementByDatatype = function (datatype, htmlvalue) {
+        alert('')
+        debugger;
         var result;
         switch (datatype[0]) {
             case "code" || "customCode" || "codeList":
@@ -669,10 +671,17 @@ define(["jquery", "formatter/DatatypesFormatter","flagTranslator/controller/Flag
             default :
                 if (htmlvalue.id == 'accessorInput1') {
                     var codes = $("#" + htmlvalue.id).select2("val");
+                    console.log('CODESSSSSSSSSSSSS')
+                    console.log(codes)
                     result = flagController.getStringFromCodes(codes);
+                    console.log('RESULTTTTTTT')
+                    console.log(codes)
 
                 } else {
                     result = $("#" + htmlvalue.id).val();
+                    if(typeof result == 'undefined'){
+                        result = null
+                    }
                 }
         }
         return result;

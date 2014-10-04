@@ -29,7 +29,8 @@ requirejs.config({
         flagTranslator    :  "../component/plugins/Amis/InputTool/utils/flagFormatter",
         specialFormulaConf:  "../amis/editing/special/configuration",
         generalObserver   :  "../component/core/balanceSheet/observer",
-        urlConfigurator   :  "../services/configurator/ServicesConfigurator"
+        urlConfigurator   :  "../services/configurator/ServicesConfigurator",
+        databaseSaver     :  "../amis/saving"
     },
     "shim": {
         "bootstrap": {
@@ -52,6 +53,9 @@ requirejs.config({
         },
         "chosen.jquery" : {
             deps : ["jquery"]
+        },
+        "bootstrap-dialog":{
+            deps: ["bootstrap"]
         }
     }
 });

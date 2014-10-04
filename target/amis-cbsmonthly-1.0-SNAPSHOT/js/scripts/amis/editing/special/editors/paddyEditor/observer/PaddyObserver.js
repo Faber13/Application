@@ -422,7 +422,7 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function($, Form
             }
             // condition follows
             if (toBlock) {
-                $("#grid").jqxGrid('endcelledit', row, column, true);
+                $("#gridSingleCrops").jqxGrid('endcelledit', row, column, true);
             }
         });
     }

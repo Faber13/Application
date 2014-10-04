@@ -1,18 +1,19 @@
 /**
  * Created by fabrizio on 5/20/14.
  */
-define(["jquery", "balanceSheet/BalanceSheet", "dataLoader/DataLoader"],
-    function($, BalanceSheet, DataLoader) {
+define(["jquery", "balanceSheet/BalanceSheet", "dataLoader/DataLoader", "databaseSaver/controller/SavingController"],
+    function($, BalanceSheet, DataLoader, SavingController) {
 
         var urlDSD = './js/scripts/component/core/balanceSheet/configuration/dsd/dsdStructure.json'
         var urlDSDRice = './js/scripts/component/core/balanceSheet/configuration/dsd/dsdStructureRice.json'
 
-        var balanceSheet, dataFiltered, dataLoader, firstIstance;
+        var balanceSheet, dataFiltered, dataLoader, firstIstance, savingController;
 
         function LoadingController() {
             balanceSheet = new BalanceSheet
             dataLoader = new DataLoader;
             firstIstance = false;
+            savingController = new SavingController;
         }
 
     LoadingController.prototype.init = function(preloadingData) {
@@ -56,6 +57,40 @@ define(["jquery", "balanceSheet/BalanceSheet", "dataLoader/DataLoader"],
         }
         var url;
 
+        /* EXAMPLE PATTERN TO SAVE
+         {
+         "filter":{
+         "region":12,
+         "product":5,
+         "year":2010
+         },
+
+         "data":[
+         [
+         4,
+         "Tonnes/Ha",
+         "2013-07-15",
+         7.81,
+         null
+         ],
+         [
+         19,
+         "Million tonnes",
+         "2013-07-15",
+         27.65,
+         " "
+         ],
+         [
+         27,
+         "Million tonnes",
+         "2013-07-15",
+         27.65,
+         " "
+         ]
+         ]
+         }
+         */
+
         //
         if(!firstIstance) {
             firstIstance = true
@@ -71,10 +106,12 @@ define(["jquery", "balanceSheet/BalanceSheet", "dataLoader/DataLoader"],
                 balanceSheet.init(totalForecast, url, dataFiltered)
             }
         }
+        debugger;
 
-        $("#controlData").bind('click', function(){
-            debugger;
-        })
+        var realPreviousYear = dataLoader.getRealPreviousYear()
+        savingController.init(balanceSheet, filterActual,realPreviousYear )
+
+
     };
 
 

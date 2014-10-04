@@ -73,6 +73,7 @@ define(['jquery','paddyEditor/model/PaddyModel', 'paddyEditor/observer/PaddyObse
     }
 
     PaddyController.prototype.updateSingleCropsGridOnEditing  = function(rowNumber, newValue, formulaToApply, columnValue){
+        console.log('=============== updateSingleCropsGridOnEditing (Paddy Controlelr) =======================')
 
         var formulaToUpdate;
         if (formulaToApply == 'init') {
@@ -80,10 +81,14 @@ define(['jquery','paddyEditor/model/PaddyModel', 'paddyEditor/observer/PaddyObse
         } else {
             formulaToUpdate = formulaHandler.getUpdateFormula(2, 'singleCrops', formulaToApply)
         }
+        console.log('new Value')
+        console.log(newValue)
         // set new value
         modelPaddy.setOriginalCropsData(newValue, rowNumber,columnValue )
         // get all the model
         var allData = modelPaddy.getSingleCropsModel();
+        console.log('allData')
+        console.log(allData)
 
         var modelSingleCrops = $.extend(true, [], allData)
 
@@ -151,7 +156,12 @@ define(['jquery','paddyEditor/model/PaddyModel', 'paddyEditor/observer/PaddyObse
         console.log('onSwitchingCrops')
         var originalSingleCropsModel = modelPaddy.getSingleCropsModel()
         var dataSingleCrops = $.extend(true, [], originalSingleCropsModel)
+        console.log('---------- onSwitchingCropsValues(PaddyCotnroller) ----------- ')
+        console.log('dataSingleCrops')
+        console.log(dataSingleCrops)
         var dataUnified = modelPaddy.unifySingleCropsData(dataSingleCrops);
+        console.log('dataUnified')
+        console.log(dataUnified)
         var totalValueModel = $.extend(true, [],modelPaddy.getTotalValuesModel());
         var rowIndexes = [];
         for(var i =0; i<dataUnified.length; i++) {

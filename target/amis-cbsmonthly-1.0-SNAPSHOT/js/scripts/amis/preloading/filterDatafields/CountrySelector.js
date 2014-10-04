@@ -1,19 +1,22 @@
 /**
  * Created by fabrizio on 5/20/14.
  */
-define(["jquery", "jqwidgets"], function($) {
+define(["jquery", "urlConfigurator","jqwidgets"], function($, servicesUrl) {
 
-    var  combo, regionCode;
+    var  combo, regionCode, Services;
 
 
-    function CountrySelector(){ }
+    function CountrySelector(){
+        Services = new servicesUrl;
+        Services.init();
+    }
 
 
     CountrySelector.prototype.init = function(){
 
         var that = this;
         combo = $("#selectionCountryBox")
-        var url = "http://hqlprfenixapp2.hq.un.fao.org:7777/msd/cl/system/AMIS_GAUL/1.0";
+        var url =Services.getCountryListUrl();
         var sources = [];
 
         $.ajax({

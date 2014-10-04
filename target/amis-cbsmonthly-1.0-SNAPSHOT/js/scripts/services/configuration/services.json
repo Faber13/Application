@@ -7,6 +7,12 @@
                 },
                 {
                     "yearUrl": "http://hqlprfenixapp2.hq.un.fao.org:12900/amis-services/dataset/year"
+                },
+                {
+                    "countryUrl": "http://hqlprfenixapp2.hq.un.fao.org:7777/msd/cl/system/AMIS_GAUL/1.0"
+                },
+                {
+                    "commodityUrl" : "http://hqlprfenixapp2.hq.un.fao.org:7777/msd/cl/system/AMIS_PRODUCTS/1.0"
                 }
             ]
         },

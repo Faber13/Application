@@ -250,8 +250,7 @@ define(["jquery", "formulasAmis/support/SupportModel" ], function ($, SupportMod
             newData.push(visualizedData[index])
         } else {
             visualizedData[indexRow] = value;
-            updatedData.push(visualizedData[index])
-
+            this.pushInUpdatedData(visualizedData[index])
         }
     }
 
@@ -357,6 +356,10 @@ define(["jquery", "formulasAmis/support/SupportModel" ], function ($, SupportMod
         var indexesTableData = this.getAllIndexesRequested(tableData, indexes, dateInvolved);
         var indexesAllData = this.getAllIndexesRequested(allData, indexes, dateInvolved);
 
+        // put in updatedData
+        for(var i =0; i<productionData.length; i++){
+            this.pushInUpdatedData(productionData[i])
+        }
 
         // save the data
         this.saveDataFromIndexes('table',indexesTableData,productionData);
@@ -375,6 +378,11 @@ define(["jquery", "formulasAmis/support/SupportModel" ], function ($, SupportMod
         var tableData = this.getTableData();
         var allData = this.getAllData();
 
+        // put in updatedData
+        for(var i =0; i<productionData.length; i++){
+            this.pushInUpdatedData(productionData[i])
+        }
+
         // take the indexes from the table data and the all data
         var indexesTableData = this.getAllIndexesRequested(tableData, indexes, dateInvolved);
         var indexesAllData = this.getAllIndexesRequested(allData, indexes, dateInvolved);
@@ -386,6 +394,24 @@ define(["jquery", "formulasAmis/support/SupportModel" ], function ($, SupportMod
             this.saveDataFromIndexes('original', indexesAllData, productionData);
         }
         return indexesTableData;
+    }
+
+    TableDataModel.prototype.pushInUpdatedData = function(value){
+        debugger;
+        var exist = false;
+        if(updatedData.length >0) {
+            for (var i = 0; i < updatedData.length && !exist; i++) {
+                //if keys are equals
+                if (value[0] == updatedData[i][0] && value[2] == updatedData[i][2]) {
+                    updatedData[i] = value
+                    exist = true;
+                } else if (i == updatedData.length - 1 && !exist) {
+                    updatedData.push(value)
+                }
+            }
+        }else{
+            updatedData.push(value)
+        }
     }
 
     // take all indexes
