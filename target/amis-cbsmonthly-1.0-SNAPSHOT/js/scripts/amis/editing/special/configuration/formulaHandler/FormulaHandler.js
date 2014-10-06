@@ -21,9 +21,9 @@ define(["jquery", "specialFormulaConf/formulaUtils/FormulaConfigurator", "specia
        return result;
     }
 
-    FormulaHandler.prototype.getUpdateFormula = function(numberOfForm, typeOfForm, dependentElement){
+    FormulaHandler.prototype.getUpdateFormula = function(numberOfForm, typeOfForm, dependentElement, typeOfEditing){
 
-        var result = formulaConfigurator.getUpdateFormula(numberOfForm, typeOfForm, dependentElement);
+        var result = formulaConfigurator.getUpdateFormula(numberOfForm, typeOfForm, dependentElement, typeOfEditing);
         return result;
     }
 

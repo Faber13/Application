@@ -60,7 +60,7 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function($, Form
     }
 
     PaddyObserver.prototype.onCheckBoxSingleCrops = function (clicked) {
-        switch (number) {
+        switch (clicked) {
             case 1:
                 $("#secondCheckBoxSingleCrops").jqxCheckBox('check');
                 $("#thirdCheckBoxSingleCrops").jqxCheckBox('disable');
@@ -195,7 +195,7 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function($, Form
                     formulaToApplyTot = 'areaHarvested'
                 }else  if ($("#fourthCheckBoxTotVal").attr("aria-checked") != 'true') {
                     $("#fourthCheckBoxTotVal").jqxCheckBox('disable');
-                    formulaToApplyTot = 'areaHarvested'
+                    formulaToApplyTot = 'milled'
                 }
                 else if($("#firstCheckBoxTotVal").attr("aria-checked") == 'true'){
                     formulaToApplyTot = 'milled'
@@ -214,7 +214,7 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function($, Form
                 break;
 
             case 4:
-                if ($("#secondCheckBoxTotVal").attr("aria-disabled") != 'true') {
+                if ($("#secondCheckBoxTotVal").attr("aria-checked") != 'true') {
                     $("#secondCheckBoxTotVal").jqxCheckBox('disable');
                     formulaToApplyTot = 'yield'
                 }
@@ -295,10 +295,15 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function($, Form
             if (columnValue == 3 && (oldvalue != value)) {
                 var numberOfRow = event.args.rowindex;
                 var value2 = parseFloat(value)
-                controllerPaddy.updateTotGridOnEditing(numberOfRow, value2, formulaToApplyTot, columnValue)
+                if( formulaToApplyTot == 'init'){
+                    formulaToApplyTot = 'milled'
+                }
+                var specialEditing = controllerPaddy.selectSpecialEditing(formulaToApplyTot, numberOfRow)
+
+                controllerPaddy.updateTotGridOnEditing(numberOfRow, value2, formulaToApplyTot, columnValue, specialEditing)
             } else if (columnValue != 3 && (oldvalue != value)) {
                 var numberOfRow = event.args.rowindex;
-                controllerPaddy.updateTotGridOnEditing(numberOfRow, value, formulaToApplyTot, columnValue)
+                controllerPaddy.updateTotGridOnEditing(numberOfRow, value, formulaToApplyTot, columnValue, specialEditing)
             }
         })
     }
@@ -318,7 +323,7 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function($, Form
             singleCropsValuesModified = true;
             console.log(counter)
             if (counter == 2) { //OK
-                controllerPaddy.updateSingleCropsGridOnFormulaChanges(formulaToApplySingle);
+                controllerPaddy.updateSingleCropsGridOnFormulaChanges(formulaToApplySingle, "normal");
             } else {
                 var alert = '<div class="alert alert-danger alert-dismissible" role="alert">' +
                     '<button type="button" class="close" data-dismiss="alert">' +
@@ -342,7 +347,7 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function($, Form
 
             singleCropsValuesModified = true;
             if (counter == 2) { //OK
-                controllerPaddy.updateTotGridOnFormulaChanges(formulaToApplyTot);
+                controllerPaddy.updateTotGridOnFormulaChanges(formulaToApplyTot, "normal");
             } else {
                 var alert = '<div class="alert alert-danger alert-dismissible" role="alert">' +
                     '<button type="button" class="close" data-dismiss="alert">' +
@@ -368,15 +373,20 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function($, Form
                    }
                     break;
                 case 'areaHarvested':
-                    if(row == 1) {
+                    if(row == 0 || row ==1) {
                         toBlock = true;
                     }
                     break;
                 case 'yield':
-                    if(row == 1) {
+                    if(row ==1 || row ==3 ) {
                         toBlock = true;
                     }
                     break;
+                case 'productionMilled':
+                    if(row == 1 || row == 4) {
+                        toBlock = true;
+                    }
+                    break
                 case 'init':
                     if(row == 0 || row == 4) {
                         toBlock = true;
@@ -447,10 +457,15 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function($, Form
             if (columnValue == 3 && (oldvalue != value)) {
                 var numberOfRow = event.args.rowindex;
                 var value2 = parseFloat(value)
-                controllerPaddy.updateSingleCropsGridOnEditing(numberOfRow, value2, formulaToApplySingle, columnValue)
+                if( formulaToApplyTot == 'init'){
+                    formulaToApplyTot = 'milled'
+                }
+                var specialEditing = controllerPaddy.selectSpecialEditing(formulaToApplySingle, numberOfRow)
+
+                controllerPaddy.updateSingleCropsGridOnEditing(numberOfRow, value2, formulaToApplySingle, columnValue, specialEditing)
             } else if (columnValue != 3 && (oldvalue != value)) { // if modified only flag/notes
                 var numberOfRow = event.args.rowindex;
-                controllerPaddy.updateSingleCropsGridOnEditing(numberOfRow, value, formulaToApplySingle, columnValue)
+                controllerPaddy.updateSingleCropsGridOnEditing(numberOfRow, value, formulaToApplySingle, columnValue, specialEditing)
             }
         })
 

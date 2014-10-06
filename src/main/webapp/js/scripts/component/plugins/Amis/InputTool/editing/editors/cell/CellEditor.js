@@ -673,6 +673,9 @@ define(["jquery", "formatter/DatatypesFormatter","flagTranslator/controller/Flag
 
                 } else {
                     result = $("#" + htmlvalue.id).val();
+                    if(typeof result == 'undefined'){
+                         result = null
+                    }
                 }
         }
         return result;

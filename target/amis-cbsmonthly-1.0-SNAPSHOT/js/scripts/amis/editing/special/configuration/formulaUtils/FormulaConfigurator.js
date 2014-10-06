@@ -38,7 +38,7 @@ define(["jquery"], function($){
             case 2:
                 var typeOfForm = config.formulaPlugins[numberOfFormUsed-1];
                 if(type == "totalValues"){
-                    result = typeOfForm.totalValues.init[0]
+                    result = typeOfForm.totalValues.init
                 }else if(type == "singleCrops"){
                     result = typeOfForm.singleCrops.init[0]
                 }
@@ -48,7 +48,7 @@ define(["jquery"], function($){
     }
 
 
-    FormulaConfigurator.prototype.getUpdateFormula = function(numberOfFormUsed, type, dependentElement){
+    FormulaConfigurator.prototype.getUpdateFormula = function(numberOfFormUsed, type, dependentElement, particularForm){
 
         var result;
         switch (numberOfFormUsed){
@@ -70,16 +70,28 @@ define(["jquery"], function($){
                 var typeOfForm = config.formulaPlugins[numberOfFormUsed-1];
                 var updateFormulas = typeOfForm[type].valuesDisabled;
                 if  (dependentElement == "milled") {
-                    result = updateFormulas[0].milled;
+                    if(typeof particularForm != 'undefined'){
+                        console.log('PARITOCLATSDADSAD')
+                        result = updateFormulas[0].milled[particularForm]
+                    }else {
+                        result = updateFormulas[0].milled;
+                    }
 
                 }else if(dependentElement == "areaHarvested"){
-                    result = updateFormulas[1].areaHarvested;
-                }else if( dependentElement == 'yield'){
-                    result = updateFormulas[2].yield;
+                    if(particularForm){
+                        result = updateFormulas[1].areaHarvested[particularForm]
+                    }else {
+                        result = updateFormulas[1].areaHarvested;
+                    }
+                }else if( dependentElement == 'yield') {
+                    if (particularForm) {
+                        result = updateFormulas[2].yield[particularForm]
+                    } else {
+                        result = updateFormulas[2].yield;
+                    }
                 }
                 break;
             case 3:
-                //TODO (paddy form)
                 break;
         }
         return result;

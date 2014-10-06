@@ -55,7 +55,8 @@ define(["jquery", "moment", "numeral"], function ($) {
                 break;
 
             default :
-                result = (value !== 'undefined' && value != '') ? value : undefined;
+                result = (value !== 'undefined' && value != '') ? value : null;
+
         }
         return result;
     }

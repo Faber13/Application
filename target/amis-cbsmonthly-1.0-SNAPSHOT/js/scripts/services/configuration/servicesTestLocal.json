@@ -3,10 +3,10 @@
         {
             "filters": [
                 {
-                    "dataSourceUrl": "http://localhost:8080/dataset/datasource"
+                    "dataSourceUrl": "http://168.202.28.178:8080/dataset/datasource"
                 },
                 {
-                    "yearUrl": "http://localhost:8080/dataset/year"
+                    "yearUrl": "http://168.202.28.178:8080/dataset/year"
                 },
                 {
                     "countryUrl": "http://hqlprfenixapp2.hq.un.fao.org:7777/msd/cl/system/AMIS_GAUL/1.0"
@@ -19,24 +19,24 @@
         {
             "loading": [
                 {
-                    "loadingElements" : "http://localhost:8080/dataset/national"
+                    "loadingElements" : "http://168.202.28.178:8080/dataset/national"
                 },
                 {
-                    "loadingPopulation" :"http://localhost:8080/dataset/population"
+                    "loadingPopulation" :"http://168.202.28.178:8080/dataset/population"
                 },
                 {
-                    "mostRecentDate" : "http://localhost:8080/dataset/recentDate"
+                    "mostRecentDate" : "http://168.202.28.178:8080/dataset/recentDate"
                 },
                 {
-                    "previousYear" : "http://localhost:8080/dataset/previousYear"
+                    "previousYear" : "http://168.202.28.178:8080/dataset/previousYear"
                 },
                 {
-                    "numberOfCrops" : "http://localhost:8080/dataset/crops"
+                    "numberOfCrops" : "http://168.202.28.178:8080/dataset/crops"
                 }
             ]
         },
         {
-            "savingData" : "http://localhost:8080/dataset/national"
+            "savingData" : "http://168.202.28.178:8080/dataset/national"
         }
     ]
 }

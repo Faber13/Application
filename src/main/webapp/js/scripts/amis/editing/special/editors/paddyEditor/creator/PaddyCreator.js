@@ -211,6 +211,7 @@ define(["jquery","formatter/DatatypesFormatter", "jqwidgets"], function($, Forma
 
 
     PaddyCreator.prototype.updateTotGrid = function (calculatedModel) {
+        var that  =this;
 
         console.log('update Tot Grid!!')
         var source = {
@@ -241,6 +242,7 @@ define(["jquery","formatter/DatatypesFormatter", "jqwidgets"], function($, Forma
                 { text: 'Flag', datafield: 4 ,cellclassname:cellclassname },
                 { text: 'Notes', datafield: 5 ,cellclassname:cellclassname }
             ]
+
         });
     }
 

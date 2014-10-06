@@ -87,7 +87,7 @@ define(["jquery", "formatter/DatatypesFormatter", "urlConfigurator"], function (
             dates = result;
         })
 
-        var mostRecentDate = dates[0][0]
+        var mostRecentDate = dates[dates.length-1][0]
         // set the most recent date to make the query
         filterPreviousYear["date"] = mostRecentDate;
 
