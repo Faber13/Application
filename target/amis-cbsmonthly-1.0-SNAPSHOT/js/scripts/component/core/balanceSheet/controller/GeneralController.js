@@ -115,7 +115,7 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
                             var tableData = $.extend(true, {}, ModelController.getTableDataModel());
                             specialControlEditor.init(allData, tableData, resultedClicked, formulaController, Configurator, supportUtility, that, filterData.productCode);
                         } else {
-                            var allData = ModelController.getTableDataModel();
+                            var allData = ModelController.getData();
                             var tableData = $.extend(true, {}, ModelController.getTableDataModel());
                             specialControlEditor.init(allData, tableData, resultedClicked, formulaController, Configurator, supportUtility, that,filterData.productCode);
                         }// other form

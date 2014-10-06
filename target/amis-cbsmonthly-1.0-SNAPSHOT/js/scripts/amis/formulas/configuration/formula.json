@@ -353,7 +353,7 @@
         {
             "id" : 2,
             "cellsClicked" : [15],
-            "itemsInvolved": [21,28,29,30,31,32,33,34],
+            "itemsInvolved": [15,21,28,29,30,31,32,33,34],
             "exogeneous"   :    true,
             "location"     : {
                 "insideBalance" : [],

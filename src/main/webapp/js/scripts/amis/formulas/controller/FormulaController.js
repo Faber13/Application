@@ -271,12 +271,16 @@ define(["jquery", "formulasAmis/support/FormulaConfigurator", "formulasAmis/supp
         var $newdiv1 = $("<div id='dialogForm' type='hidden'></div>");
         $("#pivotGrid").append($newdiv1);
         var map = configurator.getOrCreateMapInvolvedCells();
+        if(cell[0] == 15){
+            return map[15]
+        }else {
 
-        if( filterProductCode != 4) {
-            return map[cell[0]]
-        }
-        else{
-            return map[998]
+            if (filterProductCode != 4) {
+                return map[cell[0]]
+            }
+            else {
+                return map[998]
+            }
         }
     }
 

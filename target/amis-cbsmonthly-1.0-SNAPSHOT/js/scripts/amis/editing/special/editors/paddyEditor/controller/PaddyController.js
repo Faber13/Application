@@ -241,15 +241,11 @@ define(['jquery','paddyEditor/model/PaddyModel', 'paddyEditor/observer/PaddyObse
     }
 
     PaddyController.prototype.onSwitchingCropsValues = function(formulaTotToApply){
-        console.log('onSwitchingCrops')
         var originalSingleCropsModel = modelPaddy.getSingleCropsModel()
         var dataSingleCrops = $.extend(true, [], originalSingleCropsModel)
-        console.log('---------- onSwitchingCropsValues(PaddyCotnroller) ----------- ')
-        console.log('dataSingleCrops')
-        console.log(dataSingleCrops)
+
         var dataUnified = modelPaddy.unifySingleCropsData(dataSingleCrops);
-        console.log('dataUnified')
-        console.log(dataUnified)
+
         var totalValueModel = $.extend(true, [],modelPaddy.getTotalValuesModel());
         var rowIndexes = [];
         for(var i =0; i<dataUnified.length; i++) {

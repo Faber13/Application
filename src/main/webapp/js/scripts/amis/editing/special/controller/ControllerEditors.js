@@ -2,15 +2,17 @@
  * Created by fabrizio on 9/11/14.
  */
 define(["jquery", "editingSpecial/utils/DataHandler", "productionEditor/creator/ProductionEditor",
-"paddyEditor/controller/PaddyController"], function($, DataHandler, ProductionEditor, PaddyController){
+"paddyEditor/controller/PaddyController", "otherUsesEditor/controller/OtherController"], function($, DataHandler, ProductionEditor, PaddyController,
+    OtherController){
 
     var specialFormulaController, dataHandler, productionEditor, dsdConfigurator, supportUtility,
-        clickedCellInfo, generalController, paddyController;
+        clickedCellInfo, generalController, paddyController, otherController;
 
     function ControllerEditors(){
         dataHandler = new DataHandler;
         productionEditor = new ProductionEditor;
         paddyController = new PaddyController;
+        otherController = new OtherController
     }
 
     // Simple production
@@ -43,6 +45,8 @@ define(["jquery", "editingSpecial/utils/DataHandler", "productionEditor/creator/
                 break;
 
            case 15:
+               otherController.init(takenCell, dataInvolved, codes, dsdConfigurator, supportUtility, this)
+
                break;
 
            case 998:

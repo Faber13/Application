@@ -34,12 +34,12 @@ define(['jquery','otherUsesEditor/model/OtherModel', 'otherUsesEditor/observer/O
         var involvedItems = $.extend(true, [], itemsInvolved);
         supportUtility = Utility;
         // take data and calculate initial formulas
+        debugger;
 
         modelOther.createTotalValuesModel(involvedItems, supportUtility);
         var originalTotCropsModel = modelOther.getTotalValuesModel();
-        modelOther.createSingleCropsModel(involvedItems, supportUtility)
-        var singleCropsModel = modelOther.getSingleCropsModel()
-        editorOther.init(originalTotCropsModel, singleCropsModel, observer)
+
+        editorOther.init(originalTotCropsModel, observer)
     }
 
     OtherController.prototype.updateTotGridOnEditing = function(rowNumber, newValue, formulaToApply, columnValue){
