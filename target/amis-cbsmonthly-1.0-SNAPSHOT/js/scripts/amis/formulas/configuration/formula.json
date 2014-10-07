@@ -363,7 +363,7 @@
         {
             "id" : 3,
             "cellsClicked" : [998],
-            "itemsInvolved": [2,998, 3,4,5,37],
+            "itemsInvolved": [2,998, 3,4,5,37, 996],
             "exogeneous"   :    true,
             "location"     : {
                 "insideBalance" : [998,2],

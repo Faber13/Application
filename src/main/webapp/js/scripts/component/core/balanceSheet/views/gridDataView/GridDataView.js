@@ -167,7 +167,7 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel", "jquery.sidebar"
 
     }
 
-    GridDataView.prototype.updateGridView = function (newCell, indexCell) {
+    GridDataView.prototype.updateGridView = function (newCell, indexCell, xCoordinate, yCoordinate) {
 
         var cellTransformed = viewModel.updateItem(newCell)
         modelView[indexCell] = cellTransformed;
@@ -204,9 +204,11 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel", "jquery.sidebar"
 
         $("#pivotGrid").igPivotGrid("option", "dataSource", dataSource2)
 
+        window.scrollTo(xCoordinate,yCoordinate)
+
     }
 
-    GridDataView.prototype.updateBatchGridView = function (tableModel, cells) {
+    GridDataView.prototype.updateBatchGridView = function (tableModel, cells, xCoordinate, yCoordinate) {
 
         for(var i =0; i<cells.length; i++){
             modelView[cells[i]["index"]] = viewModel.updateItem(cells[i]["row"])
@@ -249,6 +251,8 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel", "jquery.sidebar"
             $('.modal-backdrop').remove();
         }
         $("#pivotGrid").igPivotGrid("option", "dataSource", dataSource2)
+
+        window.scrollTo(xCoordinate, yCoordinate)
 
 
 

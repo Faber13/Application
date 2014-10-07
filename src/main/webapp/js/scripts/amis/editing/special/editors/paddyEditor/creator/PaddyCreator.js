@@ -75,28 +75,33 @@ define(["jquery","formatter/DatatypesFormatter", "jqwidgets"], function($, Forma
             '</ul>' +
 
             '<div id="totalValues"><br>' +
-            '<div class="row"><br>' +
+
             '<div class="col-lg-5 col-lg-offset-1">' +
             '<small class = "labelRice">Select the <strong>ITEM</strong> to enter</small><br><br>'+
             '<div class ="totalValuesBoxes" id="firstCheckBoxTotVal">Rice Paddy</div>' +
             '</div>' +
-
+            '<br><br>' +
             '<div class="col-lg-6">' +
-            '<small class = "labelRice">Select the <strong>ELEMENT</strong> to enter</small><br><br>'+
-            '<div class ="totalValuesBoxes" id="secondCheckBoxTotVal">Area Harvested</div>' +
+            '<div class ="totalValuesBoxes" id="secondCheckBoxTotVal">Rice Milled</div>' +
             '</div>' +
             '<br><br>' +
             '<br>' +
-            '<div class="col-lg-5 col-lg-offset-1">' +
-            '<div class ="totalValuesBoxes" id="thirdCheckBoxTotVal">Rice Milled</div>' +
+            '<div class = "row">'+
+            '<div class="col-lg-4">' +
+            '<small class = "labelRice">Select the <strong>ELEMENT</strong> to enter</small><br>'+
+            '<div class ="totalValuesBoxes" id="thirdCheckBoxTotVal">Production</div>' +
             '</div>' +
 
-            '<div class="col-lg-6">' +
-            '<div class ="totalValuesBoxes" id="fourthCheckBoxTotVal">Yield</div>' +
+            '<div class="col-lg-4"><br>' +
+            '<div class ="totalValuesBoxes" id="fourthCheckBoxTotVal">Area Harvested</div>' +
+            '</div>' +
+
+            '<div class="col-lg-4">' +
+            '<div class ="totalValuesBoxes" id="fifthCheckBoxTotVal">Yield</div>' +
             '</div>' +
             '<br><br>' +
             '<div class="row">' +
-            '<div class="col-lg-3 col-lg-offset-4">' +
+            '<div class="col-lg-3 col-lg-offset-1">' +
             '<button type="button" class="btn btn-primary" id="applyRulesFormulaTot">Recalculate Data</button>' +
             '</div>' +
             '</div><div class="row"><br><div class = "col-lg-10 col-lg-offset-1" id="alertTotal"></div></div><hr>' +
@@ -154,10 +159,10 @@ define(["jquery","formatter/DatatypesFormatter", "jqwidgets"], function($, Forma
 
         $("#pivotGrid").append(modal);
         $('#firstCheckBoxTotVal').jqxCheckBox({ width: 120, height: 25, checked: true});
-        $('#secondCheckBoxTotVal').jqxCheckBox({ width: 120, height: 25, checked: true});
-        $('#thirdCheckBoxTotVal').jqxCheckBox({ width: 120, height: 25, disabled: true });
-        $('#fourthCheckBoxTotVal').jqxCheckBox({ width: 120, height: 25, disabled: true });
-
+        $('#secondCheckBoxTotVal').jqxCheckBox({ width: 120, height: 25, disabled: true});
+        $('#thirdCheckBoxTotVal').jqxCheckBox({ width: 120, height: 25, checked: true });
+        $('#fourthCheckBoxTotVal').jqxCheckBox({ width: 120, height: 25, checked: true });
+        $('#fifthCheckBoxTotVal').jqxCheckBox({ width: 120, height: 25, disabled: true });
 
         $('#firstCheckBoxSingleCrops').jqxCheckBox({ width: 120, height: 25, checked: true});
         $('#secondCheckBoxSingleCrops').jqxCheckBox({ width: 120, height: 25, checked: true});

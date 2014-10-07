@@ -22,7 +22,7 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function($, Form
 
     OtherObserver.prototype.applyListeners = function(){
 
-        this.listenToCheckboxesTotal();
+       // this.listenToCheckboxesTotal();
         this.listenToEditCellTotGrid();
         this.listenToSaveTotalValuesButton()
         //his.listenToCheckboxesSingleCrops()
@@ -62,9 +62,13 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function($, Form
 
     OtherObserver.prototype.listenToEditCellTotGrid = function() {
 
-        $("#gridTotalValues").on('cellendedit', function (event) {
+        $("#gridTotalValues").on('rowSelect',function (event){
             event.preventDefault();
             event.stopImmediatePropagation();
+            debugger;
+
+
+
             console.log('cellEdit: listener Active')
             totalValuesModified = true;
             var columnValue = event.args.datafield;
@@ -102,10 +106,7 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function($, Form
 
     OtherObserver.prototype.closeEventsBindedToTotGrid = function(){
         $("#gridTotalValues").off();
-        $("#firstCheckBoxTotVal").off();
-        $("#secondCheckBoxTotVal").off();
-        $("#thirdCheckBoxTotVal").off();
-        $("#fourthCheckBoxTotVal").off();
+
         $('#saveTotalValues').off()
     }
 

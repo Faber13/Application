@@ -356,6 +356,25 @@
                             "code": {
                                 "codeList": "",
                                 "version": "",
+                                "code": "996",
+                                "title": {
+                                    "EN": "Yield Paddy (Thousand tonnes)",
+                                    "FR": ""
+                                }
+                            }
+                        },
+                        {
+                            "codeList": {
+                                "codeList": "",
+                                "version": "1",
+                                "title": {
+                                    "EN": "",
+                                    "FR": ""
+                                }
+                            },
+                            "code": {
+                                "codeList": "",
+                                "version": "",
                                 "code": "2",
                                 "title": {
                                     "EN": "Area Harvested (Thousand Ha)",

@@ -45,16 +45,19 @@ define(['jquery'], function($){
 
         for(var key in copyMap){
             var found = false
+            label1:
             for(var i =0; i<dataModel.length && !found; i++){
                 if(dataModel[i][0] == key){
-                    result[i] = dataModel[i]
-                    result[i].push(copyMap[key])
+                    result.push(dataModel[i])
+                    result[result.length-1].push(copyMap[key])
                     found = true;
+                    break label1;
                 }else if(i == dataModel.length -1 && !found){
                     result.push(this.initializeModel(key, copyMap[key], dataModel[i][2]))
                 }
             }
         }
+        result.splice(result.length-1,1)
 
         originalModel = $.extend(true,[], result);
     }

@@ -71,7 +71,6 @@ define(["jquery"], function($){
                 var updateFormulas = typeOfForm[type].valuesDisabled;
                 if  (dependentElement == "milled") {
                     if(typeof particularForm != 'undefined'){
-                        console.log('PARITOCLATSDADSAD')
                         result = updateFormulas[0].milled[particularForm]
                     }else {
                         result = updateFormulas[0].milled;
@@ -88,6 +87,13 @@ define(["jquery"], function($){
                         result = updateFormulas[2].yield[particularForm]
                     } else {
                         result = updateFormulas[2].yield;
+                    }
+                }
+                else if( dependentElement == 'productionMilled') {
+                    if (particularForm) {
+                        result = updateFormulas[3].productionMilled[particularForm]
+                    } else {
+                        result = updateFormulas[3].productionMilled;
                     }
                 }
                 break;

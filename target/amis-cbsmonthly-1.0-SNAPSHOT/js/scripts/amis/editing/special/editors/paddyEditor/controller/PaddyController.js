@@ -211,6 +211,8 @@ define(['jquery','paddyEditor/model/PaddyModel', 'paddyEditor/observer/PaddyObse
     }
 
     PaddyController.prototype.updateSingleCropsGridOnFormulaChanges = function(formulaToApply, typeOfEditing){
+        console.log('formulaToApply -------SINGLE------------')
+        console.log(formulaToApply)
         var formulaToUpdate = formulaHandler.getUpdateFormula(2, 'singleCrops', formulaToApply, typeOfEditing)
         var dataUpdated = modelPaddy.getSingleCropsModel();
         var modelSingleCrops = $.extend(true, [], dataUpdated);

@@ -7,7 +7,7 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
     function ($, GridDataView, EditorController, ExportController, Adapter, FormulaController, SpecialEditorController, GeneralObserver) {
 
         var ViewGrid, ModelController, FormController, dsd, Configurator, adapterPivot, formulaController, supportUtility,
-            specialControlEditor, editingOnCell, generalObserver, filterData;
+            specialControlEditor, editingOnCell, generalObserver, filterData, xCoordinate, yCoordinate;
 
         function GeneralController() {
             ViewGrid = new GridDataView;
@@ -52,6 +52,8 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
                 debugger;
                 evt.preventDefault();
                 evt.stopImmediatePropagation();
+                xCoordinate = window.pageXOffset;
+                yCoordinate = window.pageYOffset;
                 var cellTableModel2 = ModelController.getTableDataModel();
                 var cellTableModel = $.extend(true, {}, cellTableModel2);
                 // To identify when the first new nested row starts
@@ -86,6 +88,11 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
                                }
                                oldCell.removeAttribute("id")
                                oldCell.removeAttribute("class")
+                            }
+                            console.log('clickedCell3')
+                            console.log(clickedCell[3])
+                            if(clickedCell[3] == null){
+                                clickedCell[3] = '';
                             }
                             cell.setAttribute("id", "clickedCell");
                             $("#clickedCell").igTextEditor({
@@ -182,9 +189,9 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
                 console.log(rowsChanged)
                 // at the end, order like initially
                 formulaController.sortInitialValue(modelWithFormulas);
-                ViewGrid.updateBatchGridView(modelWithFormulas, rowsChanged);
+                ViewGrid.updateBatchGridView(modelWithFormulas, rowsChanged, xCoordinate, yCoordinate);
             } else {
-                ViewGrid.updateGridView(newCell, indTable);
+                ViewGrid.updateGridView(newCell, indTable, xCoordinate, yCoordinate);
             }
         }
 
@@ -207,7 +214,7 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
                 }
             }
             console.log('generalController: saveDataFromProductionForm, before updateBatchGridView')
-            ViewGrid.updateBatchGridView(modelWithFormulas, rowsChanged);
+            ViewGrid.updateBatchGridView(modelWithFormulas, rowsChanged, xCoordinate, yCoordinate);
 
         }
 
@@ -231,7 +238,7 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
                 }
             }
             console.log('generalController: saveDataFromProductionForm, before updateBatchGridView')
-            ViewGrid.updateBatchGridView(modelWithFormulas, rowsChanged);
+            ViewGrid.updateBatchGridView(modelWithFormulas, rowsChanged, xCoordinate, yCoordinate);
         }
 
         GeneralController.prototype.updateWithNewForecast = function(){

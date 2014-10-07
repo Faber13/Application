@@ -45,7 +45,7 @@ define(["jquery", "editingSpecial/utils/DataHandler", "productionEditor/creator/
                 break;
 
            case 15:
-               otherController.init(takenCell, dataInvolved, codes, dsdConfigurator, supportUtility, this)
+               //otherController.init(takenCell, dataInvolved, codes, dsdConfigurator, supportUtility, this)
 
                break;
 

@@ -114,6 +114,8 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
 
                 }
                 break;
+
+
         }
     }
 
