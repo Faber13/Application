@@ -28,7 +28,6 @@ define(["jquery", "specialFormulaConf/formulaUtils/FormulaConfigurator", "specia
     }
 
     FormulaHandler.prototype.createFormula = function (modelData, formulaData) {
-        debugger;
         console.log("createFormula")
         var model = modelData;
         var formula =  formulaData;
@@ -130,7 +129,7 @@ define(["jquery", "specialFormulaConf/formulaUtils/FormulaConfigurator", "specia
                 }
             if (!notRealizeable) {
 
-                model[indexValue][3] = value;
+                model[indexValue][3] = parseFloat(value).toFixed(3);
                 // Insert the flag
                 model[indexValue][4] = 'C';
             } else {

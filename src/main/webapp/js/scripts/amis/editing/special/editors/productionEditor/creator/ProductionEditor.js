@@ -5,13 +5,47 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
         "productionEditor/model/ProductionModel", "specialFormulaConf/formulaHandler/FormulaHandler", "productionEditor/controller/ProductionController"],
     function ($, Formatter, Observer, ModelProduction, FormulaHandler, Controller) {
 
+
+
         var cellclassname = function (row, column, value, data) {
-            if (data[4] == 'C')
-                return "calculatedRowGrid";
+            var result;
+            switch(formulaToRenderTotVal){
+                case 'init':
+                case 'yield':
+                    result = (row == 1)? 'calculatedRowGrid' : 'notCalculatedRows';
+                    break;
+                case 'areaHarvested':
+                    result = (row == 0)? 'calculatedRowGrid' : 'notCalculatedRows';
+                    break;
+
+                case 'production':
+                    result = (row == 2)? 'calculatedRowGrid' : 'notCalculatedRows';
+                    break;
+            }
+            return result;
+        };
+
+        var cellclassnameSingle = function (row, column, value, data) {
+            var result;
+            switch(formulaToRenderSingleCrops){
+                case 'init':
+                case 'yield':
+                    result = (row == 1)? 'calculatedRowGrid' : 'notCalculatedRows';
+                    break;
+                case 'areaHarvested':
+                    result = (row == 0)? 'calculatedRowGrid' : 'notCalculatedRows';
+                    break;
+
+                case 'production':
+                    result = (row == 2)? 'calculatedRowGrid' : 'notCalculatedRows';
+                    break;
+            }
+            return result;
         };
 
         var observer, modelProduction, supportUtility, formulaHandler, originalTotCropsModel, productionController, controllerEditors, clickedCell;
 
+        var formulaToRenderTotVal, formulaToRenderSingleCrops
         // ---------------------- SUPPORT FUNCTIONS -------------------------------------------
 
         Element.prototype.remove = function () {
@@ -51,6 +85,8 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
 
             var singleCropsModel = modelProduction.getSingleCropsModel(involvedItems, supportUtility);
             var copyOriginalModelSingle = $.extend(true, [], singleCropsModel);
+            formulaToRenderTotVal = 'init'
+            formulaToRenderSingleCrops = 'init'
 
             var valueCodeItem = parseInt(clickedItem[0])
 
@@ -114,15 +150,18 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
                 '<div id="totalValues"><br>' +
                 '<div class="row"><br>' +
                 '<div class="col-lg-3 col-lg-offset-1">' +
-                '<div class ="totalValuesBoxes" id="firstCheckBoxTotVal">' + map[5] + '</div>' +
+                '<div class ="totalValuesBoxes" id="firstCheckBoxTotVal">Production</div>' +
+                '<small  class="labelCheckBoxes">(Thousand tonnes)</small>'+
                 '</div>' +
 
                 '<div class="col-lg-3">' +
-                '<div class ="totalValuesBoxes" id="secondCheckBoxTotVal">' + map[2] + '</div>' +
+                '<div class ="totalValuesBoxes" id="secondCheckBoxTotVal">Area Harvested</div>' +
+                '<small  class="labelCheckBoxes">(Thousand Ha)</small>'+
                 '</div>' +
                 '<div class="col-lg-3">' +
-                '<div class ="totalValuesBoxes" id="thirdCheckBoxTotVal">' + map[4] + '</div>' +
-                '</div><br><br>' +
+                '<div class ="totalValuesBoxes" id="thirdCheckBoxTotVal">Yield</div>' +
+                '<small  class="labelCheckBoxes">(Tonnes/Ha)</small>'+
+                '</div><br><br><br><br>' +
                 '<div class="row">' +
                 '<div class="col-lg-3 col-lg-offset-4">' +
                 '<button type="button" class="btn btn-primary" id="applyRulesFormulaTot">Recalculate Data</button>' +
@@ -143,14 +182,17 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
                 '<div class="row"><br>' +
                 '<div class="col-lg-3 col-lg-offset-1">' +
                 '<div class ="singleCropsBoxes" id="firstCheckBoxSingleCrops">' + map[5] + '</div>' +
+                '<small  class="labelCheckBoxes">(Thousand tonnes)</small>'+
                 '</div>' +
 
                 '<div class="col-lg-3">' +
                 '<div class ="singleCropsBoxes" id="secondCheckBoxSingleCrops">' + map[2] + '</div>' +
+                '<small class="labelCheckBoxes">(Thousand Ha)</small>'+
                 '</div>' +
                 '<div class="col-lg-3">' +
                 '<div class ="singleCropsBoxes" id="thirdCheckBoxSingleCrops">' + map[4] + '</div>' +
-                '</div><br><br>' +
+                '<small  class="labelCheckBoxes">(Tonnes/Ha)</small>'+
+                '</div><br><br><br><br>' +
                 '<div class="row">' +
                 '<div class="col-lg-3 col-lg-offset-4">' +
                 '<button type="button" class="btn btn-primary" id="applyRulesFormulaSingle">Recalculate Data</button>' +
@@ -181,23 +223,27 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
             $('#secondCheckBoxSingleCrops').jqxCheckBox({ width: 120, height: 25, checked: true});
             $('#thirdCheckBoxSingleCrops').jqxCheckBox({ width: 120, height: 25, disabled: true });
 
+            var that = this;
+
             $('#gridTotalValues').jqxGrid({
                 source: dataAdapter,
                 width: "100%",
                 editable: true,
+                autorowheight: true,
                 selectionmode: 'singlecell',
                 columnsresize: true,
                 pageable: true,
                 autoheight: true,
                 columns: [
-                    { text: 'Element', datafield: 6,cellclassname:cellclassname  },
-                    { text: 'Value', datafield: 3 ,cellclassname:cellclassname },
-                    { text: 'Flag', datafield: 4 ,cellclassname:cellclassname },
-                    { text: 'Notes', datafield: 5 ,cellclassname:cellclassname }
+                    { text: 'Element', datafield: 6,cellclassname:cellclassname ,width:'30%' },
+                    { text: 'Value', datafield: 3  ,cellclassname:cellclassname  ,width:'20%'},
+                    { text: 'Flag', datafield: 4   ,cellclassname:cellclassname   ,width:'10%'},
+                    { text: 'Notes', datafield: 5  ,cellclassname:cellclassname  ,width:'40%'}
                 ]
             });
 
             $('#gridSingleCrops').jqxGrid({
+                autorowheight: true,
                 source: dataAdapter2,
                 width: "100%",
                 editable: true,
@@ -206,10 +252,10 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
                 pageable: true,
                 autoheight: true,
                 columns: [
-                    { text: 'Element', datafield: 6 ,cellclassname:cellclassname },
-                    { text: 'Crop',    datafield: 7, cellclassname: cellclassname },
-                    { text: 'Value',   datafield: 3, cellclassname: cellclassname  },
-                    { text: 'Flag',    datafield: 4, cellclassname: cellclassname  }
+                    { text: 'Element', datafield: 6 ,cellclassname:cellclassnameSingle  ,width:'40%' },
+                    { text: 'Crop',    datafield: 7, cellclassname: cellclassnameSingle ,width:'20%' },
+                    { text: 'Value',   datafield: 3, cellclassname: cellclassnameSingle ,width:'30%' },
+                    { text: 'Flag',    datafield: 4, cellclassname: cellclassnameSingle ,width:'10%' }
                 ]
             });
 
@@ -222,7 +268,8 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
             observer.applyListeners(this, productionController)
         }
 
-        ProductionEditor.prototype.updateTotGrid = function (calculatedModel) {
+        ProductionEditor.prototype.updateTotGrid = function (calculatedModel, formulaToApply) {
+            formulaToRenderTotVal = formulaToApply
 
             observer.unbindEventsFromTotalValues()
 
@@ -244,15 +291,16 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
                 source: dataAdapter,
                 width: "100%",
                 editable: true,
+                autorowheight: true,
                 selectionmode: 'singlecell',
                 columnsresize: true,
                 pageable: true,
                 autoheight: true,
                 columns: [
-                    { text: 'Element', datafield: 6,cellclassname:cellclassname  },
-                    { text: 'Value', datafield: 3 ,cellclassname:cellclassname },
-                    { text: 'Flag', datafield: 4 ,cellclassname:cellclassname },
-                    { text: 'Notes', datafield: 5 ,cellclassname:cellclassname }
+                    { text: 'Element', datafield: 6,cellclassname:cellclassname ,width:'30%'  },
+                    { text: 'Value', datafield: 3 ,cellclassname:cellclassname  ,width:'20%'  },
+                    { text: 'Flag', datafield: 4 ,cellclassname:cellclassname   ,width:'10%'  },
+                    { text: 'Notes', datafield: 5 ,cellclassname:cellclassname  ,width:'40%'  }
                 ]
             });
 
@@ -261,7 +309,8 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
 
         }
 
-        ProductionEditor.prototype.updateSingleGrid = function (calculatedModel) {
+        ProductionEditor.prototype.updateSingleGrid = function (calculatedModel, formulaToApply) {
+            formulaToRenderSingleCrops = formulaToApply
 
             var source = {
                 datatype: "array",
@@ -279,6 +328,7 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
             var dataAdapter = new $.jqx.dataAdapter(source);
 
             $('#gridSingleCrops').jqxGrid({
+                autorowheight: true,
                 source: dataAdapter,
                 width: "100%",
                 editable: true,
@@ -287,10 +337,10 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
                 pageable: true,
                 autoheight: true,
                 columns: [
-                    { text: 'Element', datafield: 6 ,cellclassname:cellclassname },
-                    { text: 'Crop',    datafield: 7, cellclassname: cellclassname },
-                    { text: 'Value',   datafield: 3, cellclassname: cellclassname  },
-                    { text: 'Flag',    datafield: 4, cellclassname: cellclassname  }
+                    { text: 'Element', datafield: 6 ,cellclassname:cellclassnameSingle  ,width:'40%' },
+                    { text: 'Crop',    datafield: 7, cellclassname: cellclassnameSingle ,width:'20%' },
+                    { text: 'Value',   datafield: 3, cellclassname: cellclassnameSingle ,width:'30%' },
+                    { text: 'Flag',    datafield: 4, cellclassname: cellclassnameSingle ,width:'10%' }
                 ]
             });
 

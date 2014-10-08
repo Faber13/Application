@@ -29,7 +29,9 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
         this.listenToTabs();
         this.listenToEditCellTotGrid()
         this.listenToEditCellSingleCropsGrid()
-        this.listenToSaveTotalValuesButton()
+        this.listenToSaveTotalValuesButton();
+        this.listenToTotalEditable()
+        this.listenToSingleCropsEditable()
     }
 
     ProductionObserver.prototype.listenToCheckboxesTotal = function () {
@@ -216,6 +218,7 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
             counter += $("#thirdCheckBoxTotVal").val() ? 1 : 0;
             totalValuesModified = true;
             if (counter == 2) { //OK
+
                 controllerProduction.updateTotGridOnFormulaChanges(formulaToApplyTot);
             } else {
                 var alert = '<div class="alert alert-danger alert-dismissible" role="alert">' +
@@ -345,6 +348,88 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
         this.listenToCheckboxesTotal(); //checkboxes
         this.listenToRecalculateButtonTotalValues(); //formulas
         this.listenToSaveTotalValuesButton(); // saving
+    }
+
+    ProductionObserver.prototype.listenToTotalEditable = function () {
+        $("#gridTotalValues").bind('cellbeginedit', function (event) {
+            event.preventDefault();
+            event.stopImmediatePropagation()
+            var toBlock = false;
+            var row = event.args.rowindex;
+            var column = event.args.datafield
+
+            switch (formulaToApplyTot) {
+
+                case 'init':
+                    if (row == 1 ) {
+                        toBlock = true;
+                    }
+                    break;
+
+                case 'production':
+                    if (row == 2) {
+                        toBlock = true;
+                    }
+                    break;
+
+                case 'areaHarvested':
+                    if (row == 0 ) {
+                        toBlock = true;
+                    }
+                    break;
+
+                case 'yield':
+                    if (row == 1 ) {
+                        toBlock = true;
+                    }
+                    break;
+            }
+            // condition follows
+            if (toBlock) {
+                $("#gridTotalValues").jqxGrid('endcelledit', row, column, true);
+            }
+        });
+    }
+
+    ProductionObserver.prototype.listenToSingleCropsEditable = function () {
+        $("#gridSingleCrops").bind('cellbeginedit', function (event) {
+            event.preventDefault();
+            event.stopImmediatePropagation()
+            var toBlock = false;
+            var row = event.args.rowindex;
+            var column = event.args.datafield
+
+            switch (formulaToApplyTot) {
+
+                case 'init':
+                    if (row == 1 ) {
+                        toBlock = true;
+                    }
+                    break;
+
+                case 'production':
+                    if (row == 2) {
+                        toBlock = true;
+                    }
+                    break;
+
+                case 'areaHarvested':
+                    if (row == 0 ) {
+                        toBlock = true;
+                    }
+                    break;
+
+                case 'yield':
+                    if (row == 1 ) {
+                        toBlock = true;
+                    }
+                    break;
+            }
+            // condition follows
+            if (toBlock) {
+                $("#gridSingleCrops").jqxGrid('endcelledit', row, column, true);
+            }
+        });
     }
 
     return ProductionObserver;

@@ -302,7 +302,7 @@
                 "otherColumns":false,
                 "columnNumber":"",
                 "conditions":"",
-                "formulasBinded":[5,1,6]
+                "formulasBinded":[4,5,1,6]
             },
             {
                 "updateFormulaID" : 3,
@@ -310,7 +310,7 @@
                 "otherColumns":false,
                 "columnNumber":"",
                 "conditions":"",
-                "formulasBinded":[5,1,6]
+                "formulasBinded":[4,5,1,6]
             },
             {
                 "updateFormulaID" : 4,
@@ -328,16 +328,32 @@
                 "conditions":"",
                 "formulasBinded":[1,2,4,5,6,7]
 
+            },
+            {
+                "updateFormulaID" : 3,
+                "key":[15],
+                "otherColumns":false,
+                "columnNumber":"",
+                "conditions":"",
+                "formulasBinded":[4,5,1,6]
+            },
+            {
+                "updateFormulaID" : 3,
+                "key":[5],
+                "otherColumns":false,
+                "columnNumber":"",
+                "conditions":"",
+                "formulasBinded":[1,2,6]
             }
 
         ]
     },
     "editableValues":{
         "directEditing" : {
-            "values" : [8,7,12,10,14,13,16,17]
+            "values" : [8,7,12,10,14,13,15,16,17]
         },
         "specialEditing": {
-            "values" : [ 2,37, 4, 5, 15, 998]}
+            "values" : [ 2,37, 4, 5, 1234, 998]}
     },
     "specialFormulas": [
         {
@@ -352,7 +368,7 @@
         },
         {
             "id" : 2,
-            "cellsClicked" : [15],
+            "cellsClicked" : [777],
             "itemsInvolved": [15,21,28,29,30,31,32,33,34],
             "exogeneous"   :    true,
             "location"     : {

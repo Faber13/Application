@@ -129,7 +129,7 @@
 [title = "Area Harvested (Thousand Ha)"], [title="Area Harvested (Thousand Ha)"]~ td,
 [title = "Production Paddy (Thousand tonnes)"], [title="Production Paddy (Thousand tonnes)"]~ td,
 [title = "Area Planted (Thousand Ha)"], [title="Area Planted (Thousand Ha)"]~ td,
-[title = "Yield (Tonnes/Ha)"], [title="Yield (Tonnes/Ha)"]~ td{
+[title = "Yield (Tonnes/Ha)"], [title="Yield (Tonnes/Ha)"]~ td,[title = "Yield Paddy (Tonnes/Ha)"], [title="Yield Paddy (Tonnes/Ha)"]~ td {
     color: #047A00;
 }
 
@@ -138,5 +138,15 @@
 }
 .labelRice{
     color: #0082AD;
+}
+
+.labelCheckBoxes{
+    color: #00738A;
+}
+
+.modal .modal-dialog{
+    /* new custom width */
+    width: 800px;
+    /* must be half of the width, minus scrollbar on the left (30px) */
 }
 

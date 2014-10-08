@@ -76,24 +76,38 @@ define(["jquery"], function($){
                         result = updateFormulas[0].milled;
                     }
 
-                }else if(dependentElement == "areaHarvested"){
+                }else if(dependentElement == "areaHarvestedMilled"){
                     if(particularForm){
-                        result = updateFormulas[1].areaHarvested[particularForm]
+                        result = updateFormulas[1].areaHarvestedMilled[particularForm]
                     }else {
-                        result = updateFormulas[1].areaHarvested;
+                        result = updateFormulas[1].areaHarvestedMilled;
                     }
-                }else if( dependentElement == 'yield') {
+                }else if( dependentElement == 'productionMilled') {
                     if (particularForm) {
-                        result = updateFormulas[2].yield[particularForm]
+                        result = updateFormulas[2].productionMilled[particularForm]
                     } else {
-                        result = updateFormulas[2].yield;
+                        result = updateFormulas[2].productionMilled;
                     }
                 }
-                else if( dependentElement == 'productionMilled') {
+                else if( dependentElement == 'yieldPaddy') {
                     if (particularForm) {
-                        result = updateFormulas[3].productionMilled[particularForm]
+                        result = updateFormulas[3].yieldPaddy[particularForm]
                     } else {
-                        result = updateFormulas[3].productionMilled;
+                        result = updateFormulas[3].yieldPaddy;
+                    }
+                }
+                else if( dependentElement == 'areaHarvestedPaddy') {
+                    if (particularForm) {
+                        result = updateFormulas[4].areaHarvestedPaddy[particularForm]
+                    } else {
+                        result = updateFormulas[4].areaHarvestedPaddy;
+                    }
+                }
+                else if( dependentElement == 'productionPaddy') {
+                    if (particularForm) {
+                        result = updateFormulas[5].productionPaddy[particularForm]
+                    } else {
+                        result = updateFormulas[5].productionPaddy;
                     }
                 }
                 break;

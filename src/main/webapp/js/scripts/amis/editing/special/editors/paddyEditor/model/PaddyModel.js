@@ -30,6 +30,7 @@ define(['jquery', "urlConfigurator"], function($,ServicesUrl){
     PaddyModel.prototype.init = function(){}
 
     PaddyModel.prototype.createTotalValuesModel = function(itemsInvolved, utilitySupport){
+        console.log('paddyModel: createTotalValues Model')
         var copyMap = $.extend([], true, map);
         var result = []
         supportUtility = utilitySupport;
@@ -40,11 +41,16 @@ define(['jquery', "urlConfigurator"], function($,ServicesUrl){
                 dataModel[i] = this.initializePaddyProduction(dataModel[i])
             }
             var code = dataModel[i][0]
-            if (code != 37) {
-                result[i] = $.extend([], true, dataModel[i])
+            if(i>5){
+                result[i-1] = $.extend( true,[],dataModel[i])
+                result[i-1].push(copyMap[code])
+            }else if (code != 37  ) {
+                result[i] = $.extend( true,[],dataModel[i])
                 result[i].push(copyMap[code])
             }
         }
+        console.log('originalTotalCrospModel')
+        console.log(originalTotalCropsModel)
         originalTotalCropsModel = $.extend(true,[], result);
     }
 

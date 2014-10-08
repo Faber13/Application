@@ -3,17 +3,71 @@
  */
 define(["jquery","formatter/DatatypesFormatter", "jqwidgets"], function($, Formatter){
 
-    var observer ;
+    var observer, formulaToRenderTotVal, formulaToRenderSingleCrops ;
 
+    var cellclassnameTot = function (row, column, value, data) {
+        var result;
+        switch(formulaToRenderTotVal){
+            case 'init':
+            case 'milled':
+                result = (row == 1 || row == 3 || row == 5)? 'calculatedRowGrid' : 'notCalculatedRows';
+                break;
+            case 'yieldPaddy':
+                result = (row == 3 || row == 4 || row == 5)? 'calculatedRowGrid' : 'notCalculatedRows';
+                break;
+            case 'areaHarvestedPaddy':
+                result = (row == 0 || row == 3 ||row == 4)? 'calculatedRowGrid' : 'notCalculatedRows';
+                break;
 
-    var cellclassname = function (row, column, value, data) {
-        if (data[4] == 'C')
-            return "calculatedRowGrid";
-        };
+            case 'productionPaddy':
+                result = (row == 1 || row == 4 ||row == 5)? 'calculatedRowGrid' : 'notCalculatedRows';
+                break;
+
+            case 'productionMilled':
+                result = (row == 1 || row == 4 ||row == 5)? 'calculatedRowGrid' : 'notCalculatedRows';
+                break;
+
+            case 'areaHarvestedMilled':
+                result = (row == 0 || row == 1 ||row == 5)? 'calculatedRowGrid' : 'notCalculatedRows';
+                break;
+        }
+        return result;
+    };
+
+    var cellclassnameSingle = function (row, column, value, data) {
+        var result;
+        switch(formulaToRenderSingleCrops){
+            case 'init':
+            case 'milled':
+                result = (row == 1 || row == 3 || row == 5)? 'calculatedRowGrid' : 'notCalculatedRows';
+                break;
+            case 'yieldPaddy':
+                result = (row == 3 || row == 4 || row == 5)? 'calculatedRowGrid' : 'notCalculatedRows';
+                break;
+            case 'areaHarvestedPaddy':
+                result = (row == 0 || row == 3 ||row == 4)? 'calculatedRowGrid' : 'notCalculatedRows';
+                break;
+
+            case 'productionPaddy':
+                result = (row == 1 || row == 4 ||row == 5)? 'calculatedRowGrid' : 'notCalculatedRows';
+                break;
+
+            case 'productionMilled':
+                result = (row == 1 || row == 4 ||row == 5)? 'calculatedRowGrid' : 'notCalculatedRows';
+                break;
+
+            case 'areaHarvestedMilled':
+                result = (row == 0 || row == 1 ||row == 5)? 'calculatedRowGrid' : 'notCalculatedRows';
+                break;
+        }
+        return result;
+    };
 
     function PaddyCreator(){}
 
     PaddyCreator.prototype.init = function(totalValuesModel, singleCropsModel, Observer){
+        formulaToRenderTotVal = 'init';
+        formulaToRenderSingleCrops = 'init';
 
         var map = {
             2: "Area Harvested",
@@ -76,7 +130,7 @@ define(["jquery","formatter/DatatypesFormatter", "jqwidgets"], function($, Forma
 
             '<div id="totalValues"><br>' +
 
-            '<div class="col-lg-5 col-lg-offset-1">' +
+            '<div class="col-lg-4 col-lg-offset-1">' +
             '<small class = "labelRice">Select the <strong>ITEM</strong> to enter</small><br><br>'+
             '<div class ="totalValuesBoxes" id="firstCheckBoxTotVal">Rice Paddy</div>' +
             '</div>' +
@@ -86,22 +140,24 @@ define(["jquery","formatter/DatatypesFormatter", "jqwidgets"], function($, Forma
             '</div>' +
             '<br><br>' +
             '<br>' +
-            '<div class = "row">'+
-            '<div class="col-lg-4">' +
-            '<small class = "labelRice">Select the <strong>ELEMENT</strong> to enter</small><br>'+
+            '<div>'+
+            '<div class="col-lg-4 col-lg-offset-1">' +
+            '<small class = "labelRice">Select the <strong>ELEMENT</strong> to enter</small><br><br>'+
             '<div class ="totalValuesBoxes" id="thirdCheckBoxTotVal">Production</div>' +
+            '<small  class="labelCheckBoxes">(Thousand tonnes)</small>'+
             '</div>' +
 
-            '<div class="col-lg-4"><br>' +
+            '<div class="col-lg-4"><br><br>' +
             '<div class ="totalValuesBoxes" id="fourthCheckBoxTotVal">Area Harvested</div>' +
+            '<small  class="labelCheckBoxes">(Thousand Ha)</small>'+
             '</div>' +
-
-            '<div class="col-lg-4">' +
+            '<div class="col-lg-3"><br><br>' +
             '<div class ="totalValuesBoxes" id="fifthCheckBoxTotVal">Yield</div>' +
+            '<small  class="labelCheckBoxes">(Tonnes/Ha)</small>'+
             '</div>' +
-            '<br><br>' +
-            '<div class="row">' +
-            '<div class="col-lg-3 col-lg-offset-1">' +
+            '<br><br><br><br>' +
+            '<div class="row"><br><br>' +
+            '<div class="col-lg-3 col-lg-offset-4">' +
             '<button type="button" class="btn btn-primary" id="applyRulesFormulaTot">Recalculate Data</button>' +
             '</div>' +
             '</div><div class="row"><br><div class = "col-lg-10 col-lg-offset-1" id="alertTotal"></div></div><hr>' +
@@ -116,28 +172,36 @@ define(["jquery","formatter/DatatypesFormatter", "jqwidgets"], function($, Forma
             '</div>' +
 
             // Single Crops ------------------------------------
-            '<div id="totalValues"><br>' +
-            '<div class="row"><br>' +
-            '<div class="col-lg-5 col-lg-offset-1">' +
+            '<div id="singleCrops"><br>' +
+
+            '<div class="col-lg-4 col-lg-offset-1">' +
             '<small class = "labelRice">Select the <strong>ITEM</strong> to enter</small><br><br>'+
             '<div class ="singleCropsBoxes" id="firstCheckBoxSingleCrops">Rice Paddy</div>' +
             '</div>' +
-
+            '<br><br>' +
             '<div class="col-lg-6">' +
-            '<small class = "labelRice">Select the <strong>ELEMENT</strong> to enter</small><br><br>'+
-            '<div class ="singleCropsBoxes" id="secondCheckBoxSingleCrops">Area Harvested</div>' +
+            '<div class ="singleCropsBoxes" id="secondCheckBoxSingleCrops">Rice Milled</div>' +
             '</div>' +
             '<br><br>' +
             '<br>' +
-            '<div class="col-lg-5 col-lg-offset-1">' +
-            '<div class ="singleCropsBoxes" id="thirdCheckBoxSingleCrops">Rice Milled</div>' +
+            '<div>'+
+            '<div class="col-lg-4 col-lg-offset-1">' +
+            '<small class = "labelRice">Select the <strong>ELEMENT</strong> to enter</small><br><br>'+
+            '<div class ="singleCropsBoxes" id="thirdCheckBoxSingleCrops">Production</div>' +
+            '<small  class="labelCheckBoxes">(Thousand tonnes)</small>'+
             '</div>' +
 
-            '<div class="col-lg-6">' +
-            '<div class ="singleCropsBoxes" id="fourthCheckBoxSingleCrops">Yield</div>' +
+            '<div class="col-lg-4"><br><br>' +
+            '<div class ="singleCropsBoxes" id="fourthCheckBoxSingleCrops">Area Harvested</div>' +
+            '<small  class="labelCheckBoxes">(Thousand Ha)</small>'+
             '</div>' +
-            '<br><br>' +
-            '<div class="row">' +
+
+            '<div class="col-lg-3"><br><br>' +
+            '<div class ="singleCropsBoxes" id="fifthCheckBoxSingleCrops">Yield</div>' +
+            '<small  class="labelCheckBoxes">(Tonnes/Ha)</small>'+
+            '</div>' +
+            '<br><br><br><br><br>' +
+            '<div class="row"><br><br>' +
             '<div class="col-lg-3 col-lg-offset-4">' +
             '<button type="button" class="btn btn-primary" id="applyRulesFormulaSingle">Recalculate Data</button>' +
             '</div>' +
@@ -158,19 +222,17 @@ define(["jquery","formatter/DatatypesFormatter", "jqwidgets"], function($, Forma
 
 
         $("#pivotGrid").append(modal);
-        $('#firstCheckBoxTotVal').jqxCheckBox({ width: 120, height: 25, checked: true});
-        $('#secondCheckBoxTotVal').jqxCheckBox({ width: 120, height: 25, disabled: true});
+        $('#firstCheckBoxTotVal').jqxCheckBox({ width: 120, height: 25, disabled: true});
+        $('#secondCheckBoxTotVal').jqxCheckBox({ width: 120, height: 25, checked: true});
         $('#thirdCheckBoxTotVal').jqxCheckBox({ width: 120, height: 25, checked: true });
         $('#fourthCheckBoxTotVal').jqxCheckBox({ width: 120, height: 25, checked: true });
         $('#fifthCheckBoxTotVal').jqxCheckBox({ width: 120, height: 25, disabled: true });
 
-        $('#firstCheckBoxSingleCrops').jqxCheckBox({ width: 120, height: 25, checked: true});
+        $('#firstCheckBoxSingleCrops').jqxCheckBox({ width: 120, height: 25, disabled: true});
         $('#secondCheckBoxSingleCrops').jqxCheckBox({ width: 120, height: 25, checked: true});
-        $('#thirdCheckBoxSingleCrops').jqxCheckBox({ width: 120, height: 25, disabled: true });
-        $('#fourthCheckBoxSingleCrops').jqxCheckBox({ width: 120, height: 25, disabled: true });
-
-
-
+        $('#thirdCheckBoxSingleCrops').jqxCheckBox({ width: 120, height: 25, checked: true });
+        $('#fourthCheckBoxSingleCrops').jqxCheckBox({ width: 120, height: 25, checked: true });
+        $('#fifthCheckBoxSingleCrops').jqxCheckBox({ width: 120, height: 25, disabled: true });
 
         $('#gridTotalValues').jqxGrid({
             source: dataAdapter,
@@ -181,10 +243,10 @@ define(["jquery","formatter/DatatypesFormatter", "jqwidgets"], function($, Forma
             pageable: true,
             autoheight: true,
             columns: [
-                { text: 'Element', datafield: 6,cellclassname:cellclassname  },
-                { text: 'Value', datafield: 3 ,cellclassname:cellclassname },
-                { text: 'Flag', datafield: 4 ,cellclassname:cellclassname },
-                { text: 'Notes', datafield: 5 ,cellclassname:cellclassname }
+                { text: 'Element', datafield: 6,   cellclassname:  cellclassnameTot  },
+                { text: 'Value',   datafield: 3 ,  cellclassname:  cellclassnameTot },
+                { text: 'Flag',    datafield: 4 ,  cellclassname:  cellclassnameTot },
+                { text: 'Notes',   datafield: 5 ,  cellclassname:  cellclassnameTot }
             ]
         });
 
@@ -197,10 +259,10 @@ define(["jquery","formatter/DatatypesFormatter", "jqwidgets"], function($, Forma
             pageable: true,
             autoheight: true,
             columns: [
-                { text: 'Element', datafield: 6 ,cellclassname:cellclassname },
-                { text: 'Crop',    datafield: 7, cellclassname: cellclassname },
-                { text: 'Value',   datafield: 3, cellclassname: cellclassname  },
-                { text: 'Flag',    datafield: 4, cellclassname: cellclassname  }
+                { text: 'Element', datafield: 6 ,cellclassname: cellclassnameSingle },
+                { text: 'Crop',    datafield: 7, cellclassname: cellclassnameSingle },
+                { text: 'Value',   datafield: 3, cellclassname: cellclassnameSingle  },
+                { text: 'Flag',    datafield: 4, cellclassname: cellclassnameSingle  }
             ]
         });
 
@@ -214,10 +276,10 @@ define(["jquery","formatter/DatatypesFormatter", "jqwidgets"], function($, Forma
         observer.applyListeners()
     }
 
-
-    PaddyCreator.prototype.updateTotGrid = function (calculatedModel) {
+    PaddyCreator.prototype.updateTotGrid = function (calculatedModel, formulaToApply) {
         var that  =this;
 
+        formulaToRenderTotVal = formulaToApply
         console.log('update Tot Grid!!')
         var source = {
             datatype: "array",
@@ -242,16 +304,18 @@ define(["jquery","formatter/DatatypesFormatter", "jqwidgets"], function($, Forma
             pageable: true,
             autoheight: true,
             columns: [
-                { text: 'Element', datafield: 6,cellclassname:cellclassname  },
-                { text: 'Value', datafield: 3 ,cellclassname:cellclassname },
-                { text: 'Flag', datafield: 4 ,cellclassname:cellclassname },
-                { text: 'Notes', datafield: 5 ,cellclassname:cellclassname }
+                { text: 'Element', datafield: 6,   cellclassname:  cellclassnameTot  },
+                { text: 'Value',   datafield: 3 ,  cellclassname:  cellclassnameTot  },
+                { text: 'Flag',    datafield: 4 ,  cellclassname:  cellclassnameTot  },
+                { text: 'Notes',   datafield: 5 ,  cellclassname:  cellclassnameTot  }
             ]
 
         });
     }
 
-    PaddyCreator.prototype.updateSingleGrid = function (calculatedModel) {
+    PaddyCreator.prototype.updateSingleGrid = function (calculatedModel, formulaToApply) {
+
+        formulaToRenderSingleCrops = formulaToApply;
         console.log('updateSingelGRid')
 
         var source = {
@@ -278,10 +342,10 @@ define(["jquery","formatter/DatatypesFormatter", "jqwidgets"], function($, Forma
             pageable: true,
             autoheight: true,
             columns: [
-                { text: 'Element', datafield: 6 ,cellclassname:cellclassname },
-                { text: 'Crop',    datafield: 7, cellclassname: cellclassname },
-                { text: 'Value',   datafield: 3, cellclassname: cellclassname  },
-                { text: 'Flag',    datafield: 4, cellclassname: cellclassname  }
+                { text: 'Element', datafield: 6 ,cellclassname: cellclassnameSingle },
+                { text: 'Crop',    datafield: 7, cellclassname: cellclassnameSingle },
+                { text: 'Value',   datafield: 3, cellclassname: cellclassnameSingle  },
+                { text: 'Flag',    datafield: 4, cellclassname: cellclassnameSingle  }
             ]
         });
 

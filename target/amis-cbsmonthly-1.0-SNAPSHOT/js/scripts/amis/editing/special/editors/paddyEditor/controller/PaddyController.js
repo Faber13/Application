@@ -119,6 +119,7 @@ define(['jquery','paddyEditor/model/PaddyModel', 'paddyEditor/observer/PaddyObse
 
         if( Object.prototype.toString.call( formulaToUpdate ) === '[object Array]' ) {
             for (var i = 0; i < formulaToUpdate.length; i++) {
+                debugger;
                 var calculatedModel = formulaHandler.createFormula(modelTotalCrops, formulaToUpdate[i])
                 if (i != formulaToUpdate.length - 1) {
                     modelTotalCrops = calculatedModel
@@ -128,9 +129,11 @@ define(['jquery','paddyEditor/model/PaddyModel', 'paddyEditor/observer/PaddyObse
             var calculatedModel = formulaHandler.createFormula(modelTotalCrops, formulaToUpdate)
         }
 
+
+
         var modelCalculated =  $.extend(true, [], calculatedModel);
         modelPaddy.setCalculatedTotalModel(modelCalculated);
-        editorPaddy.updateTotGrid(modelCalculated);
+        editorPaddy.updateTotGrid(modelCalculated, formulaToApply);
     }
 
     PaddyController.prototype.reattachListeners = function(){
@@ -184,7 +187,7 @@ define(['jquery','paddyEditor/model/PaddyModel', 'paddyEditor/observer/PaddyObse
 
         var modelCalculated =  $.extend(true, [], newCalculatedData);
         modelPaddy.setCalculatedSingleModel(modelCalculated)
-        editorPaddy.updateSingleGrid(modelCalculated);
+        editorPaddy.updateSingleGrid(modelCalculated, formulaToApply);
     }
 
     PaddyController.prototype.updateTotGridOnFormulaChanges = function(formulaToApply, typeOfEditing){
@@ -206,7 +209,7 @@ define(['jquery','paddyEditor/model/PaddyModel', 'paddyEditor/observer/PaddyObse
 
         var modelCalculated =  $.extend(true, [], calculatedModel);
         modelPaddy.setCalculatedTotalModel(modelCalculated)
-        editorPaddy.updateTotGrid(calculatedModel);
+        editorPaddy.updateTotGrid(calculatedModel, formulaToApply);
 
     }
 
@@ -228,7 +231,7 @@ define(['jquery','paddyEditor/model/PaddyModel', 'paddyEditor/observer/PaddyObse
         }
         var modelCalculated =  $.extend(true, [], calculatedModel);
         modelPaddy.setCalculatedSingleModel(modelCalculated)
-        editorPaddy.updateSingleGrid(calculatedModel);
+        editorPaddy.updateSingleGrid(calculatedModel, formulaToApply);
 
     }
 

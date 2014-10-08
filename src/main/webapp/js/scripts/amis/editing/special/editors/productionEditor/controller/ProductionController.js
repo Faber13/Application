@@ -30,7 +30,7 @@ define(['jquery'], function($){
         var calculatedModel = formulaHandler.createFormula(modelTotalCrops, formulaToUpdate)
         var modelCalculated =  $.extend(true, [], calculatedModel);
         modelProduction.setCalculatedTotalModel(modelCalculated)
-        editorProduction.updateTotGrid(calculatedModel);
+        editorProduction.updateTotGrid(calculatedModel, formulaToApply);
 
     }
 
@@ -66,7 +66,7 @@ define(['jquery'], function($){
         var newCalculatedData = modelProduction.createSingleCalculatedModel(calculatedDataDividedCrops)
         var modelCalculated =  $.extend(true, [], newCalculatedData);
         modelProduction.setCalculatedSingleModel(modelCalculated)
-        editorProduction.updateSingleGrid(modelCalculated);
+        editorProduction.updateSingleGrid(modelCalculated, formulaToApply);
     }
 
     ProductionController.prototype.updateTotGridOnFormulaChanges = function(formulaToApply){
@@ -78,7 +78,7 @@ define(['jquery'], function($){
 
         var modelCalculated =  $.extend(true, [], calculatedModel);
         modelProduction.setCalculatedTotalModel(modelCalculated)
-        editorProduction.updateTotGrid(calculatedModel);
+        editorProduction.updateTotGrid(calculatedModel, formulaToApply);
 
     }
 
@@ -91,7 +91,7 @@ define(['jquery'], function($){
 
         var modelCalculated =  $.extend(true, [], calculatedModel);
         modelProduction.setCalculatedSingleModel(modelCalculated)
-        editorProduction.updateSingleGrid(calculatedModel);
+        editorProduction.updateSingleGrid(calculatedModel, formulaToApply);
 
     }
 
