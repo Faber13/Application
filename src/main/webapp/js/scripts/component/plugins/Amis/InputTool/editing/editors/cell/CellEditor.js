@@ -112,7 +112,7 @@ define(["jquery", "formatter/DatatypesFormatter","flagTranslator/controller/Flag
             title: 'Editor',
             state: "open",
             modal: true,
-            height: '500',
+            height: '550',
             width: "600",
             background: '#AAAAA',
             close: function () {
@@ -125,7 +125,9 @@ define(["jquery", "formatter/DatatypesFormatter","flagTranslator/controller/Flag
 
 
         var that = this;
-        $('#resetButton').on('click', function () {
+        $('#resetButton').on('click', function (event) {
+            event.preventDefault();
+            event.stopImmediatePropagation()
             that.restorePreviousValues();
         })
 
@@ -133,7 +135,11 @@ define(["jquery", "formatter/DatatypesFormatter","flagTranslator/controller/Flag
 
     // To restore previous values when clicks on reset button
     CellEditor.prototype.restorePreviousValues = function () {
+        debugger;
         for (key in mapPreviousValues) {
+            if(key == 'getUnique'){
+                break;
+            }
             var value = mapPreviousValues[key];
             for (var container in value) {
                 var prevValue = value[container][0]
@@ -191,9 +197,16 @@ define(["jquery", "formatter/DatatypesFormatter","flagTranslator/controller/Flag
                         break
 
                     default:
-                        var rightValue = (typeof prevValue == 'undefined' || prevValue == 'undefined') ?
-                            "" : prevValue;
-                        document.getElementById(container).value = rightValue;
+                        if( container == 'accessorInput1'){
+                            container = 's2id_accessorInput1'
+                            var rightValue = (typeof prevValue == 'undefined' || prevValue == 'undefined') ?
+                                "" : prevValue;
+                            $('#'+container).select2('val', rightValue)
+                        }else {
+                            var rightValue = (typeof prevValue == 'undefined' || prevValue == 'undefined') ?
+                                "" : prevValue;
+                            document.getElementById(container).value = rightValue;
+                        }
                         break;
                 }
             }

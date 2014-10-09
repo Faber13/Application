@@ -39,25 +39,25 @@ define(["jquery","formatter/DatatypesFormatter", "jqwidgets"], function($, Forma
         switch(formulaToRenderSingleCrops){
             case 'init':
             case 'milled':
-                result = (row == 1 || row == 3 || row == 5)? 'calculatedRowGrid' : 'notCalculatedRows';
+                result = (row == 1 || row == 3 || row == 6)? 'calculatedRowGrid' : 'notCalculatedRows';
                 break;
             case 'yieldPaddy':
-                result = (row == 3 || row == 4 || row == 5)? 'calculatedRowGrid' : 'notCalculatedRows';
+                result = (row == 3 || row == 4 || row == 6)? 'calculatedRowGrid' : 'notCalculatedRows';
                 break;
             case 'areaHarvestedPaddy':
                 result = (row == 0 || row == 3 ||row == 4)? 'calculatedRowGrid' : 'notCalculatedRows';
                 break;
 
             case 'productionPaddy':
-                result = (row == 1 || row == 4 ||row == 5)? 'calculatedRowGrid' : 'notCalculatedRows';
+                result = (row == 1 || row == 4 ||row == 6)? 'calculatedRowGrid' : 'notCalculatedRows';
                 break;
 
             case 'productionMilled':
-                result = (row == 1 || row == 4 ||row == 5)? 'calculatedRowGrid' : 'notCalculatedRows';
+                result = (row == 1 || row == 4 ||row == 6)? 'calculatedRowGrid' : 'notCalculatedRows';
                 break;
 
             case 'areaHarvestedMilled':
-                result = (row == 0 || row == 1 ||row == 5)? 'calculatedRowGrid' : 'notCalculatedRows';
+                result = (row == 0 || row == 1 ||row == 6)? 'calculatedRowGrid' : 'notCalculatedRows';
                 break;
         }
         return result;
@@ -158,7 +158,7 @@ define(["jquery","formatter/DatatypesFormatter", "jqwidgets"], function($, Forma
             '<br><br><br><br>' +
             '<div class="row"><br><br>' +
             '<div class="col-lg-3 col-lg-offset-4">' +
-            '<button type="button" class="btn btn-primary" id="applyRulesFormulaTot">Recalculate Data</button>' +
+            '<button type="button" class="btn btn-primary" id="applyRulesFormulaTot">Confirm Selection</button>' +
             '</div>' +
             '</div><div class="row"><br><div class = "col-lg-10 col-lg-offset-1" id="alertTotal"></div></div><hr>' +
             '</div>' +
@@ -200,10 +200,10 @@ define(["jquery","formatter/DatatypesFormatter", "jqwidgets"], function($, Forma
             '<div class ="singleCropsBoxes" id="fifthCheckBoxSingleCrops">Yield</div>' +
             '<small  class="labelCheckBoxes">(Tonnes/Ha)</small>'+
             '</div>' +
-            '<br><br><br><br><br>' +
+            '<br><br><br><br>' +
             '<div class="row"><br><br>' +
             '<div class="col-lg-3 col-lg-offset-4">' +
-            '<button type="button" class="btn btn-primary" id="applyRulesFormulaSingle">Recalculate Data</button>' +
+            '<button type="button" class="btn btn-primary" id="applyRulesFormulaSingle">Confirm Selection</button>' +
             '</div>' +
             '</div><div class="row"><br><div class = "col-lg-10 col-lg-offset-1" id="alertSingle"></div></div><hr>' +
             '</div>' +

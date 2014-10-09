@@ -12,7 +12,7 @@ define(['jquery', "urlConfigurator"], function($,ServicesUrl){
     var map=  {
         2 : "Area Harvested",
         5 : "Production",
-        4 : "Yield",
+        4 : "Yield Milled",
         37: "Area Planted",
         998: "Production Paddy",
         996 : "Yield Paddy",

@@ -1,7 +1,7 @@
 /**
  * Created by fabrizio on 7/7/14.
  */
-define(["jquery" , "views/modelView/ViewModel", "webix","pivot"], function ($, ViewModel) {
+define(["jquery" , "views/modelView/ViewModel", "webix"], function ($, ViewModel) {
 
     var model, table, Configurator, titlesUp, titlesLeft, accessorMap, fullModel, configurationKeys, indexValues, modelView,
         leftDimensions, upDimensions, valueColumn, dataSource2, idOlapGrid, language, viewModel
@@ -84,25 +84,24 @@ define(["jquery" , "views/modelView/ViewModel", "webix","pivot"], function ($, V
             }
         });*/
 
-        grida = new webix.ui({
-            container: "pivotGrid",
-            id: "pivot",
-            view: "pivot",
-            height: 400,
-            width: 1000,
-            datatype: "jsarray",
-            data: modello,
-            structure: {
-                rows : [ {
-                    id: "data0",
-                    text : { name : "data0",rowspan : 2}
-                }]
-                ,
-                columns: ["data2", "data3"],
-                values: []
-            }
-        });
+        gridd = new webix.ui({
+            container:"testD",
+            view:"datatable",
+            columns:[
+                { id:"data5",	header:"", css:"rank",  		width:50},
+                { id:"data1",	header:"Film title",width:200},
+                { id:"data2",	header:"Released" , width:80},
+                { id:"data3",	header:"Votes", 	width:100}
+            ],
+            autoheight:true,
+            autowidth:true,
 
+            datatype:"jsarray",
+            data:[
+                [1,"The Shawshank Redemption",1994,678790,9.2,1],
+                [2,"The Godfather",1972,511495,9.2,2]
+            ]
+        });
 
 
 

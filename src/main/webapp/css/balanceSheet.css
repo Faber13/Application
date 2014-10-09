@@ -129,7 +129,8 @@
 [title = "Area Harvested (Thousand Ha)"], [title="Area Harvested (Thousand Ha)"]~ td,
 [title = "Production Paddy (Thousand tonnes)"], [title="Production Paddy (Thousand tonnes)"]~ td,
 [title = "Area Planted (Thousand Ha)"], [title="Area Planted (Thousand Ha)"]~ td,
-[title = "Yield (Tonnes/Ha)"], [title="Yield (Tonnes/Ha)"]~ td,[title = "Yield Paddy (Tonnes/Ha)"], [title="Yield Paddy (Tonnes/Ha)"]~ td {
+[title = "Yield (Tonnes/Ha)"], [title="Yield (Tonnes/Ha)"]~ td,
+[title = "Yield Milled (Tonnes/Ha)"], [title="Yield Milled (Tonnes/Ha)"]~ td,[title = "Yield Paddy (Tonnes/Ha)"], [title="Yield Paddy (Tonnes/Ha)"]~ td {
     color: #047A00;
 }
 
@@ -149,4 +150,13 @@
     width: 800px;
     /* must be half of the width, minus scrollbar on the left (30px) */
 }
+
+.ui-dialog .ui-dialog-titlebar-close .ui-icon {
+    background-color: grey;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default{
+    border: 0px solid #bcbcbc;
+}
+
 

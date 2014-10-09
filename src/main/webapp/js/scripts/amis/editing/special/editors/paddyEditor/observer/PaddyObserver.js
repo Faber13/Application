@@ -550,6 +550,7 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function ($, For
 
     PaddyObserver.prototype.listenToTotalEditable = function () {
         $("#gridTotalValues").bind('cellbeginedit', function (event) {
+            debugger;
             event.preventDefault();
             event.stopImmediatePropagation()
             var toBlock = false;
@@ -577,7 +578,7 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function ($, For
                     break;
 
                 case 'productionMilled':
-                    if (row == 1 || row == 3 || row == 4) {
+                    if (row == 1 || row == 4 || row == 5) {
                         toBlock = true;
                     }
                     break;
@@ -595,7 +596,7 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function ($, For
                     break;
 
                 case 'productionPaddy':
-                    if (row == 1 || row == 3 || row ==4) {
+                    if (row == 1 || row == 4 || row ==5) {
                         toBlock = true;
                     }
                     break;
@@ -615,34 +616,34 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function ($, For
             var row = event.args.rowindex;
             var column = event.args.datafield
 
-            switch (formulaToApplyTot) {
+            switch (formulaToApplySingle) {
 
                 case 'init':
-                    if (row == 1 || row == 3 || row == 5) {
+                    if (row == 1 || row == 3 || row == 6) {
                         toBlock = true;
                     }
                     break;
 
                 case 'milled':
-                    if (row == 1 || row == 3 || row == 5) {
+                    if (row == 1 || row == 3 || row == 6) {
                         toBlock = true;
                     }
                     break;
 
                 case 'areaHarvestedMilled':
-                    if (row == 0 || row == 1 || row ==5) {
+                    if (row == 0 || row == 1 || row ==6) {
                         toBlock = true;
                     }
                     break;
 
                 case 'productionMilled':
-                    if (row == 1 || row == 3 || row == 4) {
+                    if (row == 1 || row == 4 || row == 6) {
                         toBlock = true;
                     }
                     break;
 
                 case 'yieldPaddy':
-                    if (row == 3 || row == 4  || row == 5) {
+                    if (row == 3 || row == 4  || row == 6) {
                         toBlock = true;
                     }
                     break;
@@ -654,7 +655,7 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function ($, For
                     break;
 
                 case 'productionPaddy':
-                    if (row == 1 || row == 3 || row ==4) {
+                    if (row == 1 || row == 4 || row ==6) {
                         toBlock = true;
                     }
                     break;
