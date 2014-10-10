@@ -27,7 +27,6 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
             supportUtility = utility;
             // create a copy
             var tableModelWithFormula = $.extend(true,[], tableModel);
-
             filterData = supportUtility.getFilterData()
 
             // formula
@@ -36,8 +35,8 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
             // visualization model
             ViewGrid.init(tableModelWithFormula, configurator, supportUtility)
             // append listeners to events
-            this.createListeners();
-            this.onChangeModalityEditing();
+          this.createListeners();
+          this.onChangeModalityEditing();
         }
 
         GeneralController.prototype.createListeners = function () {
@@ -252,7 +251,6 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
         GeneralController.prototype.onChangeModalityEditing = function() {
             $("#editingChoice").bind('change', function (event) {
                 event.preventDefault()
-                console.log('click!!')
                 editingOnCell = !event.args.checked;
             })
         }

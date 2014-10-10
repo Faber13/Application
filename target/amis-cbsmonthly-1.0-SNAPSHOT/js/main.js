@@ -19,6 +19,7 @@ requirejs.config({
         validator         :  "../component/core/balanceSheet/validator",
         formatter         :  "../component/core/balanceSheet/formatter",
         adapter           :  "../component/core/balanceSheet/visualization/ignite/adapter",
+        adapterGrid       :  "../component/core/balanceSheet/visualization/jqxgrid/adapter/AdapterGrid",
         formulasAmis      :  "../amis/formulas",
         dataLoader        :  "../amis/loading/logic",
         editingSpecial    :  "../amis/editing/special",

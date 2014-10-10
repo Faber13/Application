@@ -3,67 +3,22 @@
  */
 define(['jquery'], function(){
 
-    var filterActual, realPreviousDate, realDataToSave;
+    var filterActual, realPreviousDate, realDataToSave, previousYearForecast, actualYearForecasts;
+
     function SavingModel(){}
 
-    /* EXAMPLE PATTERN TO SAVE
-     {
-         "filter":{
-             "region":12,
-             "product":5,
-             "year":2010
-         },
-
-         "data":[
-             [
-                 4,
-                 "Tonnes/Ha",
-                 "2013-07-15",
-                 7.81,
-                 null
-             ],
-             [
-                 19,
-                 "Million tonnes",
-                 "2013-07-15",
-                 27.65,
-                 " "
-             ],
-             [
-                 27,
-                 "Million tonnes",
-                 "2013-07-15",
-                 27.65,
-                 " "
-             ]
-         ]
-     }
-     */
-
     SavingModel.prototype.init = function(){}
-
 
     SavingModel.prototype.prepareData = function(alldata, tableData, newData,actualFilter, realPreviousYearDate){
         realPreviousDate = realPreviousYearDate;
         filterActual = actualFilter;
-        //TODO
-        console.log('-------------------------------------------------')
-        console.log('Insertion only cell click: ')
-        console.log('+++++++++++++++++++')
-        console.log('newData:')
-        console.log(newData)
-        console.log('+++++++++++++++++++')
-        console.log('TableData')
-        console.log(tableData)
 
-        console.log('allData')
-        console.log(alldata)
-        console.log('-------------------------------------------------')
         // dataOriginals
-        var allDataWithRealDate = this.setRealDate(alldata)
+
         debugger;
 
-        var allDataCleaned = this.cleanNewData(allDataWithRealDate);
+        var allDataCleaned = this.cleanNewData(actualYearForecasts);
+        var allDataWithRealDate = this.setRealDate(allDataCleaned)
         var allDataRightDate = this.setRightDateFormat(allDataCleaned)
 
         // data Updated
@@ -78,16 +33,23 @@ define(['jquery'], function(){
             trueNewUpdatedData = this.mergeNewDateWithUpdatedDate(trueNewUpdatedData, newDataRightDate)
         }
         // now I have the new Data clean, ready to merge with allData
-        realDataToSave = this.mergeNewDateWithUpdatedDate(allDataRightDate, trueNewUpdatedData);
+        var dataToSplit = this.mergeNewDateWithUpdatedDate(allDataRightDate, trueNewUpdatedData);
+
+        realDataToSave = this.splitDataWithDate(dataToSplit);
+        debugger;
     }
 
-
     SavingModel.prototype.setRealDate = function(model){
+        previousYearForecast = [];
+        actualYearForecasts = [];
         var result = []
         for( var i=0; i< model.length; i++){
             if(model[i][2] == '20000103'){
                 model[i][2] = realPreviousDate
+                previousYearForecast.push(model[i])
             }
+            actualYearForecasts.push(model[i])
+
             result.push(model[i])
         }
         return result;
@@ -147,6 +109,26 @@ define(['jquery'], function(){
         }
         result["data"] = realDataToSave
         return result;
+    }
+
+    SavingModel.prototype.splitDataWithDate = function(model){
+
+        var result = []
+        var date = {}
+        date[model[0][2]] = true;
+        var index = 0;
+        result[index] =model[0]
+        for(var i=0 ; i< model.length; i++){
+            if( date[model[i][2]]){
+                result[index].push(model[i])
+            }else{
+                index++;
+                date[model[i][2]] = true;
+                result[index]= model[i]
+            }
+        }
+        return result;
+
     }
 
     return SavingModel;

@@ -70,10 +70,7 @@ define(["jquery" ], function($ ){
 
 
 
-    AdapterPivot.prototype.setCSSClassOnRendering = function(ModelTable, ModelGrid){
 
-
-    }
 
     return AdapterPivot;
 })

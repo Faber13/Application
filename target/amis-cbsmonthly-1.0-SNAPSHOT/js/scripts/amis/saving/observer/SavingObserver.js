@@ -16,7 +16,7 @@ define(['jquery', "bootstrap-dialog"], function($, BootstrapDialog){
 
     SavingObserver.prototype.applyListener = function(){
 
-        $('#saveData').on('click', function(event){
+        $('#saveFinalData').on('click', function(event){
             event.preventDefault();
             event.stopImmediatePropagation();
             bootstrapDialog.confirm('Are you sure to save the data ?', function(result){

@@ -34,6 +34,7 @@ define(['jquery','databaseSaver/model/SavingModel', 'databaseSaver/observer/Savi
         modelSaving.prepareData(allData,tableData,newdata, actualFilter,realPreviousYearDate);
 
         var payload = modelSaving.preparePutPayload()
+        debugger;
     }
 
 

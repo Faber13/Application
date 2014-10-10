@@ -57,41 +57,6 @@ define(["jquery", "balanceSheet/BalanceSheet", "dataLoader/DataLoader", "databas
         }
         var url;
 
-        /* EXAMPLE PATTERN TO SAVE
-         {
-         "filter":{
-         "region":12,
-         "product":5,
-         "year":2010
-         },
-
-         "data":[
-         [
-         4,
-         "Tonnes/Ha",
-         "2013-07-15",
-         7.81,
-         null
-         ],
-         [
-         19,
-         "Million tonnes",
-         "2013-07-15",
-         27.65,
-         " "
-         ],
-         [
-         27,
-         "Million tonnes",
-         "2013-07-15",
-         27.65,
-         " "
-         ]
-         ]
-         }
-         */
-
-        //
         if(!firstIstance) {
             firstIstance = true
             // Choice of DSD dependent on the product (if rice has been chosen)

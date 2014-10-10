@@ -1,18 +1,20 @@
 /**
  * Created by fabrizio on 7/7/14.
  */
-define(["jquery" , "views/modelView/ViewModel", "webix"], function ($, ViewModel) {
+define(["jquery" , "views/modelView/ViewModel", "adapterGrid",  "jqwidgets" ], function ($, ViewModel, AdapterGrid) {
 
     var model, table, Configurator, titlesUp, titlesLeft, accessorMap, fullModel, configurationKeys, indexValues, modelView,
-        leftDimensions, upDimensions, valueColumn, dataSource2, idOlapGrid, language, viewModel
+        leftDimensions, upDimensions, valueColumn, dataSource2, idOlapGrid, language, viewModel, adapterGrid, supportUtility
 
     function GridDataView2() {
 
     }
 
 
-    GridDataView2.prototype.init = function (tableModel, configurator) {
+    GridDataView2.prototype.init = function (tableModel, configurator, utility) {
 
+        supportUtility = utility
+        adapterGrid = new AdapterGrid;
         viewModel = new ViewModel;
         table = tableModel;
         Configurator = configurator;
@@ -26,122 +28,114 @@ define(["jquery" , "views/modelView/ViewModel", "webix"], function ($, ViewModel
         fullModel = Configurator.getAllColumnModels();
         configurationKeys = Configurator.getKeyColumnConfiguration();
         accessorMap = Configurator.getAccessorMap();
-        leftDimensions = this.createLeftPivotDimension(fullModel["leftColumnsModel"], configurationKeys["lefKeyColumnConfiguration"]);
-        upDimensions = this.createUpPivotDimension(fullModel["upColumnsModel"], configurationKeys["upKeyColumnConfiguration"]);
+        // leftDimensions = this.createLeftPivotDimension(fullModel["leftColumnsModel"], configurationKeys["lefKeyColumnConfiguration"]);
+        // upDimensions = this.createUpPivotDimension(fullModel["upColumnsModel"], configurationKeys["upKeyColumnConfiguration"]);
         valueColumn = Configurator.getValueColumnConfiguration();
         indexValues = Configurator.getValueIndex();
         idOlapGrid = Configurator.getIdOlapGrid();
-        modelView = viewModel.init(table, Configurator)
+        modelView = viewModel.init(table, Configurator, supportUtility)
         this.renderGrid(modelView)
     }
 
 
     GridDataView2.prototype.renderGrid = function (model) {
+        var columnsNumber = adapterGrid.getNumberOfColumns(model)
+        var differentDates = adapterGrid.getDifferentDates();
+        var columns = [];
 
-        getValue = function (valueInd) {
-            var result;
-            return function (items, cellMetadata) {
+        console.log(JSON.stringify(model))
 
-                $.each(items, function (index, item) {
-                    result = item[valueInd];
-                });
-                return result;
-            };
+
+        var source = {
+            datatype: "array",
+            datafields: [
+                { name: 0, type: 'string' },
+                { name: 3, type: 'string' }
+            ],
+            id: 'ppp',
+            localdata: model
         };
 
-         var modello =
-         [
-            ["Production","Maize","Egypt","summer","22","Kg","asd",true],
-            ["Production","Maize","Egypt","summer","",null,"qweqwe",null],
-            ["Production","Maize","Egypt","winter","",null,"wqe",null],
-            ["Production","Maize","Egypt","winter","",null,"ewq",null],
-            ["Production","Rice","Egypt","summer","22","Kg","asd",true],
-            ["Production","Rice","Egypt","summer","",null,"qweqwe",null],
-            ["Production","Rice","Egypt","winter","",null,"wqe",null],
-            ["Production","Rice","Egypt","winter","",null,"ewq",null]
-         ]
-      //  debugger;
+        var dataAdapter = new $.jqx.dataAdapter(source);
+        console.log('DataAdapter')
+        console.log(dataAdapter)
 
-      /*  grida = new webix.ui({
-            container: "pivotGrid",
-            id: "pivot",
-            view: "pivot",
-            height: 400,
-            width: 1000,
-            datatype: "jsarray",
-            data: modello,
-            structure: {
-                rows : [
-                { type:"space", rows:[
-                    { template:"cell 1" },
-                    { template:"cell 2" },
-                    { template:"cell 3" }
-                ]
-                }]
-        ,
-                columns: ["data2", "data3"],
-                values: []
-            }
-        });*/
+        $('#pivotGrid').jqxGrid({
+            source: dataAdapter,
+            width: "100%",
+            editable: true,
+            selectionmode: 'singlecell',
+            columnsresize: true,
+            pageable: true,
+            autoheight: true,
+            columns: [
+                { text: 'Element', datafield: 0 },
+                { text: 'Values',    datafield: 3}
 
-        gridd = new webix.ui({
-            container:"testD",
-            view:"datatable",
-            columns:[
-                { id:"data5",	header:"", css:"rank",  		width:50},
-                { id:"data1",	header:"Film title",width:200},
-                { id:"data2",	header:"Released" , width:80},
-                { id:"data3",	header:"Votes", 	width:100}
-            ],
-            autoheight:true,
-            autowidth:true,
-
-            datatype:"jsarray",
-            data:[
-                [1,"The Shawshank Redemption",1994,678790,9.2,1],
-                [2,"The Godfather",1972,511495,9.2,2]
             ]
         });
 
-
-
-
-        var datatable = $$("pivot").$$("data");
-
-        //attach event to selection
-        datatable.attachEvent("onAfterSelect", function(id){
-         //   alert()
-          //  debugger;
-            webix.message("selected row: "+id);
-            var record = datatable.getItem(id);
-            record["Egypt_'_spring"] = "<img src='http://www.imginternet.com/imgpub/img7787_0_0.gif'>ciao</img>";
-            var columnConfig = datatable.getColumnConfig("Egypt_'_spring")
-        });
-
-        // cells
-        var values = [];
-
-        var array = document.getElementsByClassName("webix_ss_center_scroll")[1].childNodes;
-
-        for (var i = 0; i < 9; i++) {
-            model.push(["", "", "", "", "", "", "", undefined])
+        document.getElementById('box').style.visibility = "visible";
+        var options =  document.getElementById('options')
+        options.style.visibility = "visible" ;
+        var toappend = document.getElementById('toAppend');
+        if(toappend != null){
+            toappend.remove()
         }
 
-        /*
-         for(var j =0; j<array[0].childNodes.length; j++){
-         for(var i=0; i<array.length; i++) {
-         debugger;
-         var div = array[i].childNodes[j]
-         var indexTable = (j==0)? i: i+(j*array.length);
-         div.innerHTML = model[indexTable][indexValues];
-         }
-         }*/
+        var f = document.getElementById('optionsPivotGrid');
+        if(typeof f != 'undefined' && f != null){
+            f.remove();
+        }
 
-        // ------------------------------------------
-        // REGUlar expression with columnId
-        //
-        //          /((\w+)(\_'_))/
-        // ------------------------------------------
+        var f = document.getElementById('newForecast');
+        if(typeof f != 'undefined' && f != null){
+            f.remove();
+        }
+
+
+        /*
+        columns.push({ text: 'Elements', datafield: 0})
+        var keys = Object.keys(differentDates)
+        for (var j = 0; j < keys.length; j++) {
+            columns.push({text: keys[j], datafield: 3 })
+         }
+
+
+        console.log('columns')
+        console.log(columns)
+
+        var datafields = []
+
+        for (var i = 0; i < columns.length; i++) {
+            datafields.push({name: 0, type: 'string'},{name: 3, type: 'string'})
+        }
+
+        console.log('datafields')
+        console.log(datafields)
+
+        debugger;
+        var source = {
+            datatype: "array",
+            datafields: datafields,
+            id: 'ppp',
+            localdata: model
+        };
+
+        var dataAdapter = new $.jqx.dataAdapter(source);
+
+
+        $('#pivotGrid').jqxGrid({
+            source: dataAdapter,
+            width: "100%",
+            editable: true,
+            selectionmode: 'singlecell',
+            columnsresize: true,
+            pageable: true,
+            autoheight: true,
+            columns: columns
+        });
+*/
 
     }
 
@@ -203,7 +197,7 @@ define(["jquery" , "views/modelView/ViewModel", "webix"], function ($, ViewModel
     }
 
 
-    GridDataView2.prototype.createLeftPivotDimension = function (keyColumns, keyColumnConf) {
+    GridDataView2.prototype.createLeftPivotDimension1 = function (keyColumns, keyColumnConf) {
 
         var that = this;
         titlesLeft = [];
