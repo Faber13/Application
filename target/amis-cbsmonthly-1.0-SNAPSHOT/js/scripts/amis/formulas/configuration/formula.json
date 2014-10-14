@@ -350,10 +350,10 @@
     },
     "editableValues":{
         "directEditing" : {
-            "values" : [8,7,12,10,14,13,15,16,17]
+            "values" : [8,7,12,10,14,13,16,17]
         },
         "specialEditing": {
-            "values" : [ 2,37, 4, 5, 1234, 998]}
+           "values" : [ 2,37, 4, 5, 15, 998]}
     },
     "specialFormulas": [
         {
@@ -368,7 +368,7 @@
         },
         {
             "id" : 2,
-            "cellsClicked" : [777],
+            "cellsClicked" : [15],
             "itemsInvolved": [15,21,28,29,30,31,32,33,34],
             "exogeneous"   :    true,
             "location"     : {

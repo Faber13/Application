@@ -25,55 +25,32 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function($, Form
        // this.listenToCheckboxesTotal();
         this.listenToEditCellTotGrid();
         this.listenToSaveTotalValuesButton()
-        //his.listenToCheckboxesSingleCrops()
-    }
-
-    OtherObserver.prototype.listenToCheckboxesTotal = function(){
-        var that = this;
-        $("#firstCheckBoxTotVal").on('change', function (event) {
-            event.preventDefault();
-            event.stopImmediatePropagation();
-            (event.args.checked) ? that.onCheckBoxTotal(1) : that.onUncheckBoxTotal([2, 3]);
-        })
-        $("#secondCheckBoxTotVal").on('change', function (event) {
-            event.preventDefault();
-            event.stopImmediatePropagation();
-            (event.args.checked) ? that.onCheckBoxTotal(2) : that.onUncheckBoxTotal([1, 3]);
-        })
-
-
-    }
-
-    OtherObserver.prototype.onCheckBoxTotal = function(number) {
-        switch (number) {
-            case 1:
-                if ($("#secondCheckBoxTotVal").attr("aria-checked") == 'true') {
-                    $("#firstCheckBoxTotVal").jqxCheckBox('disable');
-                }
-                break;
-
-            case 2:
-                if ($("#firstCheckBoxTotVal").attr("aria-checked") == 'true') {
-                    $("#secondCheckBoxTotVal").jqxCheckBox('disable');
-                }
-                break;
-        }
+        this.listenToCloseButton();
+        this.listenToCloseModal();
     }
 
     OtherObserver.prototype.listenToEditCellTotGrid = function() {
 
-        $("#gridTotalValues").on('rowSelect',function (event){
+        $("#gridTotalValues").on('cellBeginEdit', function (event) {
             event.preventDefault();
             event.stopImmediatePropagation();
             debugger;
-
-
 
             console.log('cellEdit: listener Active')
             totalValuesModified = true;
             var columnValue = event.args.datafield;
             var oldvalue = event.args.oldvalue;
             var value = event.args.value;
+            var rowKey = args.key;
+
+
+            switch(rowKey ){
+                case 0:
+                    break;
+                default :
+                    break;
+
+            }
             if (checkAll(oldvalue) && columnValue == 3) {
                 oldvalue = parseFloat(oldvalue)
             }
@@ -108,6 +85,18 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function($, Form
         $("#gridTotalValues").off();
 
         $('#saveTotalValues').off()
+    }
+
+    OtherObserver.prototype.listenToCloseModal = function(){
+        $('#specialForm').on('hidden.bs.modal', function () {
+            controllerPaddy.destroyAll()
+        })
+    }
+
+    OtherObserver.prototype.listenToCloseButton = function(){
+        $('#closeModal').on('click', function(){
+            controllerPaddy.destroyAll()
+        })
     }
 
 

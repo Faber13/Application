@@ -172,7 +172,7 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
                 '<div class="row"><div class="col-lg-10 col-lg-offset-1">' +
                 '<div id="gridTotalValues"></div></div></div>' +
                 '<div class="modal-footer">' +
-                '<button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>' +
+                '<button type="button" class="btn btn-default" data-dismiss="modal" id="closeModal" >Close</button>' +
                 '<button type="button" class="btn btn-primary" data-dismiss="modal" id="saveTotalValues">Save changes</button>' +
                 '</div>' +
                 '</div>' +
@@ -354,6 +354,21 @@ define(["jquery", "formatter/DatatypesFormatter", "productionEditor/observer/Pro
 
         ProductionEditor.prototype.setTotalValuesOnModified = function(){
             observer.setTotalValuesModified();
+        }
+
+        ProductionEditor.prototype.destroyAll = function(){
+            $('#gridTotalValues').jqxGrid('destroy')
+            $('#gridSingleCrops').jqxGrid('destroy');
+
+            $('#firstCheckBoxTotVal').jqxCheckBox( 'destroy');
+            $('#secondCheckBoxTotVal').jqxCheckBox('destroy');
+            $('#thirdCheckBoxTotVal').jqxCheckBox( 'destroy');
+
+            $('#firstCheckBoxSingleCrops').jqxCheckBox( 'destroy');
+            $('#secondCheckBoxSingleCrops').jqxCheckBox('destroy');
+            $('#thirdCheckBoxSingleCrops').jqxCheckBox( 'destroy');
+
+            $('#productionTabs').jqxTabs('destroy');
         }
 
         return ProductionEditor;

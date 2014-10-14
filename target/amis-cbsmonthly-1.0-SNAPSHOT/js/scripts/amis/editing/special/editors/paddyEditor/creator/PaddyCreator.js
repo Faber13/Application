@@ -111,6 +111,8 @@ define(["jquery","formatter/DatatypesFormatter", "jqwidgets"], function($, Forma
         var f = document.getElementById("specialForm");
 
         if (f !== null) {
+            // destroy both grids, all checkboxes, tabs
+
             f.remove()
         }
 
@@ -166,7 +168,7 @@ define(["jquery","formatter/DatatypesFormatter", "jqwidgets"], function($, Forma
             '<div class="row"><div class="col-lg-10 col-lg-offset-1">' +
             '<div id="gridTotalValues"></div></div></div>' +
             '<div class="modal-footer">' +
-            '<button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>' +
+            '<button type="button" class="btn btn-default" data-dismiss="modal" id="closeModal" >Close</button>' +
             '<button type="button" class="btn btn-primary" data-dismiss="modal" id="saveTotalValues">Save changes</button>' +
             '</div>' +
             '</div>' +
@@ -348,6 +350,29 @@ define(["jquery","formatter/DatatypesFormatter", "jqwidgets"], function($, Forma
                 { text: 'Flag',    datafield: 4, cellclassname: cellclassnameSingle  }
             ]
         });
+
+    }
+
+    PaddyCreator.prototype.destroyAll = function(){
+        $('#gridTotalValues').jqxGrid('destroy')
+        $('#gridSingleCrops').jqxGrid('destroy');
+
+        $('#firstCheckBoxTotVal').jqxCheckBox( 'destroy');
+        $('#secondCheckBoxTotVal').jqxCheckBox('destroy');
+        $('#thirdCheckBoxTotVal').jqxCheckBox( 'destroy');
+        $('#fourthCheckBoxTotVal').jqxCheckBox('destroy');
+        $('#fifthCheckBoxTotVal').jqxCheckBox( 'destroy');
+
+        $('#firstCheckBoxSingleCrops').jqxCheckBox( 'destroy');
+        $('#secondCheckBoxSingleCrops').jqxCheckBox('destroy');
+        $('#thirdCheckBoxSingleCrops').jqxCheckBox( 'destroy');
+        $('#fourthCheckBoxSingleCrops').jqxCheckBox('destroy');
+        $('#fifthCheckBoxSingleCrops').jqxCheckBox( 'destroy');
+
+        $('#productionTabs').jqxTabs('destroy');
+
+
+
 
     }
 

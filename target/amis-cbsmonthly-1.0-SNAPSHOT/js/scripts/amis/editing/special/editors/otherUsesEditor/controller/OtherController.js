@@ -90,6 +90,10 @@ define(['jquery','otherUsesEditor/model/OtherModel', 'otherUsesEditor/observer/O
         editorsController.saveFormRiceProduction(dataOriginal,dataOriginal); // this is FALSE!! true is up
     }
 
+    OtherController.prototype.destroyAll = function(){
+        editorOther.destroyAll()
+    }
+
     OtherController.prototype.onSwitchingCropsValues = function(formulaSingleToApply){
         // TODO
     }

@@ -1,7 +1,7 @@
 /**
  * Created by fabrizio on 7/7/14.
  */
-define(["jquery" , "views/modelView/ViewModel", "adapterGrid",  "jqwidgets" ], function ($, ViewModel, AdapterGrid) {
+define(["jquery" , "views/modelView/ViewModel", "adapterGrid",  "webix" ], function ($, ViewModel, AdapterGrid) {
 
     var model, table, Configurator, titlesUp, titlesLeft, accessorMap, fullModel, configurationKeys, indexValues, modelView,
         leftDimensions, upDimensions, valueColumn, dataSource2, idOlapGrid, language, viewModel, adapterGrid, supportUtility
@@ -22,7 +22,6 @@ define(["jquery" , "views/modelView/ViewModel", "adapterGrid",  "jqwidgets" ], f
         this.createFullGrid();
     }
 
-
     GridDataView2.prototype.createFullGrid = function () {
 
         fullModel = Configurator.getAllColumnModels();
@@ -39,106 +38,121 @@ define(["jquery" , "views/modelView/ViewModel", "adapterGrid",  "jqwidgets" ], f
 
 
     GridDataView2.prototype.renderGrid = function (model) {
+        var filterData = supportUtility.getFilterData()
+
+        adapterGrid.createPropertiesFromModel(model)
         var columnsNumber = adapterGrid.getNumberOfColumns(model)
         var differentDates = adapterGrid.getDifferentDates();
-        var columns = [];
+        var titlesMap = adapterGrid.getTitlesMap()
+        console.log('---------titlesMap -------------------')
+        console.log(titlesMap)
 
-        console.log(JSON.stringify(model))
+        var dataSource = this.createDataSource(columnsNumber, differentDates, titlesMap, model)
+        console.log('DATASORUCE')
+        console.log(dataSource)
+        debugger;
 
+        var columns = this.createColumns(dataSource, differentDates)
+        console.log('*********** columns ********************')
+        console.log(columns)
 
-        var source = {
-            datatype: "array",
-            datafields: [
-                { name: 0, type: 'string' },
-                { name: 3, type: 'string' }
-            ],
-            id: 'ppp',
-            localdata: model
-        };
-
-        var dataAdapter = new $.jqx.dataAdapter(source);
-        console.log('DataAdapter')
-        console.log(dataAdapter)
-
-        $('#pivotGrid').jqxGrid({
-            source: dataAdapter,
-            width: "100%",
-            editable: true,
-            selectionmode: 'singlecell',
-            columnsresize: true,
-            pageable: true,
-            autoheight: true,
-            columns: [
-                { text: 'Element', datafield: 0 },
-                { text: 'Values',    datafield: 3}
-
-            ]
-        });
 
         document.getElementById('box').style.visibility = "visible";
-        var options =  document.getElementById('options')
-        options.style.visibility = "visible" ;
+        var options = document.getElementById('options')
+        options.style.visibility = "visible";
         var toappend = document.getElementById('toAppend');
-        if(toappend != null){
+        if (toappend != null) {
             toappend.remove()
         }
 
         var f = document.getElementById('optionsPivotGrid');
-        if(typeof f != 'undefined' && f != null){
+        if (typeof f != 'undefined' && f != null) {
             f.remove();
         }
 
         var f = document.getElementById('newForecast');
-        if(typeof f != 'undefined' && f != null){
+        if (typeof f != 'undefined' && f != null) {
             f.remove();
         }
 
-
-        /*
-        columns.push({ text: 'Elements', datafield: 0})
-        var keys = Object.keys(differentDates)
-        for (var j = 0; j < keys.length; j++) {
-            columns.push({text: keys[j], datafield: 3 })
-         }
-
-
-        console.log('columns')
-        console.log(columns)
-
-        var datafields = []
-
-        for (var i = 0; i < columns.length; i++) {
-            datafields.push({name: 0, type: 'string'},{name: 3, type: 'string'})
+        var fa = document.querySelectorAll('[view_id="grid"]');
+        if (typeof fa != 'undefined' && fa != null) {
+            fa.remove();
         }
 
-        console.log('datafields')
-        console.log(datafields)
 
-        debugger;
-        var source = {
-            datatype: "array",
-            datafields: datafields,
-            id: 'ppp',
-            localdata: model
-        };
+        var grid =
+            webix.ui({
+                view: "datatable",
+                container: "pivotGrid",
+                id: "grid",
+                editable: true,
+                columns: columns,
+                autoheight: true,
+                datatype: "jsarray",
+                data: dataSource,
+                fixedRowHeight:false,
+                rowLineHeight:35,
+                rowHeight:35,
+                autowidth:true
+            });
 
-        var dataAdapter = new $.jqx.dataAdapter(source);
 
+        $('#options').append('<div class="btn-group"><button class="btn btn-primary" id="newForecast">Create a new forecast for season '+filterData.season+'</button></div><div class="btn-group-vertical" id="optionsPivotGrid">' +
+            '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">' +
+            '<span class="caret"></span><span>Options</span></button>' +
+            '<ul class="dropdown-menu" role="menu"><li>' +
+            '<div class="row"><div class="col-lg-1"><div id="editingChoice"/></div>' +
+            '<div class="col-lg-9"><span>Edit flag and notes</span></div></div><hr></li></ul></div>') ;
+        $('#editingChoice').jqxCheckBox({width: 30, height: 25});
 
-        $('#pivotGrid').jqxGrid({
-            source: dataAdapter,
-            width: "100%",
-            editable: true,
-            selectionmode: 'singlecell',
-            columnsresize: true,
-            pageable: true,
-            autoheight: true,
-            columns: columns
-        });
-*/
 
     }
 
+        GridDataView2.prototype.createColumns = function(dataSource, differentDates){
+            debugger;
+            var columns = [];
+            columns.push({id : "data0", adjust : true,header: [{text: '',adjust : true},
+                {text: 'Elements',adjust : true}]})
+            var arrDiffDates = Object.keys(differentDates)
+            for(var i =0; i< arrDiffDates.length; i++){
+                if(i==0) {
+                    columns.push({id: "data" + 1,adjust : true, header: [
+                        {text: 'Input dates',adjust : true, colspan: arrDiffDates.length},
+                        {text: arrDiffDates[i],adjust : true}
+                    ], editor: 'text'})
+                }else{
+                    if(i == arrDiffDates.length -1){
+
+                    }
+                    columns.push({id: "data" + (i+1),adjust : true,header: [
+                       '',{text: arrDiffDates[i]}], editor: 'text',adjust : true})
+                }
+            }
+            return columns;
+        }
+
+
+
+
+
+    GridDataView2.prototype.createDataSource = function(columnsNumber,differentDates,titlesMap, model  ){
+
+        debugger;
+
+        var viewRowModel = []
+        var index =0;
+        for(var key in titlesMap){
+            viewRowModel[index] = [key];
+            for(var i =0; i<titlesMap[key].length; i++){
+                var indexValue = titlesMap[key][i]
+                viewRowModel[index].push(model[indexValue][3])
+            }
+            index++;
+        }
+
+        return viewRowModel;
+    }
 
     GridDataView2.prototype.updateGridView = function (newCell, indexCell) {
 
@@ -315,29 +329,49 @@ define(["jquery" , "views/modelView/ViewModel", "adapterGrid",  "jqwidgets" ], f
     }
 
 
-    GridDataView2.prototype.onChangeCellValue = function (datasource) {
-        //TODO
-    }
+    /*
+     columns.push({ text: 'Elements', datafield: 0})
+     var keys = Object.keys(differentDates)
+     for (var j = 0; j < keys.length; j++) {
+     columns.push({text: keys[j], datafield: 3 })
+     }
 
 
-    GridDataView2.prototype.onAddRow = function () {
-        //TODO (V2.0)
-    }
+     console.log('columns')
+     console.log(columns)
+
+     var datafields = []
+
+     for (var i = 0; i < columns.length; i++) {
+     datafields.push({name: 0, type: 'string'},{name: 3, type: 'string'})
+     }
+
+     console.log('datafields')
+     console.log(datafields)
+
+     debugger;
+     var source = {
+     datatype: "array",
+     datafields: datafields,
+     id: 'ppp',
+     localdata: model
+     };
+
+     var dataAdapter = new $.jqx.dataAdapter(source);
 
 
-    GridDataView2.prototype.onDeleteRow = function () {
-        //TODO (V2.0)
-    }
+     $('#pivotGrid').jqxGrid({
+     source: dataAdapter,
+     width: "100%",
+     editable: true,
+     selectionmode: 'singlecell',
+     columnsresize: true,
+     pageable: true,
+     autoheight: true,
+     columns: columns
+     });
+     */
 
-
-    GridDataView2.prototype.onAddColumn = function () {
-        //TODO (V2.0)
-    }
-
-
-    GridDataView2.prototype.onRemoveColumn = function () {
-        //TODO (V2.0)
-    }
 
     return GridDataView2;
 

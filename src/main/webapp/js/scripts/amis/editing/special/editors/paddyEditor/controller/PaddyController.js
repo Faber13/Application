@@ -271,5 +271,9 @@ define(['jquery','paddyEditor/model/PaddyModel', 'paddyEditor/observer/PaddyObse
         this.updateTotGridOnFormulaChanges(formulaTotToApply, "normal")
     }
 
+    PaddyController.prototype.destroyAll = function(){
+        editorPaddy.destroyAll();
+    }
+
     return PaddyController;
 })

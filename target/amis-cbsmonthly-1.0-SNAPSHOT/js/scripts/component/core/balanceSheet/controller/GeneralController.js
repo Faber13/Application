@@ -1,7 +1,7 @@
 /**
  * Created by fabrizio on 7/7/14.
  */
-define(["jquery", "view/GridDataView", "editorController/FormController",
+define(["jquery", "view/GridDataView2", "editorController/FormController",
         "exporter/controller/ExportController", "adapter/AdapterPivot", "formulasAmis/controller/FormulaController",
         "editingSpecial/controller/ControllerEditors", "generalObserver/GeneralObserver" ,"jquery.sidebar"],
     function ($, GridDataView, EditorController, ExportController, Adapter, FormulaController, SpecialEditorController, GeneralObserver) {
@@ -35,7 +35,7 @@ define(["jquery", "view/GridDataView", "editorController/FormController",
             // visualization model
             ViewGrid.init(tableModelWithFormula, configurator, supportUtility)
             // append listeners to events
-          this.createListeners();
+       //   this.createListeners();
           this.onChangeModalityEditing();
         }
 

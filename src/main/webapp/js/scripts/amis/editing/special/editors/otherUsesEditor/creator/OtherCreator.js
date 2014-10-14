@@ -58,6 +58,8 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function ($, For
         var f = document.getElementById("specialForm");
 
         if (f !== null) {
+
+
             f.remove()
         }
 
@@ -94,13 +96,19 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function ($, For
 
         $("#specialForm").modal({ backdrop: 'static',
             keyboard: false});
-        $("#gridTotalValues").jqxTreeGrid(
-            {
+        $("#gridTotalValues").jqxTreeGrid( {
                 width: 400,
                 source: dataAdapter,
                 editable: true,
-                selectionMode: 'custom',
-                editSettings: { saveOnSelectionChange: true, cancelOnEsc: true, saveOnEnter: true, editSingleCell: true, editOnDoubleClick: true, editOnF2: true },
+                editSettings: {
+                    saveOnPageChange: true,
+                    saveOnBlur: true,
+                    saveOnSelectionChange: true,
+                    cancelOnEsc: true,
+                    saveOnEnter: true,
+                    editOnDoubleClick: true,
+                    editOnF2: false
+                },
                 columns: [
                     { text: 'Element', datafield: 6 },
                     { text: 'Value', datafield: 3  },
@@ -109,8 +117,7 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function ($, For
                 ]
             });
 
-
-       // observer.applyListeners()
+       observer.applyListeners()
     }
 
     OtherCreator.prototype.prepareDataForTreeGrid = function (model) {
@@ -120,8 +127,6 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function ($, For
                 if (arr[i] !== undefined) rv[i] = arr[i];
             return rv;
         }
-
-
 
        var  result = [
             {      "0": model[0][0], "1": model[0][1], "2": model[0][2], "3": model[0][3], "4": model[0][4], "5": model[0[5]], "6": model[0][6], "expanded": true,
@@ -180,6 +185,10 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function ($, For
                     { text: 'Notes', datafield: 5   }
                 ]
             });
+    }
+
+    OtherCreator.prototype.destroyAll = function(){
+        $("#gridTotalValues").jqxTreeGrid('destroy')
     }
 
 

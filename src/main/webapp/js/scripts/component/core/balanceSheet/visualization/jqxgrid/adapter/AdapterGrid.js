@@ -23,11 +23,6 @@ define(['jquery'], function($){
             }
         }
 
-        console.log('getNumberOfColuns:')
-        console.log(numberOfColumns)
-        console.log('diffferetnetDates')
-        console.log(differentDates)
-
 
         result =  numberOfColumns;
         return result;

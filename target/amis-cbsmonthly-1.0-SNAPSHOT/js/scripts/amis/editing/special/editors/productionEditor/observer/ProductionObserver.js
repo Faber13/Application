@@ -32,6 +32,8 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
         this.listenToSaveTotalValuesButton();
         this.listenToTotalEditable()
         this.listenToSingleCropsEditable()
+        this.listenToCloseModal()
+        this.listenToCloseButton()
     }
 
     ProductionObserver.prototype.listenToCheckboxesTotal = function () {
@@ -430,6 +432,18 @@ define(["jquery", "formatter/DatatypesFormatter"], function ($, Formatter) {
                 $("#gridSingleCrops").jqxGrid('endcelledit', row, column, true);
             }
         });
+    }
+
+    ProductionObserver.prototype.listenToCloseModal = function(){
+        $('#specialForm').on('hidden.bs.modal', function () {
+            controllerProduction.destroyAll()
+        })
+    }
+
+    ProductionObserver.prototype.listenToCloseButton = function(){
+        $('closeModal').on('click', function(){
+            controllerProduction.destroyAll()
+        })
     }
 
     return ProductionObserver;

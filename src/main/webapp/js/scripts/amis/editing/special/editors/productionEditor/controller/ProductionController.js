@@ -123,5 +123,9 @@ define(['jquery'], function($){
         this.updateTotGridOnFormulaChanges(formulaSingleToApply)
     }
 
+    ProductionController.prototype.destroyAll = function(){
+        editorProduction.destroyAll()
+    }
+
     return ProductionController;
 })

@@ -34,6 +34,8 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function ($, For
         this.listenToRecalculateButtonTotalValues()
         this.listenToSaveTotalValuesButton();
         this.listenToTabs()
+        this.listenToCloseModal()
+        this.listenToCloseButton()
     }
 
     PaddyObserver.prototype.listenToCheckboxesSingleCrops = function () {
@@ -733,6 +735,19 @@ define(["jquery", "formatter/DatatypesFormatter", "jqwidgets"], function ($, For
             }
         });
     }
+
+    PaddyObserver.prototype.listenToCloseModal = function(){
+        $('#specialForm').on('hidden.bs.modal', function () {
+            controllerPaddy.destroyAll()
+        })
+    }
+
+    PaddyObserver.prototype.listenToCloseButton = function(){
+        $('closeModal').on('click', function(){
+            controllerPaddy.destroyAll()
+        })
+    }
+
 
     PaddyObserver.prototype.getFormulaTotalValues = function () {
         var result = formulaToApplyTot;
