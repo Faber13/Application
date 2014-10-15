@@ -33,12 +33,12 @@ define(["jquery" , "views/modelView/ViewModel", "adapterGrid",  "webix" ], funct
         indexValues = Configurator.getValueIndex();
         idOlapGrid = Configurator.getIdOlapGrid();
         modelView = viewModel.init(table, Configurator, supportUtility)
-        this.renderGrid(modelView)
+        var grid = this.renderGrid(modelView)
+        return grid;
     }
 
 
     GridDataView2.prototype.renderGrid = function (model) {
-        var filterData = supportUtility.getFilterData()
 
         adapterGrid.createPropertiesFromModel(model)
         var columnsNumber = adapterGrid.getNumberOfColumns(model)
@@ -83,18 +83,26 @@ define(["jquery" , "views/modelView/ViewModel", "adapterGrid",  "webix" ], funct
 
         var grid =
             webix.ui({
-                view: "datatable",
                 container: "pivotGrid",
+                view: "datatable",
                 id: "grid",
-                editable: true,
+                editable:true,
+                leftSplit:1,
+                scheme:{
+                    $change:function(item){
+                        switch(item.data0) {
+                            case 'Population (1000s)':
+                                item.$css = "blueLine"
+                                break;
+                            default :
+                                item.$css = "default"
+                                break;
+                        }
+                    }
+                },
                 columns: columns,
-                autoheight: true,
                 datatype: "jsarray",
-                data: dataSource,
-                fixedRowHeight:false,
-                rowLineHeight:35,
-                rowHeight:35,
-                autowidth:true
+                data: dataSource
             });
 
 
@@ -106,27 +114,38 @@ define(["jquery" , "views/modelView/ViewModel", "adapterGrid",  "webix" ], funct
             '<div class="col-lg-9"><span>Edit flag and notes</span></div></div><hr></li></ul></div>') ;
         $('#editingChoice').jqxCheckBox({width: 30, height: 25});
 
-
+        return grid;
     }
 
         GridDataView2.prototype.createColumns = function(dataSource, differentDates){
+            var filterData = supportUtility.getFilterData()
+
             debugger;
             var columns = [];
-            columns.push({id : "data0", adjust : true,header: [{text: '',adjust : true},
-                {text: 'Elements',adjust : true}]})
             var arrDiffDates = Object.keys(differentDates)
+           /* columns.push({id : "data0",width:400,header: [
+                {text:  'Forecast for season: '+filterData.season+', '
+                    +filterData.country+' , '+filterData.product+' , '
+                    +filterData.dataSource+' ',  colspan: arrDiffDates.length+1},
+
+                {text: 'Elements'}]})*/
+            columns.push({id : "data0",width:400,header:'Elements', css:"firstColumn" })
+
             for(var i =0; i< arrDiffDates.length; i++){
                 if(i==0) {
-                    columns.push({id: "data" + 1,adjust : true, header: [
-                        {text: 'Input dates',adjust : true, colspan: arrDiffDates.length},
-                        {text: arrDiffDates[i],adjust : true}
+                    columns.push({id: "data" + 1, header: [
+                   //   {text: ''},
+                        {text: 'Input dates' ,colspan: arrDiffDates.length},
+                        {text: arrDiffDates[i]}
                     ], editor: 'text'})
                 }else{
                     if(i == arrDiffDates.length -1){
 
                     }
-                    columns.push({id: "data" + (i+1),adjust : true,header: [
-                       '',{text: arrDiffDates[i]}], editor: 'text',adjust : true})
+                    columns.push({id: "data" + (i+1),header: [
+                      //{text: ''},
+                        {text: null},
+                        {text: arrDiffDates[i]}], editor: 'text'})
                 }
             }
             return columns;
@@ -155,6 +174,7 @@ define(["jquery" , "views/modelView/ViewModel", "adapterGrid",  "webix" ], funct
     }
 
     GridDataView2.prototype.updateGridView = function (newCell, indexCell) {
+        var filterData = supportUtility.getFilterData()
 
         var cellTransformed = viewModel.updateItem(newCell)
         modelView[indexCell] = cellTransformed;

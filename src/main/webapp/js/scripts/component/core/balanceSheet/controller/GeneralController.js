@@ -33,21 +33,28 @@ define(["jquery", "view/GridDataView2", "editorController/FormController",
             formulaController.init(tableModelWithFormula, Configurator, filterData)
 
             // visualization model
-            ViewGrid.init(tableModelWithFormula, configurator, supportUtility)
+            var grid = ViewGrid.init(tableModelWithFormula, configurator, supportUtility)
             // append listeners to events
-       //   this.createListeners();
-          this.onChangeModalityEditing();
+             this.createListeners();
+            this.onChangeModalityEditing();
         }
 
         GeneralController.prototype.createListeners = function () {
-            console.log('listeners')
+
 
             var idPivot = Configurator.getIdOlapGrid()
             // Transform pivotGrid into grid
             var grid = $("#" + idPivot).igPivotGrid("grid");
             var that = this;
 
-            $(document.body).delegate("#" + grid.id(), "iggridcellclick", function (evt, ui) {
+            grid.attachEvent("onItemClick", function(id, e, node){
+
+
+
+            })
+
+
+                $(document.body).delegate("#" + grid.id(), "iggridcellclick", function (evt, ui) {
                 debugger;
                 evt.preventDefault();
                 evt.stopImmediatePropagation();

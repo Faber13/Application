@@ -120,7 +120,8 @@ define(["jquery" , "infragistics", "views/modelView/ViewModel", "jquery.sidebar"
             isParentInFrontForColumns: true,
             hideFiltersDropArea: true,
             gridOptions: {
-                caption : "Forecast for season: "+filterData.season+" , "+filterData.country+" , "+filterData.product+" , "+filterData.dataSource,
+                caption :
+                    "Forecast for season: "+filterData.season+" , "+filterData.country+" , "+filterData.product+" , "+filterData.dataSource,
                 defaultColumnWidth: 120,
                 features: [
                     {

@@ -90,6 +90,10 @@
     border-color: #E2E2E2 !important;
 }
 
+.firstColumn{
+    background-color: #FAFAFA;
+}
+
 #editingChoice{
     margin-top: 12px;
 }
@@ -157,6 +161,14 @@
 
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default{
     border: 0px solid #bcbcbc;
+}
+
+.blueLine{
+    color: #0082AD;
+}
+
+.default{
+    color: red;
 }
 
 

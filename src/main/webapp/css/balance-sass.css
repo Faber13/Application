@@ -39,10 +39,6 @@ thead .ui-widget-header {
 .ui-iggrid .ui-ig-altrecord {
   background-color: transparent !important; }
 
-.ui-iggrid-scrolldiv {
-  border-bottom: none !important;
-  border-right: 1px solid #DCDCDC; }
-
 #clickedCell {
   border-color: transparent;
   border-bottom: 1px solid #DCDCDC; }

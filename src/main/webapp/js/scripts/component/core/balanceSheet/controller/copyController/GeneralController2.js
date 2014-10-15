@@ -1,4 +1,7 @@
 /**
+ * Created by fabrizio on 10/15/14.
+ */
+/**
  * Created by fabrizio on 7/7/14.
  */
 define(["jquery", "view/GridDataView2", "editorController/FormController",
@@ -33,28 +36,21 @@ define(["jquery", "view/GridDataView2", "editorController/FormController",
             formulaController.init(tableModelWithFormula, Configurator, filterData)
 
             // visualization model
-            var grid = ViewGrid.init(tableModelWithFormula, configurator, supportUtility)
+            ViewGrid.init(tableModelWithFormula, configurator, supportUtility)
             // append listeners to events
-             this.createListeners();
+            //   this.createListeners();
             this.onChangeModalityEditing();
         }
 
         GeneralController.prototype.createListeners = function () {
-
+            console.log('listeners')
 
             var idPivot = Configurator.getIdOlapGrid()
             // Transform pivotGrid into grid
             var grid = $("#" + idPivot).igPivotGrid("grid");
             var that = this;
 
-            grid.attachEvent("onItemClick", function(id, e, node){
-
-
-
-            })
-
-
-                $(document.body).delegate("#" + grid.id(), "iggridcellclick", function (evt, ui) {
+            $(document.body).delegate("#" + grid.id(), "iggridcellclick", function (evt, ui) {
                 debugger;
                 evt.preventDefault();
                 evt.stopImmediatePropagation();
@@ -89,11 +85,11 @@ define(["jquery", "view/GridDataView2", "editorController/FormController",
                                 }
                             }
                             if (typeof oldCell !== 'undefined' && oldCell != null) {
-                               if (oldCell.firstElementChild != null) {
-                                  $("#" + oldCell.id).igTextEditor('destroy');
-                               }
-                               oldCell.removeAttribute("id")
-                               oldCell.removeAttribute("class")
+                                if (oldCell.firstElementChild != null) {
+                                    $("#" + oldCell.id).igTextEditor('destroy');
+                                }
+                                oldCell.removeAttribute("id")
+                                oldCell.removeAttribute("class")
                             }
                             console.log('clickedCell3')
                             console.log(clickedCell[3])
@@ -102,11 +98,11 @@ define(["jquery", "view/GridDataView2", "editorController/FormController",
                             }
                             cell.setAttribute("id", "clickedCell");
                             $("#clickedCell").igTextEditor({
-                               textMode: "text",
-                               value: clickedCell[3],
-                               focusOnSpin: false,
-                               selectionOnFocus: 0,
-                               valueChanged: functionChanges
+                                textMode: "text",
+                                value: clickedCell[3],
+                                focusOnSpin: false,
+                                selectionOnFocus: 0,
+                                valueChanged: functionChanges
                             });
                         }
                         else { // editing total
@@ -120,8 +116,8 @@ define(["jquery", "view/GridDataView2", "editorController/FormController",
                             that.startFullEditing(resultedClicked)
                         }
                     }
-                        // if it is a special editable value
-                     else if (isEditable == 2) {
+                    // if it is a special editable value
+                    else if (isEditable == 2) {
                         // production form
                         if (resultedClicked.clickedCell[0] == 5 || resultedClicked.clickedCell[0] == 2 || resultedClicked.clickedCell[0] == 4) {
                             var allData = $.extend(true, {}, ModelController.getData());
@@ -145,7 +141,7 @@ define(["jquery", "view/GridDataView2", "editorController/FormController",
 
 
             $('#newForecast').on("click", function(){
-               that.updateWithNewForecast()
+                that.updateWithNewForecast()
             })
         }
 
@@ -226,7 +222,7 @@ define(["jquery", "view/GridDataView2", "editorController/FormController",
 
         GeneralController.prototype.saveDataFromProductionForm = function(newCalculatedData,newOriginalData, cellClickedInfo){
             console.log('generalController: saveDataFromProductionForm, init')
-           debugger;
+            debugger;
             var indexes = ModelController.saveDataFromProduction(newOriginalData, cellClickedInfo.indTable, cellClickedInfo.rowGridIndex, cellClickedInfo.columnGridIndex)
             var tableModel = ModelController.getTableDataModel();
             console.log('generalController: saveDataFromProductionForm, afet getTableData')
