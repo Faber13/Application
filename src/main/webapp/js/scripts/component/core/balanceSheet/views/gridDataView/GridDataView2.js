@@ -4,15 +4,17 @@
 define(["jquery" , "views/modelView/ViewModel", "adapterGrid",  "webix" ], function ($, ViewModel, AdapterGrid) {
 
     var model, table, Configurator, titlesUp, titlesLeft, accessorMap, fullModel, configurationKeys, indexValues, modelView,
-        leftDimensions, upDimensions, valueColumn, dataSource2, idOlapGrid, language, viewModel, adapterGrid, supportUtility
+        leftDimensions, upDimensions, valueColumn, language, viewModel, adapterGrid, supportUtility,
+        dataSource, columns ,arrDiffDates, grid, generalController
 
     function GridDataView2() {
 
     }
 
 
-    GridDataView2.prototype.init = function (tableModel, configurator, utility) {
+    GridDataView2.prototype.init = function (tableModel, configurator, utility, GeneralController) {
 
+        generalController = GeneralController;
         supportUtility = utility
         adapterGrid = new AdapterGrid;
         viewModel = new ViewModel;
@@ -28,16 +30,12 @@ define(["jquery" , "views/modelView/ViewModel", "adapterGrid",  "webix" ], funct
         fullModel = Configurator.getAllColumnModels();
         configurationKeys = Configurator.getKeyColumnConfiguration();
         accessorMap = Configurator.getAccessorMap();
-        // leftDimensions = this.createLeftPivotDimension(fullModel["leftColumnsModel"], configurationKeys["lefKeyColumnConfiguration"]);
-        // upDimensions = this.createUpPivotDimension(fullModel["upColumnsModel"], configurationKeys["upKeyColumnConfiguration"]);
         valueColumn = Configurator.getValueColumnConfiguration();
         indexValues = Configurator.getValueIndex();
-        idOlapGrid = Configurator.getIdOlapGrid();
         modelView = viewModel.init(table, Configurator, supportUtility)
         var grid = this.renderGrid(modelView)
         return grid;
     }
-
 
     GridDataView2.prototype.renderGrid = function (model) {
         adapterGrid.createPropertiesFromModel(model)
@@ -45,14 +43,14 @@ define(["jquery" , "views/modelView/ViewModel", "adapterGrid",  "webix" ], funct
         var differentDates = adapterGrid.getDifferentDates();
         var titlesMap = adapterGrid.getTitlesMap()
 
-        var dataSource = this.createDataSource(columnsNumber, differentDates, titlesMap, model)
+        dataSource = this.createDataSource(columnsNumber, differentDates, titlesMap, model)
 
-        var columns = this.createColumns(dataSource, differentDates)
+        columns = this.createColumns(dataSource, differentDates)
 
        this.createOtherOptions()
 
         var self = this;
-        var grid =
+        grid =
             webix.ui({
                 container: "pivotGrid",
                 view: "datatable",
@@ -115,7 +113,6 @@ define(["jquery" , "views/modelView/ViewModel", "adapterGrid",  "webix" ], funct
 
     }
 
-
     GridDataView2.prototype.createColourConfiguration = function(item){
         switch(item.data0) {
             case 'Population (1000s)':
@@ -151,11 +148,11 @@ define(["jquery" , "views/modelView/ViewModel", "adapterGrid",  "webix" ], funct
         }
     }
 
-        GridDataView2.prototype.createColumns = function(dataSource, differentDates){
+    GridDataView2.prototype.createColumns = function(dataSource, differentDates){
             var filterData = supportUtility.getFilterData()
 
             var columns = [];
-            var arrDiffDates = Object.keys(differentDates)
+            arrDiffDates = Object.keys(differentDates)
 
             columns.push({id : "data0",width:400,header:'Elements', css:"firstColumn" })
 
@@ -179,10 +176,6 @@ define(["jquery" , "views/modelView/ViewModel", "adapterGrid",  "webix" ], funct
             return columns;
         }
 
-
-
-
-
     GridDataView2.prototype.createDataSource = function(columnsNumber,differentDates,titlesMap, model  ){
 
         var viewRowModel = []
@@ -199,225 +192,113 @@ define(["jquery" , "views/modelView/ViewModel", "adapterGrid",  "webix" ], funct
         return viewRowModel;
     }
 
-    GridDataView2.prototype.updateGridView = function (newCell, indexCell) {
-        var filterData = supportUtility.getFilterData()
+    GridDataView2.prototype.updateGridView = function (newCell, indexCell, xCoordinate, yCoordinate) {
 
         var cellTransformed = viewModel.updateItem(newCell)
         modelView[indexCell] = cellTransformed;
-        dataSource2 = new $.ig.OlapFlatDataSource({
-            dataSource: modelView,
-            metadata: {
-                cube: {
-                    name: "Sales",
-                    caption: "Sales",
-                    measuresDimension: {
-                        caption: "Measures",
-                        measures: [ //for each measure, name and aggregator are required
-                            { caption: "value", name: "value", aggregator: getValue(indexValues) }
-                        ]
+
+        var result =this.updateDataSourceSingleCell(cellTransformed)
+
+        var fa = document.querySelectorAll('[view_id="grid"]');
+        if (typeof fa != 'undefined' && fa != null) {
+            fa.remove();
+        }
+
+        var self = this;
+        grid =
+            webix.ui({
+                container: "pivotGrid",
+                view: "datatable",
+                navigation:true,
+                id: "grid",
+                editable:true,
+                leftSplit:1,
+                scheme: {
+                    $change: function (item) {
+                        self.createColourConfiguration(item);
+                    }
+                },
+                columns: columns,
+                datatype: "jsarray",
+                data: dataSource
+            });
+    //    window.scrollTo(xCoordinate,yCoordinate)
+        debugger;
+
+        generalController.createListeners(grid)
+
+    }
+
+    GridDataView2.prototype.updateBatchGridView = function (tableModel, cells, xCoordinate, yCoordinate) {
+
+        var newCalculatedCells = []
+        for(var i =0; i<cells.length; i++){
+            modelView[cells[i]["index"]] = viewModel.updateItem(cells[i]["row"])
+            newCalculatedCells.push( modelView[cells[i]["index"]])
+        }
+
+        for(var i=0; i<newCalculatedCells.length; i++){
+            this.updateDataSourceSingleCell(newCalculatedCells[i])
+        }
+
+
+        var self = this
+
+        var fa = document.querySelectorAll('[view_id="grid"]');
+        if (typeof fa != 'undefined' && fa != null) {
+            fa.remove();
+        }
+
+        if(document.getElementById('specialForm')) {
+            $('#specialForm').modal('hide');
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
+        }
+
+        grid =  webix.ui({
+                    container: "pivotGrid",
+                    view: "datatable",
+                    navigation:true,
+                    id: "grid",
+                    editable:true,
+                    leftSplit:1,
+                    scheme: {
+                        $change: function (item) {
+                            self.createColourConfiguration(item);
+                        }
                     },
-                    dimensions: [ // for each dimension
-                        {
-                            // For each dimension at least one hierarchy must be defined.
-                            caption: "Rows", name: "Rows", hierarchies: leftDimensions
-                        },
-                        {
-                            caption: "Columns", name: "Columns", displayFolder: "Folder1\\Folder2", hierarchies: upDimensions
-                        }
-                    ]
+                    columns: columns,
+                    datatype: "jsarray",
+                    data: dataSource
+                });
 
-                }
-            },
-            // Preload hiearhies for the rows, columns, filters and measures
-            rows: "[Rows].[" + titlesLeft[0] + "],[Rows].[" + titlesLeft[1] + "]",
-            columns: "[Columns].[" + titlesUp[0] + "],[Columns].[" + titlesUp[1] + "]",
-            measures: "[Measures].[value]"
 
-        });
 
-        $("#pivotGrid").igPivotGrid("option", "dataSource", dataSource2)
-
+        generalController.createListeners(grid);
     }
 
-
-    GridDataView2.prototype.setPropertiesDatasource = function () {
-
-        var result = {};
-        result["rows"] = "[Rows].[" + titlesLeft[0] + "]";
-        if (titlesLeft.length > 1) {
-            result["rows"] += ",[Rows].[" + titlesLeft[1] + "]";
-        }
-        result["Columns"] = "[Columns].[" + titlesUp[0] + "]";
-        if (titlesLeft.length > 1) {
-            result["Columns"] += ",[Columns].[" + titlesUp[1] + "]";
-        }
-        result["Measures"] = "[Measures].[value]"
-
-        return result;
+    GridDataView2.prototype.getDataSource = function(){
+        return dataSource
     }
 
-
-    GridDataView2.prototype.createLeftPivotDimension1 = function (keyColumns, keyColumnConf) {
-
-        var that = this;
-        titlesLeft = [];
-        var keysLeft = [];
-        var that = this;
-        titlesLeft.push(keyColumns["leftColumns"][0].domain.title[language])
-        var key = {
-            caption: keyColumns["leftColumns"][0].domain.title[language],
-            name: keyColumns["leftColumns"][0].domain.title[language],
-            levels: [
-                {
-                    name: keyColumns["leftColumns"][0].domain.supplemental[language],
-                    caption: keyColumns["leftColumns"][0].domain.title[language],
-                    memberProvider: function (item) {
-                        return item[keyColumns["leftKeyIndexes"][0]];
-                    }
-
-                }
-            ]
-        }
-        keysLeft.push(key);
-        if (keyColumns["leftColumns"].length > 1) {
-            titlesLeft.push(keyColumns["leftColumns"][1].domain.title[language])
-            var key2 = {
-                caption: keyColumns["leftColumns"][1].domain.title[language],
-                name: keyColumns["leftColumns"][1].domain.title[language],
-                levels: [
-                    {
-                        name: keyColumns["leftColumns"][1].domain.supplemental[language],
-                        caption: keyColumns["leftColumns"][1].domain.title[language],
-                        memberProvider: function (item) {
-                            return item[keyColumns["leftKeyIndexes"][1]];
+    GridDataView2.prototype.updateDataSourceSingleCell = function(newCell){
+        debugger;
+        var result = {}
+        var found = false;
+        for(var i =0; i< dataSource.length && !found; i++){
+                if(dataSource[i][0] == newCell[0] ){
+                    for( var j=0; j< arrDiffDates.length && !found; j++){
+                        if(newCell[2] == arrDiffDates[j]){
+                            found = true;
+                            dataSource[i][j+1] = newCell[3]
+                            result['row'] =  dataSource[i]
+                            result['idRow'] = i;
                         }
                     }
-                ]
+                }
             }
-            keysLeft.push(key2);
-        }
-        return keysLeft;
-    }
-
-
-    GridDataView2.prototype.createUpPivotDimension = function (keyColumns, keyColumnConf) {
-
-        var that = this;
-        titlesUp = []
-        titlesUp.push(keyColumns["upColumns"][0].domain.title[language]);
-
-        var keysUp = [];
-        var key = {
-            caption: keyColumns["upColumns"][0].domain.title[language],
-            name: keyColumns["upColumns"][0].domain.title[language],
-            levels: [
-                {
-                    name: keyColumns["upColumns"][0].domain.supplemental[language],
-                    caption: keyColumns["upColumns"][0].domain.title[language],
-                    memberProvider: function (item) {
-                        return item[keyColumns["upKeyIndexes"][0]];
-                    }
-                }
-            ]}
-        keysUp.push(key);
-        if (keyColumns["upColumns"].length > 1) {
-            titlesUp.push(keyColumns["upColumns"][1].domain.title[language])
-            var key2 = {
-                caption: keyColumns["upColumns"][1].domain.title[language],
-                name: keyColumns["upColumns"][1].domain.title[language],
-                levels: [
-                    {
-                        name: keyColumns["upColumns"][1].domain.supplemental[language],
-                        caption: keyColumns["upColumns"][1].domain.title[language],
-                        memberProvider: function (item) {
-                            return item[keyColumns["upKeyIndexes"][1]];
-                        }                    }
-                ]}
-            keysUp.push(key2);
-        }
-        return keysUp;
-    }
-
-
-    GridDataView2.prototype.renderFormatDate = function (value, configurationKeyColumn, datatype) {
-
-        var result;
-        switch (datatype[0]) {
-            case "time":
-                var date = new Date(value);
-                result = moment(date).format(configurationKeyColumn.properties.cellProperties.dateFormat)
-                break;
-
-            case "month":
-                var year = value.substr(0, 4);
-                var month = value.substr(4, 2);
-                var date = new Date(year, month - 1);
-                result = moment(date).format(configurationKeyColumn.properties.cellProperties.dateFormat)
-                break;
-
-            case "year":
-                var year = value.substr(0, 4);
-                var date = new Date(year);
-                result = moment(date).format(configurationKeyColumn.properties.cellProperties.dateFormat)
-                break;
-
-            case "date":
-                var year = value.substr(0, 4);
-                var month = value.substr(4, 2);
-                var day = value.substr(6, 2);
-                var date = new Date(year, month - 1, day);
-                result = moment(date).format(configurationKeyColumn.properties.cellProperties.dateFormat)
-
-                break;
-        }
         return result;
-
     }
-
-
-    /*
-     columns.push({ text: 'Elements', datafield: 0})
-     var keys = Object.keys(differentDates)
-     for (var j = 0; j < keys.length; j++) {
-     columns.push({text: keys[j], datafield: 3 })
-     }
-
-
-     console.log('columns')
-     console.log(columns)
-
-     var datafields = []
-
-     for (var i = 0; i < columns.length; i++) {
-     datafields.push({name: 0, type: 'string'},{name: 3, type: 'string'})
-     }
-
-     console.log('datafields')
-     console.log(datafields)
-
-     debugger;
-     var source = {
-     datatype: "array",
-     datafields: datafields,
-     id: 'ppp',
-     localdata: model
-     };
-
-     var dataAdapter = new $.jqx.dataAdapter(source);
-
-
-     $('#pivotGrid').jqxGrid({
-     source: dataAdapter,
-     width: "100%",
-     editable: true,
-     selectionmode: 'singlecell',
-     columnsresize: true,
-     pageable: true,
-     autoheight: true,
-     columns: columns
-     });
-     */
-
 
     return GridDataView2;
 

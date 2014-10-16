@@ -185,8 +185,7 @@
 .default{
     color: red;
 }
-
-.webix_view .webix_dt_editor input{
+.webix_view .webix_dt_editor input, .webix_view .webix_dt_editor select {
     border: 5px solid #3498db;
 }
 

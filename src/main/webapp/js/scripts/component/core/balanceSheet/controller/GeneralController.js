@@ -35,22 +35,24 @@ define(["jquery", "view/GridDataView2", "editorController/FormController",
             formulaController.init(tableModelWithFormula, Configurator, filterData)
 
             // visualization model
-             grid = ViewGrid.init(tableModelWithFormula, configurator, supportUtility)
+             grid = ViewGrid.init(tableModelWithFormula, configurator, supportUtility, this)
             console.log
             // append listeners to events
-            this.createListeners();
+            this.createListeners(grid);
             this.onChangeModalityEditing();
         }
 
-        GeneralController.prototype.createListeners = function () {
+        GeneralController.prototype.createListeners = function (grid) {
 
             // Transform pivotGrid into grid
         //    var grid = $("#" + idPivot).igPivotGrid("grid");
             var self = this;
             console.log('grid')
             console.log(grid)
+            var resultedClicked
 
             grid.attachEvent("onItemClick", function(id, e, node){
+                console.log('onItemCLICKKKKKKKKKKKKKKKKKKKK')
                 //oldValue = this.getEditorValue(id) // save the old value
                 debugger;
                 e.preventDefault();
@@ -63,7 +65,7 @@ define(["jquery", "view/GridDataView2", "editorController/FormController",
                 var cellTableModel = $.extend(true, {}, cellTableModel2);
                 // To identify when the first new nested row starts
                 var indexesObject = ModelController.getIndexesNewFirstColumnLeft();
-                var resultedClicked = adapterGrid.getClickedCell(cellTableModel, Configurator, id, this, indexesObject);
+                resultedClicked = adapterGrid.getClickedCell(cellTableModel, Configurator, id, this, indexesObject);
                 var clickedCell = resultedClicked["clickedCell"]
                 var isEditable = formulaController.checkIfEditableCell(clickedCell)
                 editHandler.startEditCell(resultedClicked, isEditable, editingOnCell, grid, self)
@@ -71,93 +73,32 @@ define(["jquery", "view/GridDataView2", "editorController/FormController",
 
             grid.attachEvent("onBeforeEditStop", function(state, editor){
                 this.blockEvent()
-                state.value = state.old;
-              //  this.editCancel();
-                this.unblockEvent();
-            });
+                console.log('onBEFORE EDIT STOPPPPPPP')
 
-/*
-                $(document.body).delegate("#" + grid.id(), "iggridcellclick", function (evt, ui) {
-                debugger;
-                evt.preventDefault();
-                evt.stopImmediatePropagation();
-                xCoordinate = window.pageXOffset;
-                yCoordinate = window.pageYOffset;
-                var cellTableModel2 = ModelController.getTableDataModel();
-                var cellTableModel = $.extend(true, {}, cellTableModel2);
-                // To identify when the first new nested row starts
-                var indexesObject = ModelController.getIndexesNewFirstColumnLeft();
-                var resultedClicked = adapterGrid.getClickedCell(cellTableModel, Configurator, ui, indexesObject);
-                var clickedCell = resultedClicked["clickedCell"]
-                var isEditable = formulaController.checkIfEditableCell(clickedCell)
-                var cell = ui.cellElement;
-                var oldCell = document.getElementById("clickedCell")
-                if (cell.parentElement != oldCell) {
-                    if (typeof oldCell !== 'undefined' && oldCell != null) {
-                        if (oldCell.firstElementChild != null) {
-                            $("#" + oldCell.id).igTextEditor('destroy');
-                        }
-                        oldCell.removeAttribute("id")
-                        oldCell.removeAttribute("class")
-                    }
-                    if (isEditable == 1) {
-                        if (editingOnCell) {
-                            var functionChanges = function (evt, ui) {
-                                if (ui.oldValue != ui.value) {
-                                    clickedCell[3] = parseFloat(ui.value);
-                                    var indTable = resultedClicked["indTable"];
-                                    var rowGridIndex = resultedClicked["rowGridIndex"];
-                                    var columnGridIndex = resultedClicked["columnGridIndex"];
-                                    that.updateGrid(clickedCell, indTable, rowGridIndex, columnGridIndex);
-                                }
-                            }
-                            if (typeof oldCell !== 'undefined' && oldCell != null) {
-                               if (oldCell.firstElementChild != null) {
-                                  $("#" + oldCell.id).igTextEditor('destroy');
-                               }
-                               oldCell.removeAttribute("id")
-                               oldCell.removeAttribute("class")
-                            }
-                            console.log('clickedCell3')
-                            console.log(clickedCell[3])
-                            if(clickedCell[3] == null){
-                                clickedCell[3] = '';
-                            }
-                            cell.setAttribute("id", "clickedCell");
-                            $("#clickedCell").igTextEditor({
-                               textMode: "text",
-                               value: clickedCell[3],
-                               focusOnSpin: false,
-                               selectionOnFocus: 0,
-                               valueChanged: functionChanges
-                            });
-                        }
-                        else { // editing total
-                            var cell = ui.cellElement;
-                            var oldCell = document.getElementById("clickedCell")
-                            if (document.getElementById('clickedCell') != null) {
-                                $('#clickedCell').igTextEditor('destroy');
-                                oldCell.removeAttribute("id")
-                                oldCell.removeAttribute("class")
-                            }
-                            that.startFullEditing(resultedClicked)
-                        }
-                    }
-                        // if it is a special editable value
-                     else if (isEditable == 2) {
-                        // production form
-                        if (resultedClicked.clickedCell[0] == 5 || resultedClicked.clickedCell[0] == 2 || resultedClicked.clickedCell[0] == 4) {
-                            var allData = $.extend(true, {}, ModelController.getData());
-                            var tableData = $.extend(true, {}, ModelController.getTableDataModel());
-                            specialControlEditor.init(allData, tableData, resultedClicked, formulaController, Configurator, supportUtility, that, filterData.productCode);
-                        } else {
-                            var allData = ModelController.getData();
-                            var tableData = $.extend(true, {}, ModelController.getTableDataModel());
-                            specialControlEditor.init(allData, tableData, resultedClicked, formulaController, Configurator, supportUtility, that,filterData.productCode);
-                        }// other form
+                if(state.value == resultedClicked.clickedCell[3]) {
+                    state.value = state.old;
+                    this.unblockEvent();
+                }else{
+                    if(state.value != null && state.value != '') {
+                        debugger;
+                        var newValue = parseFloat(state.value)
+                        resultedClicked.clickedCell[3] = newValue
+                        this.unblockEvent();
+                        var indTable = resultedClicked["indTable"];
+                        var rowGridIndex = resultedClicked["rowGridIndex"];
+                        var columnGridIndex = resultedClicked["columnGridIndex"];
+
+                        self.updateGrid(resultedClicked.clickedCell, indTable, rowGridIndex, columnGridIndex)
+                        this.editCancel()
+
+                    }else{
+                        state.value = state.old;
+                        this.unblockEvent();
                     }
                 }
-            })*/
+            });
+
+
 
 
             $("#export").click(function () {
@@ -208,6 +149,8 @@ define(["jquery", "view/GridDataView2", "editorController/FormController",
         }
 
         GeneralController.prototype.updateGrid = function (newCell, indTable, rowIndex, columnIndex) {
+            debugger;
+            console.log('updateGRIDDDDDDDDD')
             var bindedKeys = formulaController.getBindedKeys();
             ModelController.updateModels(newCell, indTable, rowIndex, columnIndex)
             // check if need to apply a formula
@@ -223,11 +166,9 @@ define(["jquery", "view/GridDataView2", "editorController/FormController",
                 formulaController.sortByDateAtStart(modelWithFormulas);
 
                 var rowsChanged = formulaController.applyUpdateFormulas(modelWithFormulas, formulas, columnIndex, rowIndex);
-                console.log('before Row changed')
-                console.log(rowsChanged)
+
                 rowsChanged.push({'index': indTable, 'row': newCell})
-                console.log('rowChanged')
-                console.log(rowsChanged)
+
                 // at the end, order like initially
                 formulaController.sortInitialValue(modelWithFormulas);
                 ViewGrid.updateBatchGridView(modelWithFormulas, rowsChanged, xCoordinate, yCoordinate);
@@ -285,7 +226,8 @@ define(["jquery", "view/GridDataView2", "editorController/FormController",
             var tableModel = ModelController.createNewForecast();
             var tableModelWithFormula = $.extend(true,[], tableModel);
             formulaController.init(tableModelWithFormula, Configurator, filterData)
-            ViewGrid.init(tableModelWithFormula, Configurator, supportUtility)
+            var grid = ViewGrid.init(tableModelWithFormula, Configurator, supportUtility)
+            this.createListeners(grid)
             this.onChangeModalityEditing()
         }
 

@@ -35,7 +35,7 @@ define(['jquery'], function($){
             clickedCell = TableModel[indTable]
         }
         else{
-            indTable = rowIndex* columnsNumber+columnIndex
+            indTable = (rowIndex* columnsNumber)+columnIndex
             clickedCell = TableModel[indTable]
         }
         result["clickedCell"]   = clickedCell;
