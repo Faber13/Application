@@ -9,8 +9,40 @@ define(['jquery'], function($){
         mapTitles = {}
     }
 
-    AdapterDataTable.prototype.init = function(){
+    // get the clicked cell from the model data and the index of Table model
+    AdapterDataTable.prototype.getClickedCell = function(TableModel, Configurator, idDatatable, grid, indexesObject) {
+        var result = {};
+        var rowGridIndex, columnGridIndex;
 
+        // starts from -1, because it includes the first column
+        var columnsNumber = -1;
+        grid.eachColumn(
+            function (col){
+                columnsNumber++;
+            }
+        )
+        var numberLeftKeyColumns = Configurator.getLeftKeyColumn().leftColumns.length
+
+        // columnIndex
+        var columnIndex  = grid.getColumnIndex(idDatatable.column)-1;
+        var rowIndex = grid.getIndexById(idDatatable);
+
+        rowGridIndex = rowIndex;
+        columnGridIndex = columnIndex
+
+        if(rowIndex == 0){
+            var indTable = columnIndex
+            clickedCell = TableModel[indTable]
+        }
+        else{
+            indTable = rowIndex* columnsNumber+columnIndex
+            clickedCell = TableModel[indTable]
+        }
+        result["clickedCell"]   = clickedCell;
+        result["indTable"]      = indTable;
+        result["rowGridIndex"]    = rowGridIndex;
+        result["columnGridIndex"]    = columnGridIndex;
+        return result;
     }
 
     AdapterDataTable.prototype.createPropertiesFromModel = function(model){

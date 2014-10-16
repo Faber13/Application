@@ -2,17 +2,19 @@
  * Created by fabrizio on 7/7/14.
  */
 define(["jquery", "view/GridDataView2", "editorController/FormController",
-        "exporter/controller/ExportController", "adapter/AdapterPivot", "formulasAmis/controller/FormulaController",
-        "editingSpecial/controller/ControllerEditors", "generalObserver/GeneralObserver" ,"jquery.sidebar"],
-    function ($, GridDataView, EditorController, ExportController, Adapter, FormulaController, SpecialEditorController, GeneralObserver) {
+        "exporter/controller/ExportController", "adapterGrid", "formulasAmis/controller/FormulaController",
+        "editingSpecial/controller/ControllerEditors", "generalObserver/GeneralObserver" ,"editHandler","jquery.sidebar"],
+    function ($, GridDataView, EditorController, ExportController, Adapter, FormulaController, SpecialEditorController, GeneralObserver,
+        EditHandler) {
 
-        var ViewGrid, ModelController, FormController, dsd, Configurator, adapterPivot, formulaController, supportUtility,
-            specialControlEditor, editingOnCell, generalObserver, filterData, xCoordinate, yCoordinate;
+        var ViewGrid, ModelController, FormController, dsd, Configurator, adapterGrid, formulaController, supportUtility,
+            specialControlEditor, editingOnCell, generalObserver, filterData, xCoordinate, yCoordinate, grid, editHandler;
 
         function GeneralController() {
+            editHandler = new EditHandler;
             ViewGrid = new GridDataView;
             FormController = new EditorController;
-            adapterPivot = new Adapter;
+            adapterGrid = new Adapter;
             formulaController = new FormulaController;
             specialControlEditor = new SpecialEditorController;
             generalObserver = new GeneralObserver;
@@ -33,27 +35,48 @@ define(["jquery", "view/GridDataView2", "editorController/FormController",
             formulaController.init(tableModelWithFormula, Configurator, filterData)
 
             // visualization model
-            var grid = ViewGrid.init(tableModelWithFormula, configurator, supportUtility)
+             grid = ViewGrid.init(tableModelWithFormula, configurator, supportUtility)
+            console.log
             // append listeners to events
-             this.createListeners();
+            this.createListeners();
             this.onChangeModalityEditing();
         }
 
         GeneralController.prototype.createListeners = function () {
 
-
-            var idPivot = Configurator.getIdOlapGrid()
             // Transform pivotGrid into grid
-            var grid = $("#" + idPivot).igPivotGrid("grid");
-            var that = this;
+        //    var grid = $("#" + idPivot).igPivotGrid("grid");
+            var self = this;
+            console.log('grid')
+            console.log(grid)
 
             grid.attachEvent("onItemClick", function(id, e, node){
+                //oldValue = this.getEditorValue(id) // save the old value
+                debugger;
+                e.preventDefault();
+                e.stopImmediatePropagation();
 
+                xCoordinate = window.pageXOffset;
+                yCoordinate = window.pageYOffset;
 
+                var cellTableModel2 = ModelController.getTableDataModel();
+                var cellTableModel = $.extend(true, {}, cellTableModel2);
+                // To identify when the first new nested row starts
+                var indexesObject = ModelController.getIndexesNewFirstColumnLeft();
+                var resultedClicked = adapterGrid.getClickedCell(cellTableModel, Configurator, id, this, indexesObject);
+                var clickedCell = resultedClicked["clickedCell"]
+                var isEditable = formulaController.checkIfEditableCell(clickedCell)
+                editHandler.startEditCell(resultedClicked, isEditable, editingOnCell, grid, self)
+            });
 
-            })
+            grid.attachEvent("onBeforeEditStop", function(state, editor){
+                this.blockEvent()
+                state.value = state.old;
+              //  this.editCancel();
+                this.unblockEvent();
+            });
 
-
+/*
                 $(document.body).delegate("#" + grid.id(), "iggridcellclick", function (evt, ui) {
                 debugger;
                 evt.preventDefault();
@@ -64,7 +87,7 @@ define(["jquery", "view/GridDataView2", "editorController/FormController",
                 var cellTableModel = $.extend(true, {}, cellTableModel2);
                 // To identify when the first new nested row starts
                 var indexesObject = ModelController.getIndexesNewFirstColumnLeft();
-                var resultedClicked = adapterPivot.getClickedCell(cellTableModel, Configurator, ui, indexesObject);
+                var resultedClicked = adapterGrid.getClickedCell(cellTableModel, Configurator, ui, indexesObject);
                 var clickedCell = resultedClicked["clickedCell"]
                 var isEditable = formulaController.checkIfEditableCell(clickedCell)
                 var cell = ui.cellElement;
@@ -134,7 +157,7 @@ define(["jquery", "view/GridDataView2", "editorController/FormController",
                         }// other form
                     }
                 }
-            })
+            })*/
 
 
             $("#export").click(function () {
@@ -147,6 +170,18 @@ define(["jquery", "view/GridDataView2", "editorController/FormController",
             $('#newForecast').on("click", function(){
                that.updateWithNewForecast()
             })
+        }
+
+        GeneralController.prototype.startSpecialEditing = function(resultedClicked){
+            if (resultedClicked.clickedCell[0] == 5 || resultedClicked.clickedCell[0] == 2 || resultedClicked.clickedCell[0] == 4) {
+                var allData = $.extend(true, {}, ModelController.getData());
+                var tableData = $.extend(true, {}, ModelController.getTableDataModel());
+                specialControlEditor.init(allData, tableData, resultedClicked, formulaController, Configurator, supportUtility, this, filterData.productCode);
+            } else {
+                var allData = ModelController.getData();
+                var tableData = $.extend(true, {}, ModelController.getTableDataModel());
+                specialControlEditor.init(allData, tableData, resultedClicked, formulaController, Configurator, supportUtility, this,filterData.productCode);
+            }// other form
         }
 
         GeneralController.prototype.startFullEditing = function (resultedClicked) {
@@ -226,7 +261,6 @@ define(["jquery", "view/GridDataView2", "editorController/FormController",
 
         GeneralController.prototype.saveDataFromProductionForm = function(newCalculatedData,newOriginalData, cellClickedInfo){
             console.log('generalController: saveDataFromProductionForm, init')
-           debugger;
             var indexes = ModelController.saveDataFromProduction(newOriginalData, cellClickedInfo.indTable, cellClickedInfo.rowGridIndex, cellClickedInfo.columnGridIndex)
             var tableModel = ModelController.getTableDataModel();
             console.log('generalController: saveDataFromProductionForm, afet getTableData')
@@ -259,6 +293,7 @@ define(["jquery", "view/GridDataView2", "editorController/FormController",
             $("#editingChoice").bind('change', function (event) {
                 event.preventDefault()
                 editingOnCell = !event.args.checked;
+                editHandler.updateEditingOnCell(editingOnCell)
             })
         }
 

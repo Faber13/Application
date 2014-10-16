@@ -31,7 +31,8 @@ requirejs.config({
         specialFormulaConf:  "../amis/editing/special/configuration",
         generalObserver   :  "../component/core/balanceSheet/observer",
         urlConfigurator   :  "../services/configurator/ServicesConfigurator",
-        databaseSaver     :  "../amis/saving"
+        databaseSaver     :  "../amis/saving",
+        editHandler       :  "../amis/editing/direct/EditHandler"
     },
     "shim": {
         "bootstrap": {

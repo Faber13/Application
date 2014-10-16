@@ -10,7 +10,6 @@
     position: fixed !important;
 }
 
-
 .ui-timepicker-div dl { text-align: left; }
 .ui-timepicker-div dl dt { float: left; clear:left; padding: 0 0 0 5px; }
 .ui-timepicker-div dl dd { margin: 0 10px 10px 40%; }
@@ -106,13 +105,20 @@
     padding: 7px !important;
 }
 
+#titlepivotGrid{
+    background-color: #FAFAFA;
+    font-size: 12px;
+    border: 1px solid #E2E2E2;
+    text-transform: uppercase;
+    text-align: center;
+    vertical-align: middle;
+}
 
 
-
+/*
 [title = "Unbalanced"], [title="Unbalanced"]~ td  {
     color : #7A0000;
 }
-
 
 [title = "Total Supply (Thousand tonnes)"], [title="Total Supply (Thousand tonnes)"]~ td,
 [title = "Domestic Supply (Thousand tonnes)"], [title="Domestic Supply (Thousand tonnes)"]~ td,
@@ -137,6 +143,7 @@
 [title = "Yield Milled (Tonnes/Ha)"], [title="Yield Milled (Tonnes/Ha)"]~ td,[title = "Yield Paddy (Tonnes/Ha)"], [title="Yield Paddy (Tonnes/Ha)"]~ td {
     color: #047A00;
 }
+*/
 
 .calculatedRowGrid{
     background-color: rgba(191, 201, 238, 0.34);
@@ -167,8 +174,20 @@
     color: #0082AD;
 }
 
+.greenLine{
+    color: #047A00;
+}
+
+.redLine {
+    color : #7A0000;
+}
+
 .default{
     color: red;
+}
+
+.webix_view .webix_dt_editor input{
+    border: 5px solid #3498db;
 }
 
 

@@ -19,7 +19,8 @@ define(["jquery" , "views/modelView/ViewModel", "adapterGrid",  "webix" ], funct
         table = tableModel;
         Configurator = configurator;
         language = Configurator.getComponentLanguage();
-        this.createFullGrid();
+        var grid = this.createFullGrid();
+        return grid;
     }
 
     GridDataView2.prototype.createFullGrid = function () {
@@ -39,23 +40,43 @@ define(["jquery" , "views/modelView/ViewModel", "adapterGrid",  "webix" ], funct
 
 
     GridDataView2.prototype.renderGrid = function (model) {
-
         adapterGrid.createPropertiesFromModel(model)
         var columnsNumber = adapterGrid.getNumberOfColumns(model)
         var differentDates = adapterGrid.getDifferentDates();
         var titlesMap = adapterGrid.getTitlesMap()
-        console.log('---------titlesMap -------------------')
-        console.log(titlesMap)
 
         var dataSource = this.createDataSource(columnsNumber, differentDates, titlesMap, model)
-        console.log('DATASORUCE')
-        console.log(dataSource)
-        debugger;
 
         var columns = this.createColumns(dataSource, differentDates)
-        console.log('*********** columns ********************')
-        console.log(columns)
 
+       this.createOtherOptions()
+
+        var self = this;
+        var grid =
+            webix.ui({
+                container: "pivotGrid",
+                view: "datatable",
+                navigation:true,
+                id: "grid",
+                editable:true,
+                leftSplit:1,
+                scheme: {
+                    $change: function (item) {
+                        self.createColourConfiguration(item);
+                    }
+                },
+                columns: columns,
+                datatype: "jsarray",
+                data: dataSource
+            });
+
+
+
+        return grid;
+    }
+
+    GridDataView2.prototype.createOtherOptions = function(){
+        var filterData = supportUtility.getFilterData()
 
         document.getElementById('box').style.visibility = "visible";
         var options = document.getElementById('options')
@@ -80,31 +101,9 @@ define(["jquery" , "views/modelView/ViewModel", "adapterGrid",  "webix" ], funct
             fa.remove();
         }
 
-
-        var grid =
-            webix.ui({
-                container: "pivotGrid",
-                view: "datatable",
-                id: "grid",
-                editable:true,
-                leftSplit:1,
-                scheme:{
-                    $change:function(item){
-                        switch(item.data0) {
-                            case 'Population (1000s)':
-                                item.$css = "blueLine"
-                                break;
-                            default :
-                                item.$css = "default"
-                                break;
-                        }
-                    }
-                },
-                columns: columns,
-                datatype: "jsarray",
-                data: dataSource
-            });
-
+        var titleGrid = document.getElementById('titlepivotGrid')
+        titleGrid.innerHTML = "Forecast for season: "+filterData.season+" , "+filterData.country+
+            " , "+filterData.product+" , "+filterData.dataSource
 
         $('#options').append('<div class="btn-group"><button class="btn btn-primary" id="newForecast">Create a new forecast for season '+filterData.season+'</button></div><div class="btn-group-vertical" id="optionsPivotGrid">' +
             '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">' +
@@ -114,21 +113,50 @@ define(["jquery" , "views/modelView/ViewModel", "adapterGrid",  "webix" ], funct
             '<div class="col-lg-9"><span>Edit flag and notes</span></div></div><hr></li></ul></div>') ;
         $('#editingChoice').jqxCheckBox({width: 30, height: 25});
 
-        return grid;
+    }
+
+
+    GridDataView2.prototype.createColourConfiguration = function(item){
+        switch(item.data0) {
+            case 'Population (1000s)':
+            case 'Total Supply (Thousand tonnes)':
+            case 'Domestic Supply (Thousand tonnes)':
+            case 'Opening Stocks (Thousand tonnes)':
+            case 'Total Utilization (Thousand tonnes)':
+            case 'Domestic Utilization (Thousand tonnes)':
+            case 'Per capita food use (Kg/Yr)':
+            case 'Extraction Rate (%)':
+                item.$css = "blueLine"
+                break;
+
+            case 'Unbalanced':
+                item.$css = "redLine"
+                break;
+
+            case 'Production (Thousand tonnes)':
+            case 'Other Uses (Thousand tonnes)':
+            case 'Area Harvested (Thousand Ha)':
+            case 'Production Paddy (Thousand tonnes)':
+            case 'Area Planted (Thousand Ha)':
+            case 'Yield (Tonnes/Ha)':
+            case 'Yield Paddy (Tonnes/Ha)':
+            case 'Yield Milled (Tonnes/Ha)':
+                item.$css = "greenLine"
+                break;
+
+            default :
+                item.$css = "defaultLine"
+                break;
+
+        }
     }
 
         GridDataView2.prototype.createColumns = function(dataSource, differentDates){
             var filterData = supportUtility.getFilterData()
 
-            debugger;
             var columns = [];
             var arrDiffDates = Object.keys(differentDates)
-           /* columns.push({id : "data0",width:400,header: [
-                {text:  'Forecast for season: '+filterData.season+', '
-                    +filterData.country+' , '+filterData.product+' , '
-                    +filterData.dataSource+' ',  colspan: arrDiffDates.length+1},
 
-                {text: 'Elements'}]})*/
             columns.push({id : "data0",width:400,header:'Elements', css:"firstColumn" })
 
             for(var i =0; i< arrDiffDates.length; i++){
@@ -156,8 +184,6 @@ define(["jquery" , "views/modelView/ViewModel", "adapterGrid",  "webix" ], funct
 
 
     GridDataView2.prototype.createDataSource = function(columnsNumber,differentDates,titlesMap, model  ){
-
-        debugger;
 
         var viewRowModel = []
         var index =0;
