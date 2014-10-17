@@ -37,61 +37,77 @@ define(["jquery", "view/GridDataView2", "editorController/FormController",
             // visualization model
              grid = ViewGrid.init(tableModelWithFormula, configurator, supportUtility, this)
             console.log
-            // append listeners to events
-            this.createListeners(grid);
+
             this.onChangeModalityEditing();
         }
 
         GeneralController.prototype.createListeners = function (grid) {
 
-            // Transform pivotGrid into grid
-        //    var grid = $("#" + idPivot).igPivotGrid("grid");
             var self = this;
-            console.log('grid')
+            console.log('GCONTROLLER : createListenersgrid')
             console.log(grid)
             var resultedClicked
 
             grid.attachEvent("onItemClick", function(id, e, node){
-                console.log('onItemCLICKKKKKKKKKKKKKKKKKKKK')
-                //oldValue = this.getEditorValue(id) // save the old value
-                debugger;
-                e.preventDefault();
-                e.stopImmediatePropagation();
+                this.blockEvent();
+                console.log('gCONTROLLER: onItemCLICKKKKKKKKKKKKKKKKKKKK')
 
                 xCoordinate = window.pageXOffset;
                 yCoordinate = window.pageYOffset;
+                console.log('id from event')
+                console.log(id)
+                // no clikc on the first column
+                if(id.column != 'data0' && resultedClicked != -1) {
+                    var cellTableModel2 = ModelController.getTableDataModel();
+                    var cellTableModel = $.extend(true, {}, cellTableModel2);
+                    // To identify when the first new nested row starts
+                    var indexesObject = ModelController.getIndexesNewFirstColumnLeft();
+                    resultedClicked = adapterGrid.getClickedCell(cellTableModel, Configurator, id, this, indexesObject);
+                    console.log('resulted Clicked:')
+                    console.log(resultedClicked)
+                    var clickedCell = resultedClicked["clickedCell"]
+                    var isEditable = formulaController.checkIfEditableCell(clickedCell)
+                    editHandler.startEditCell(resultedClicked, isEditable, editingOnCell, grid, self)
 
-                var cellTableModel2 = ModelController.getTableDataModel();
-                var cellTableModel = $.extend(true, {}, cellTableModel2);
-                // To identify when the first new nested row starts
-                var indexesObject = ModelController.getIndexesNewFirstColumnLeft();
-                resultedClicked = adapterGrid.getClickedCell(cellTableModel, Configurator, id, this, indexesObject);
-                var clickedCell = resultedClicked["clickedCell"]
-                var isEditable = formulaController.checkIfEditableCell(clickedCell)
-                editHandler.startEditCell(resultedClicked, isEditable, editingOnCell, grid, self)
+                }else{
+                    this.unblockEvent()
+                }
             });
 
-            grid.attachEvent("onBeforeEditStop", function(state, editor){
-                this.blockEvent()
+           var eventStop = grid.attachEvent("onBeforeEditStop", function(state, editor){
+
                 console.log('onBEFORE EDIT STOPPPPPPP')
+                console.log('state OLD')
+                console.log(state.old);
+                console.log('state VALUE')
+
+                console.log(state.value);
 
                 if(state.value == resultedClicked.clickedCell[3]) {
+                    this.blockEvent()
+                    console.log('value not changed!!!')
                     state.value = state.old;
                     this.unblockEvent();
                 }else{
                     if(state.value != null && state.value != '') {
-                        debugger;
+                        console.log('*************************************')
+                        console.log('start true Editing:')
                         var newValue = parseFloat(state.value)
+
+                        console.log('new Value: '+newValue)
                         resultedClicked.clickedCell[3] = newValue
-                        this.unblockEvent();
+                        console.log('new Cell value: '+resultedClicked.clickedCell[3])
+
                         var indTable = resultedClicked["indTable"];
+                        console.log('indTable: '+indTable)
                         var rowGridIndex = resultedClicked["rowGridIndex"];
+                        console.log('RpwGridIndex: '+rowGridIndex)
                         var columnGridIndex = resultedClicked["columnGridIndex"];
-
+                        console.log('columnGridIndex: '+columnGridIndex)
                         self.updateGrid(resultedClicked.clickedCell, indTable, rowGridIndex, columnGridIndex)
-                        this.editCancel()
-
+                        resultedClicked = -1
                     }else{
+                        this.blockEvent()
                         state.value = state.old;
                         this.unblockEvent();
                     }
@@ -109,8 +125,12 @@ define(["jquery", "view/GridDataView2", "editorController/FormController",
 
 
             $('#newForecast').on("click", function(){
-               that.updateWithNewForecast()
+               self.updateWithNewForecast()
             })
+        }
+
+        GeneralController.prototype.setGrid = function(newGrid){
+            grid = newGrid;
         }
 
         GeneralController.prototype.startSpecialEditing = function(resultedClicked){
@@ -149,8 +169,8 @@ define(["jquery", "view/GridDataView2", "editorController/FormController",
         }
 
         GeneralController.prototype.updateGrid = function (newCell, indTable, rowIndex, columnIndex) {
-            debugger;
             console.log('updateGRIDDDDDDDDD')
+            grid.blockEvent()
             var bindedKeys = formulaController.getBindedKeys();
             ModelController.updateModels(newCell, indTable, rowIndex, columnIndex)
             // check if need to apply a formula

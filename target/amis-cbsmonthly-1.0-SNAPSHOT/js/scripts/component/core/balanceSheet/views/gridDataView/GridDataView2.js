@@ -49,12 +49,16 @@ define(["jquery" , "views/modelView/ViewModel", "adapterGrid",  "webix" ], funct
 
        this.createOtherOptions()
 
+        if(grid)
+            grid.destructor()
+
         var self = this;
         grid =
             webix.ui({
                 container: "pivotGrid",
                 view: "datatable",
                 navigation:true,
+                clipboard:"selection",
                 id: "grid",
                 editable:true,
                 leftSplit:1,
@@ -69,6 +73,7 @@ define(["jquery" , "views/modelView/ViewModel", "adapterGrid",  "webix" ], funct
             });
 
 
+        generalController.createListeners(grid);
 
         return grid;
     }
@@ -199,10 +204,7 @@ define(["jquery" , "views/modelView/ViewModel", "adapterGrid",  "webix" ], funct
 
         var result =this.updateDataSourceSingleCell(cellTransformed)
 
-        var fa = document.querySelectorAll('[view_id="grid"]');
-        if (typeof fa != 'undefined' && fa != null) {
-            fa.remove();
-        }
+        grid.destructor()
 
         var self = this;
         grid =
@@ -212,6 +214,7 @@ define(["jquery" , "views/modelView/ViewModel", "adapterGrid",  "webix" ], funct
                 navigation:true,
                 id: "grid",
                 editable:true,
+                clipboard:"selection",
                 leftSplit:1,
                 scheme: {
                     $change: function (item) {
@@ -222,11 +225,14 @@ define(["jquery" , "views/modelView/ViewModel", "adapterGrid",  "webix" ], funct
                 datatype: "jsarray",
                 data: dataSource
             });
-    //    window.scrollTo(xCoordinate,yCoordinate)
-        debugger;
+        window.scrollTo(xCoordinate,yCoordinate)
 
         generalController.createListeners(grid)
 
+    }
+
+    GridDataView2.prototype.getGrid = function(){
+        return grid
     }
 
     GridDataView2.prototype.updateBatchGridView = function (tableModel, cells, xCoordinate, yCoordinate) {
@@ -244,10 +250,7 @@ define(["jquery" , "views/modelView/ViewModel", "adapterGrid",  "webix" ], funct
 
         var self = this
 
-        var fa = document.querySelectorAll('[view_id="grid"]');
-        if (typeof fa != 'undefined' && fa != null) {
-            fa.remove();
-        }
+        grid.destructor()
 
         if(document.getElementById('specialForm')) {
             $('#specialForm').modal('hide');
@@ -274,7 +277,7 @@ define(["jquery" , "views/modelView/ViewModel", "adapterGrid",  "webix" ], funct
 
 
 
-        generalController.createListeners(grid);
+       generalController.createListeners(grid);
     }
 
     GridDataView2.prototype.getDataSource = function(){
@@ -282,7 +285,6 @@ define(["jquery" , "views/modelView/ViewModel", "adapterGrid",  "webix" ], funct
     }
 
     GridDataView2.prototype.updateDataSourceSingleCell = function(newCell){
-        debugger;
         var result = {}
         var found = false;
         for(var i =0; i< dataSource.length && !found; i++){

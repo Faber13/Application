@@ -71,12 +71,9 @@ define(["jquery", "balanceSheet/BalanceSheet", "dataLoader/DataLoader", "databas
                 balanceSheet.init(totalForecast, url, dataFiltered)
             }
         }
-        debugger;
 
         var realPreviousYear = dataLoader.getRealPreviousYear()
         savingController.init(balanceSheet, filterActual,realPreviousYear )
-
-
     };
 
 

@@ -10,23 +10,25 @@ define(['jquery'], function($){
     EditHandler.prototype.startEditCell = function(resultedClicked, isEditable, editingOnCell, grid, GeneralController){
         var clickedCell =   resultedClicked["clickedCell"]
         generalController = GeneralController
-        debugger;
+
         switch(isEditable){
             case 0:
                 //not editable
                 grid.editCancel();
+                grid.unblockEvent()
                 break;
 
             case 1:
                 // editable
-
                 if(editingOnCell){
+
                     grid.getEditor().setValue(clickedCell[3]) // change the value
-                    debugger;
+                    grid.unblockEvent()
 
                 }else{
                     grid.editCancel();
                     generalController.startFullEditing(resultedClicked)
+                    grid.unblockEvent()
                 }
 
 
